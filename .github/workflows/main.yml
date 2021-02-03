@@ -40,7 +40,7 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          server: ftps://waws-prod-blu-203.ftp.azurewebsites.windows.net
+          server:   waws-prod-blu-203.ftp.azurewebsites.windows.net
           username: orders-center\$orders-center
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
