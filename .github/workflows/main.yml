@@ -40,11 +40,11 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          server: ftps://waws-prod-blu-203.ftp.azurewebsites.windows.net/site/wwwroot
+          server: ftps://waws-prod-blu-203.ftp.azurewebsites.windows.net
           username: orders-center\$orders-center
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./server/
-          server-dir: public_html/api/
+          server-dir: /site/wwwroot/public_html/api/
           dangerous-clean-slate: true
         
