@@ -1,10 +1,14 @@
 name: CI
 on: [push]
 jobs:
-  build:
+  build-api:
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./server
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+        operating-system: [ubuntu-latest]
         php-versions: ['7.4']
     runs-on: ${{ matrix.operating-system }}
     steps:
