@@ -45,7 +45,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./server/
-          server-dir: /site/wwwroot/public_html/api/
+          server-dir: /site/wwwroot/public/api/
       - name: Sync Client files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
@@ -54,5 +54,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./client/dist/
-          server-dir: /site/wwwroot/public_html/
+          server-dir: /site/wwwroot/public/
 
