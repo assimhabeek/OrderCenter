@@ -54,5 +54,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./client/dist/
-          server-dir: /site/wwwroot/public/
+          server-dir: /site/wwwroot/
 
