@@ -30,6 +30,7 @@ jobs:
         tools: php-cs-fixer, phpunit
       
   web-deploy:
+      needs: [build-server]
       name:  Deploy
       runs-on: ubuntu-latest
       steps:
@@ -41,4 +42,9 @@ jobs:
         with:
           server: ftps://waws-prod-blu-203.ftp.azurewebsites.windows.net/site/wwwroot
           username: orders-center\$orders-center
-          password: ${{ secrets.ftp_password }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./server/
+          server-dir: public_html/api/
+          dangerous-clean-slate: true
+        
