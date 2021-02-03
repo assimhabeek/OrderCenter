@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Staging CI
 
 # Controls when the action will run. 
 on:
@@ -29,30 +29,16 @@ jobs:
         coverage: xdebug    
         tools: php-cs-fixer, phpunit
       
-  build-client:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: './client'
-    strategy:
-      matrix:
-        node-version: [12.x]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache node modules
-        uses: actions/cache@v1
+  web-deploy:
+      name:  Deploy
+      runs-on: ubuntu-latest
+      steps:
+      - name: Get latest code
+        uses: actions/checkout@v2.3.2
+
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install and npm run build
-        run: |
-          npm i
-          npm run build:prod
+          server: ftps://waws-prod-blu-203.ftp.azurewebsites.windows.net/site/wwwroot
+          username: orders-center\$orders-center
+          password: ${{ secrets.ftp_password }}
