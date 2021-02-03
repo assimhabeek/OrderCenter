@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Staging CI
+
+# Controls when the action will run. 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+
+  build-server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: './server'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        extensions: mbstring, intl
+        ini-values: post_max_size=256M, max_execution_time=180
+        coverage: xdebug    
+        tools: php-cs-fixer, phpunit
+      
+  web-deploy:
+      needs: [build-server]
+      name:  Deploy
+      runs-on: ubuntu-latest
+      steps:
+      - name: Get latest code
+        uses: actions/checkout@v2.3.2
+
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server:   waws-prod-blu-203.ftp.azurewebsites.windows.net
+          username: orders-center\$orders-center
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./server/
+          server-dir: /site/wwwroot/public_html/api/
+          dangerous-clean-slate: true
+        
