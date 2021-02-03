@@ -1,0 +1,28 @@
+<div class="ct-container">
+
+  <div class="ct-row">
+
+    <div class="ct-upload-zone">
+      <div class="ct-drop-zone" ctDnd (fileDropped)="importFile($event)">
+        Drag and Drop
+      </div>
+      <div class="ct-progress-bar">
+        <mat-progress-bar mode="determinate" [value]="progressBarValue"></mat-progress-bar>
+      </div>
+      <input class="ct-hide" #fileInput type="file" (change)="importFile($event.target)"/>
+      <div class="ct-button-container">
+        <button mat-raised-button color="primary" (click)="onChoseFile(fileInput)">Choose Files</button>
+        <button mat-raised-button color="accent" (click)="uploadFile()">
+          <mat-icon>upload</mat-icon>
+        </button>
+
+      </div>
+      <div *ngIf="uploadedFileName" class="ct-file-name">
+        <mat-label> {{uploadedFileName}} </mat-label>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>

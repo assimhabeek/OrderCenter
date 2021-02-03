@@ -1,0 +1,44 @@
+<mat-card class="ct-toolbar mat-elevation-z1">
+
+  <span class="ct-spacer"></span>
+  <div [formGroup]="orderDateForm">
+    <mat-form-field class="ct-order-date">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="orderDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <button class="ct-filter" [color]="orderStatus!=0 ? 'primary': ''" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>filter_alt</mat-icon>
+  </button>
+  <button mat-icon-button matTooltip="Refresh" (click)="refresh()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+
+    <button mat-menu-item (click)="orderStatus=0;refresh()">
+      <span>Both</span>
+    </button>
+
+    <button mat-menu-item (click)="orderStatus=1;refresh()">
+      <span>Pending</span>
+    </button>
+
+    <button mat-menu-item (click)="orderStatus=2;refresh()">
+      <span>Queued</span>
+    </button>
+
+  </mat-menu>
+  <button mat-flat-button matTooltip="Reset Filters" color="accent" (click)="clearFilters()">Reset Filters</button>
+
+
+</mat-card>
+
+<div *ngIf="columns" class="ct-table-wrapper">
+  <ag-grid-angular class="ag-theme-material"
+                   [gridOptions]="options"
+                   [modules]="modules"
+                   [rowData]="rowData"></ag-grid-angular>
+</div>

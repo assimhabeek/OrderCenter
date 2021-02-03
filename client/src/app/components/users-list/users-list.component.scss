@@ -1,0 +1,32 @@
+.ct-toolbar {
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 24px;
+}
+.ct-toolbar button{
+  margin: auto 8px;
+}
+.ct-toolbar .ct-filter{
+  float: right;
+}
+.mat-menu-item .mat-icon {
+  margin-right: 0 !important;
+}
+
+.ct-table-wrapper {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+
+.ct-table-wrapper ag-grid-angular {
+  display: inline-block;
+  flex: 1 1 auto;
+  height: calc(100vh - 172px);;
+  margin: 16px;
+}
+
+.ct-table-wrapper .ct-next-button {
+  align-self: center;
+}

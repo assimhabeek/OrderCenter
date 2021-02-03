@@ -1,0 +1,56 @@
+{
+  "name": "semhoun/slim-skeleton-mvc",
+  "description": "Simple Slim Framework 4 skeleton with Twig, Monolog, Doctrine in Sqlite.",
+  "license": "MIT",
+  "type": "project",
+  "keywords": [
+    "slim-framework",
+    "skeleton",
+    "mvc",
+    "sqlite",
+    "twig",
+    "monolog",
+    "doctrine",
+    "console"
+  ],
+  "authors": [
+    {
+      "name": "Nathanael Semhoun",
+      "email": "nathanael@semhoun.net",
+      "homepage": "http://www.semhoun.net"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\Controller\\": "src/Controller",
+      "App\\Entity\\": "src/Entity",
+      "App\\Command\\": "src/Command",
+      "App\\Middleware\\": "src/Middleware",
+      "App\\Common\\": "src/Common",
+      "App\\Common\\VehicleMatch\\": "src/Common/VehicleMatch"
+    }
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/aphofstede/spout.git"
+    }
+  ],
+  "require": {
+    "php": ">=7.3",
+    "slim/slim": "^4.7.1",
+    "slim/psr7": "^1.0",
+    "php-di/php-di": "^6.0",
+    "monolog/monolog": "2.0.0",
+    "doctrine/orm": "^2.8.1",
+    "symfony/console": "^4.2",
+    "semhoun/proxy-detection-middleware": "^0.5.0",
+    "vlucas/phpdotenv": "^5.3",
+    "rbdwllr/psr-jwt": "^1.0",
+    "tuupola/cors-middleware": "^1.2",
+    "pmill/doctrine-array-hydrator": "^0.1.7",
+    "box/spout": "^3.1.x-dev",
+    "ext-json": "*",
+    "ext-curl": "*"
+  }
+}

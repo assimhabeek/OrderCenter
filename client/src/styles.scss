@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+@import "theme";
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-material.min.css";
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+.rag-green {
+  background: rgba(0, 255, 0, 0.1) !important;
+}
+
+.rag-amber {
+  background: rgb(238, 237, 144) !important;
+}
+
+.rag-red {
+  background: rgb(226, 103, 97) !important;
+}

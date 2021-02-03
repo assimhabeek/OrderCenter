@@ -1,0 +1,62 @@
+.ct-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.ct-is-mobile .ct-toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+h1.ct-app-name {
+  margin-left: 8px;
+}
+
+.ct-sidenav-container {
+  flex: 1;
+}
+
+.ct-sidenav-container mat-sidenav {
+  width: 300px;
+}
+
+.ct-is-mobile .ct-sidenav-container {
+  flex: 1 0 auto;
+}
+
+
+.ct-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.ct-is-mobile .ct-toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+h1.ct-app-name {
+  margin-left: 8px;
+}
+
+.ct-sidenav-container {
+  flex: 1;
+}
+
+.ct-is-mobile .ct-sidenav-container {
+  flex: 1 0 auto;
+}
+
+.ct-spacer{
+  flex: 1 1 auto;
+}

@@ -1,0 +1,33 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$ct-primary: mat-palette($mat-teal);
+$ct-accent: mat-palette($mat-light-blue, A200, A100, A400);
+$ct-warn: mat-palette($mat-red);
+
+$ct-theme: mat-light-theme((color: (primary: $ct-primary, accent: $ct-accent, warn: $ct-warn)));
+
+@include angular-material-theme($ct-theme);
+
+ct-file-select {
+
+  .ct-drop-zone.fileOver {
+    border-color: mat-color($ct-primary) !important;
+  }
+
+  .ct-file-name {
+    color: mat-color($ct-primary) !important;
+  }
+
+}
+
+.ct-primary {
+  background-color: mat-color($ct-primary) !important;
+  color: mat-color($ct-primary, 'default-contrast') !important;
+}
+
+.ct-warn {
+  background-color: mat-color($ct-warn) !important;
+  color: mat-color($ct-warn, 'default-contrast') !important;
+}

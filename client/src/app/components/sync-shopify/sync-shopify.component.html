@@ -1,0 +1,19 @@
+<mat-toolbar class="ct-toolbar mat-elevation-z1">
+  <button mat-raised-button color="primary" matTooltip="Import" (click)="insertOrders()"
+          [disabled]="rowData.length===0 || disableImport">
+    Import
+  </button>
+
+  <button mat-icon-button matTooltip="Refresh" (click)="refresh()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+
+
+</mat-toolbar>
+
+<div *ngIf="columns" class="ct-table-wrapper">
+  <ag-grid-angular class="ag-theme-material"
+                   [gridOptions]="options"
+                   [modules]="modules"
+                   [rowData]="rowData"></ag-grid-angular>
+</div>

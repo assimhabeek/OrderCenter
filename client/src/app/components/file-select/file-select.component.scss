@@ -1,0 +1,63 @@
+$ct-upload-zone-max-width: 600px;
+
+.ct-container {
+  padding-top: 64px;
+  width: 100%;
+  text-align: center;
+}
+
+.ct-button-container button{
+  margin: auto 8px !important;
+}
+
+.ct-container .ct-row {
+  width: 80%;
+  max-width: $ct-upload-zone-max-width;
+  display: block;
+  margin: auto;
+
+}
+
+
+.ct-upload-zone {
+  display: inline-block;
+  text-align: center;
+
+  width: 100%;
+  max-width: $ct-upload-zone-max-width;
+
+}
+
+
+.ct-drop-zone {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  line-height: 150px;
+  font-size: 16px;
+  font-weight: lighter;
+  opacity: .9;
+  height: 150px;
+  width: 100%;
+  border-radius: 10px;
+  border: dashed 3px;
+  margin: 8px;
+}
+
+.ct-hide {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  opacity: 0;
+}
+
+.ct-progress-bar {
+  margin: 16px;
+}
+
+.ct-file-name {
+  margin: 16px;
+}
+
+

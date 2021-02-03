@@ -1,0 +1,51 @@
+$formMarginTop: 40px;
+$formWidth: 300px;
+
+.ct-login {
+  overflow: auto;
+}
+
+.ct-login-card {
+  max-width: $formWidth;
+  margin: $formMarginTop auto;
+}
+
+.ct-login .mat-card-header-text {
+  margin: 0 !important;
+}
+
+.ct-login-card .logo {
+  height: auto;
+  width: 220px;
+  display: block;
+  margin: 10px auto;
+}
+
+.ct-login-card .mat-form-field {
+  margin-top: 15px;
+  width: 280px !important;
+}
+
+.ct-login-card .ct-remember-me {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.ct-login-card .ct-submit {
+  text-align: center;
+  width: 100%;
+  margin-top: 16px !important;
+}
+
+.ct-login-card .indicator {
+  cursor: pointer;
+}
+
+.ct-login-card mat-card-actions {
+  text-align: center;
+}
+
+.ct-vspace {
+  width: 100%;
+  height: 5px;
+}

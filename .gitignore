@@ -1,0 +1,9 @@
+/client/node_modules/
+/.idea/
+/client/dist/
+
+/server/\.ac-php-conf\.json
+/server/vendor/
+/server/var/*
+/server/composer.lock
+/server/.env
