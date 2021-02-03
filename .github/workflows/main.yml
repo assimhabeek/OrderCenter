@@ -19,7 +19,7 @@ jobs:
         working-directory: './server'
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.4.3
+      uses: actions/checkout@v2
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -40,7 +40,7 @@ jobs:
         node-version: [12.x]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.4.3
+        uses: actions/checkout@v2
       - name: Cache node modules
         uses: actions/cache@v1
         with:
