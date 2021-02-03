@@ -53,6 +53,6 @@ jobs:
           username: orders-center\$orders-center
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
-          local-dir: ./clinet/dist/
+          local-dir: ./client/dist/
           server-dir: /site/wwwroot/public_html/
 
