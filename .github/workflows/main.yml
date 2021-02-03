@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Get latest code
         uses: actions/checkout@v2.3.2
-      - name: Sync files
+      - name: Sync Server files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           server: waws-prod-blu-203.ftp.azurewebsites.windows.net
@@ -46,5 +46,13 @@ jobs:
           protocol: ftps
           local-dir: ./server/
           server-dir: /site/wwwroot/public_html/api/
-          dangerous-clean-slate: true
-        
+      - name: Sync Client files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: waws-prod-blu-203.ftp.azurewebsites.windows.net
+          username: orders-center\$orders-center
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./clinet/dist/
+          server-dir: /site/wwwroot/public_html/
+
