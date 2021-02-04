@@ -2,6 +2,7 @@
 /.idea/
 
 /server/\.ac-php-conf\.json
+/server/var/exportedFile/*.xlsx
 /server/vendor/
 /server/composer.lock
 /server/.env

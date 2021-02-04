@@ -149,7 +149,7 @@ export class OrdersService implements IServerSideDatasource {
             },
             {
                 field: 'bulbTypeFogLight',
-                headerName: 'bulbTypeFogLight',
+                headerName: 'bulb Type Fog Light',
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: bulbTypeFogLight

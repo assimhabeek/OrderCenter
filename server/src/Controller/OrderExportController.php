@@ -184,16 +184,16 @@ final class OrderExportController extends BaseController
 
             $notExistsBefore = $this->orderNotExistsYet($registeredOrder, $order);
 
-            $rows = $notExistsBefore ?
-                $this->createCarifixFirstRow($carifixMap, $order) :
-                $this->generateRowsFromSkus($order);
-
             if ($notExistsBefore) {
                 array_push($registeredOrder, $order['orderNo']);
-                $writer->addRow($rows);
-            } else {
-                foreach ($rows as $r) $writer->addRow($r);
+                $firstRow = $this->createCarifixFirstRow($carifixMap, $order);
+                $writer->addRow($firstRow->writterRow);
+                $order[$firstRow->sku] = '-';
             }
+
+            $rows = $this->generateRowsFromSkus($order);
+
+            foreach ($rows as $r) $writer->addRow($r);
 
         }
         return $writer;
@@ -212,7 +212,10 @@ final class OrderExportController extends BaseController
         $datum["ShipBilling"] = "PREPAID";
         $datum["ShipAccount"] = "PREPAID";
 
-        return WriterEntityFactory::createRow($this->generateRowFromMap($map, $datum));
+        $firstRow = new \stdClass();
+        $firstRow->writterRow = WriterEntityFactory::createRow($this->generateRowFromMap($map, $datum));
+        $firstRow->sku = $key;
+        return $firstRow;
     }
 
     private function createNonCarifixFile($data, $exportHistory)
