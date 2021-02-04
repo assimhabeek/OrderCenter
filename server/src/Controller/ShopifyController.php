@@ -141,6 +141,45 @@ final class ShopifyController extends BaseController
         return $responsePayload;
     }
 
+    public function importParsedOrders($request, $orders): array
+    {
+        $responsePayload = [];
+        $user = $this->authController->getCurrentUser($request);
+
+        try {
+
+            $toUpdate = [];
+            $toInsert = [];
+
+            foreach ($orders as $order) {
+                $order->setModifiedBy($user);
+                $copies = $this->getLineCopies($order->getShopifyId(), $order->getItemLineId());
+                if (sizeof($copies) > 0) $toUpdate = array_merge($toUpdate, $this->updateCopies($copies, $order));
+                else array_push($toInsert, $order);
+            }
+            $this->em->getConnection()->beginTransaction(); // suspend auto-commit
+
+            foreach ($toInsert as $o) {
+                $this->em->persist($o);
+            }
+
+            foreach ($toUpdate as $o) {
+                $this->em->merge($o);
+            }
+
+            $this->em->flush();
+            $this->em->getConnection()->commit();
+
+            $responsePayload = ["status" => true, "message" => "Imported successfully"];
+
+        } catch (Exception $exception) {
+            $this->em->getConnection()->rollBack();
+            $responsePayload = ["status" => false, "message" => "Failed to read file"];
+        }
+
+        return $responsePayload;
+    }
+
     private function wrapParams($request): array
     {
         return array_merge($request->getQueryParams(),

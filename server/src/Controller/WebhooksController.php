@@ -28,14 +28,14 @@ final class WebhooksController extends BaseController
     public function create(Request $request, Response $response): Response
     {
         $orders = $this->orderParser->parseOrderLines($request->getParsedBody());
-        $this->shopifyController->doImport($request, $orders);
+        $this->shopifyController->importParsedOrders($request, $orders);
         return $response->withStatus(200);
     }
 
     public function update(Request $request, Response $response): Response
     {
         $orders = $this->orderParser->parseOrderLines($request->getParsedBody());
-        $this->shopifyController->doImport($request, $orders);
+        $this->shopifyController->importParsedOrders($request, $orders);
         return $response->withStatus(200);
     }
 
@@ -56,7 +56,7 @@ final class WebhooksController extends BaseController
     public function partiallyFulfilled(Request $request, Response $response): Response
     {
         $orders = $this->orderParser->parseOrderLines($request->getParsedBody());
-        $this->shopifyController->doImport($request, $orders);
+        $this->shopifyController->importParsedOrders($request, $orders);
         return $response->withStatus(200);
     }
 
@@ -66,7 +66,7 @@ final class WebhooksController extends BaseController
         $shopifyOrder = $request->getParsedBody();
         $shopifyOrder['fulfillment_status'] = 'fulfilled';
         $orders = $this->orderParser->parseOrderLines($shopifyOrder);
-        $this->shopifyController->doImport($request, $orders);
+        $this->shopifyController->importParsedOrders($request, $orders);
         return $response->withStatus(200);
     }
 
@@ -77,7 +77,7 @@ final class WebhooksController extends BaseController
         $shopifyOrder = $request->getParsedBody();
         $shopifyOrder['fulfillment_status'] = 'cancelled';
         $orders = $this->orderParser->parseOrderLines($shopifyOrder);
-        $this->shopifyController->doImport($request, $orders);
+        $this->shopifyController->importParsedOrders($request, $orders);
         return $response->withStatus(200);
     }
 
