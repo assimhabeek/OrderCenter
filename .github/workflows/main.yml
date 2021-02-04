@@ -29,14 +29,21 @@ jobs:
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
           tools: php-cs-fixer, phpunit
-      - name: Cache dependencies
+      - name: Get Composer Cache Directory
+        id: get-composer-cache-dir
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache Composer
         uses: actions/cache@v1
+        id: composer-cache
         with:
-          path: ~/.composer/cache/files
-          key: dependencies-composer-${{ hashFiles('composer.json') }}
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-suggest
-
+          path: ${{ steps.get-composer-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install
   deploy:
     needs: [ build-server ]
     name: Deploy
