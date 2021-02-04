@@ -6,3 +6,4 @@
 /server/vendor/
 /server/composer.lock
 /server/.env
+/server/.env.prod
