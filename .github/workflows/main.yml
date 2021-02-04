@@ -48,7 +48,7 @@ jobs:
         run: touch ./output/api/.env
 
       - name: Load Production Values
-        run: echo $PRODUCTION_VALUES > ./output/api/.env
+        run: echo $PRODUCTION_VALUES | base64 -d > ./output/api/.env
         shell: bash
         env:
             PRODUCTION_VALUES: ${{ secrets.PRODUCTION_ENV_VALUES }}
