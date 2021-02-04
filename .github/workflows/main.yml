@@ -10,6 +10,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_NAME: orders-center    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './output'      # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   build-deply:
@@ -32,25 +35,25 @@ jobs:
         run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
         working-directory: './server'
 
-      - name: Sync Client files
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      - name: Create Dist Folder
+        run: mkdir output
+
+      - name: Copy Client files
+        run: cp ./dist/*  ./output
+
+      - name: Copy Server files
+        run: cp ./server/*  ./output
+
+      - name: Display Output Content
+        run: ls ./output
+
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v2
         with:
-          server: waws-prod-blu-203.ftp.azurewebsites.windows.net
-          username: orders-center\$orders-center
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./client/dist/
-          server-dir: /site/wwwroot/
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-      - name: Sync Server files
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
-        with:
-          server: waws-prod-blu-203.ftp.azurewebsites.windows.net
-          username: orders-center\$orders-center
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./server/
-          server-dir: /site/wwwroot/api/
-
-
+      - name: Delete Output File
+        run: rm -Rf ./output
 
