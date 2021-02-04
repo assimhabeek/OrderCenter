@@ -36,13 +36,13 @@ jobs:
         working-directory: './server'
 
       - name: Create Dist Folder
-        run: mkdir output
+        run: mkdir -p ./output/api
 
       - name: Copy Client files
         run: cp -R ./client/dist/*  ./output
 
       - name: Copy Server files
-        run: cp -R ./server/*  ./output
+        run: cp -R ./server/*  ./output/api
 
       - name: Display Output Content
         run: ls ./output
