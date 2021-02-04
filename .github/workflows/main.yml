@@ -45,8 +45,8 @@ jobs:
     steps:
       - name: Get latest code
         uses: actions/checkout@v2.3.2
-      - name: Display content
-        run: ls
+      - name: Include vendor
+        run:  echo "vendor/:composer.lock" > .git-ftp-include
       - name: Sync Client files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
