@@ -18,6 +18,8 @@ return function (ContainerBuilder $containerBuilder) {
             // Base path
             'base_path' => '/api/public',
 
+            'envFilePath' => $rootPath . '/.env',
+
             'exportPath' => $rootPath . '/var/exportedFile/',
             // Is debug mode
             'debug' => (getenv('APPLICATION_ENV') != 'production'),
@@ -51,8 +53,14 @@ return function (ContainerBuilder $containerBuilder) {
 
             'SHOPIFY_SHOP' => getenv('SHOP_NAME'),
             'SHOP_SECRET' => getenv('SHOP_SECRET'),
-            'CURRENT_SITE_ROOT' => getenv('CURRENT_SITE_ROOT'),
+            'CURRENT_API_ROOT' => getenv('CURRENT_API_ROOT'),
+            'CURRENT_HOST' => getenv('CURRENT_HOST'),
             // authorisation middleware
+
+            'API_KEY' => getenv('API_KEY'),
+            'SCOPES' => getenv('SCOPES'),
+            'SHARED_SECRET' => getenv('SHARED_SECRET'),
+
             'jwtMiddleware' =>
                 [
                     'secret' => getenv('JWT_SECRET'),

@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Common\EnvFile;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -10,33 +11,45 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class ShopifyConnector
 {
     private $setting;
+    private $envFile;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container,
+                                EnvFile $envFile)
     {
         $this->setting = $container->get('settings');
+        $this->envFile = $envFile;
     }
 
 
     public function install(Request $request, Response $response, array $args)
     {
         $shop = $request->getQueryParams()['shop'];
-        $install_url = "https://" . $shop . "/admin/oauth/authorize?client_id=" . API_KEY . "&scope=" . SCOPES . "&redirect_uri=" . urlencode(REDIRECTION_URL);
-        return $response->withHeader("location", $install_url)->withStatus(301);
+        $apiKey = $this->setting['API_KEY'];
+        $scopes = $this->setting['SCOPES'];
+        $redirectionUrl = $this->setting['REDIRECTION_URL'];
+
+        $installUrl = "https://" . $shop . "/admin/oauth/authorize?client_id=" . $apiKey . "&scope=" . $scopes . "&redirect_uri=" . urlencode($redirectionUrl);
+        return $response->withHeader("location", $installUrl)->withStatus(301);
     }
 
     public function generateToken(Request $request, Response $response, array $args)
     {
+        $sharedSecret = $this->setting['SHARED_SECRET'];
+        $apiKey = $this->setting['API_KEY'];
+        $currentHost = $this->setting['CURRENT_HOST'];
+
         $params = $request->getQueryParams();
         $hmac = $request->getQueryParams()['hmac'];
         $params = array_diff_key($params, array('hmac' => ''));
         ksort($params);
-        $computed_hmac = hash_hmac('sha256', http_build_query($params), SHARED_SECRET);
+        $computed_hmac = hash_hmac('sha256', http_build_query($params), $sharedSecret);
 
         if (hash_equals($hmac, $computed_hmac)) {
 
+
             $query = array(
-                "client_id" => API_KEY, // Your API key
-                "client_secret" => SHARED_SECRET, // Your app credentials (secret key)
+                "client_id" => $apiKey, // Your API key
+                "client_secret" => $sharedSecret, // Your app credentials (secret key)
                 "code" => $params['code'] // Grab the access key from the URL
             );
 
@@ -52,23 +65,25 @@ class ShopifyConnector
             curl_close($ch);
 
             $result = json_decode($result, true);
-            $access_token = $result['access_token'];
+            $accessToken = $result['access_token'];
 
-            $fp = fopen(TOKEN_FILE, "w+");
-            fwrite($fp, $params['shop']);
-            fwrite($fp, "\n");
-            fwrite($fp, $access_token);
-            fclose($fp);
-            $head_to_login = CURRENT_HOST . '/login?installed=1';
+            $this->envFile->addOrChangeKey('SHOP_NAME',$params['shop']);
+            $this->envFile->addOrChangeKey('SHOP_SECRET',$accessToken);
+            $this->envFile->save();
+
+            $head_to_login = $currentHost . '/login?installed=1';
+
         } else {
-            $head_to_login = CURRENT_HOST . '/login?installed=-1';
+
+            $head_to_login = $currentHost . '/login?installed=-1';
+
         }
         return $response->withHeader("location", $head_to_login)->withStatus(301);
     }
 
-    public function createWebhooks(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function createWebhooks(Request $request, Response $response, array $args)
     {
-        $baseURL = $this->setting['CURRENT_SITE_ROOT'];
+        $baseURL = $this->setting['CURRENT_API_ROOT'];
 
         $webhooks = [
             $this->generateWebhook("orders/create", $baseURL . '/shopify/orders/create'),
@@ -106,7 +121,7 @@ class ShopifyConnector
         );
     }
 
-    public function getWebhooks(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function getWebhooks(Request $request, Response $response, array $args)
     {
         $payload = $this->shopifyCall("/admin/api/2020-10/webhooks.json", array());
         $webhooks = json_decode($payload['response'], TRUE)['webhooks'];
