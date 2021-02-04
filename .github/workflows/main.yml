@@ -39,10 +39,10 @@ jobs:
         run: mkdir output
 
       - name: Copy Client files
-        run: cp ./dist/*  ./output
+        run: cp -R ./client/dist/*  ./output
 
       - name: Copy Server files
-        run: cp ./server/*  ./output
+        run: cp -R ./server/*  ./output
 
       - name: Display Output Content
         run: ls ./output
