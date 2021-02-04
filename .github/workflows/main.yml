@@ -41,7 +41,6 @@ jobs:
           protocol: ftps
           local-dir: ./client/dist/
           server-dir: /site/wwwroot/
-          dangerous-clean-slate: true
 
       - name: Sync Server files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
