@@ -60,6 +60,7 @@ return function (ContainerBuilder $containerBuilder) {
             'API_KEY' => getenv('API_KEY'),
             'SCOPES' => getenv('SCOPES'),
             'SHARED_SECRET' => getenv('SHARED_SECRET'),
+            'REDIRECTION_URL' => getenv('REDIRECTION_URL'),
 
             'jwtMiddleware' =>
                 [

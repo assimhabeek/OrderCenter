@@ -26,7 +26,7 @@ return function (App $app) {
     $app->get('/isLoggedIn', AuthController::class . ':isLoggedIn');
 
     $app->get('/install', ShopifyConnector::class . ':install');
-    $app->get('/generate_token', ShopifyConnector::class . ':generateToken');
+    $app->get('/generateToken', ShopifyConnector::class . ':generateToken');
 
 
 
@@ -38,7 +38,7 @@ return function (App $app) {
         $shopifyGroup->post('/shopify/orders/partially_fulfilled', WebhooksController::class . ':partiallyFulfilled');
         $shopifyGroup->post('/shopify/orders/cancelled', WebhooksController::class . ':canceled');
         $shopifyGroup->post('/shopify/orders/delete', WebhooksController::class . ':fulfilled');
-    });
+    })->add(AdminMiddleware::class);
 
     $app->group('', function (Group $authGroup) {
 
@@ -48,7 +48,6 @@ return function (App $app) {
             $group->put('', OrderController::class . ':update');
             $group->delete('/{id}', OrderController::class . ':delete');
             $group->put('/queueAll', OrderController::class . ':queueAll');
-
             $group->get('/export/preview', OrderExportController::class . ':exportPreview');
             $group->post('/export', OrderExportController::class . ':export');
         });
