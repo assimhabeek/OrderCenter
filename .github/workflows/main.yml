@@ -25,10 +25,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          extensions: mbstring, intl
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, json
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
           tools: php-cs-fixer, phpunit
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-suggest
 
   deploy:
     needs: [ build-server ]
