@@ -3,6 +3,5 @@
 
 /server/\.ac-php-conf\.json
 /server/vendor/
-/server/var/*
 /server/composer.lock
 /server/.env
