@@ -45,13 +45,13 @@ export class OrdersService implements IServerSideDatasource {
                 this.vehiclesService.getYear()
             ])
             .pipe(map(([skus, years]) => {
-                const bulbTypes = skus['BULB_TYPE'];
-                const bulbTypeFogLight = skus['BULB_TYPE_FOG_LIGHT'];
-                const highBeam = skus['HIGH_BEAM'];
-                const lowBeam = skus['LOW_BEAM'];
-                const fogLight = skus['FOG_LIGHT'];
-                const hbCanBus = skus['HB_CAN_BUS'];
-                const lbCanBus = skus['LB_CAN_BUS'];
+                const bulbTypes = skus.BULB_TYPE;
+                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT;
+                const highBeam = skus.HIGH_BEAM;
+                const lowBeam = skus.LOW_BEAM;
+                const fogLight = skus.FOG_LIGHT;
+                const hbCanBus = skus.HB_CAN_BUS;
+                const lbCanBus = skus.LB_CAN_BUS;
                 return this.buildHeader(bulbTypes, bulbTypeFogLight, highBeam, lowBeam, fogLight, hbCanBus, lbCanBus, years);
             }));
     }
@@ -91,7 +91,7 @@ export class OrdersService implements IServerSideDatasource {
                 headerName: 'Last modification',
                 tooltipField: 'lastModification',
                 valueSetter: (params: any) => {
-                    params.data['lastModification'] = params.newValue;
+                    params.data.lastModification = params.newValue;
                     return true;
                 },
                 cellRenderer: (col: any) => {
@@ -149,7 +149,7 @@ export class OrdersService implements IServerSideDatasource {
             },
             {
                 field: 'bulbTypeFogLight',
-                headerName: 'Bulb type fog light',
+                headerName: 'bulbTypeFogLight',
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: bulbTypeFogLight
@@ -274,11 +274,11 @@ export class OrdersService implements IServerSideDatasource {
 
     getQueueOrders(ordersStatus: number): Observable<any> {
         const filter = JSON.stringify([
-            {'name': 'completed', 'value': 'completed'},
-            {'name': 'orderStatus', 'value': ordersStatus}
+            {name: 'completed', value: 'completed'},
+            {name: 'orderStatus', value: ordersStatus}
         ]);
         return this.httpService.getWithAuth(environment.routes.orders, {params: new HttpParams().set('filter', filter)});
-    };
+    }
 
 
     getRows(params: IServerSideGetRowsParams): void {
@@ -289,7 +289,7 @@ export class OrdersService implements IServerSideDatasource {
 
         const filter = JSON.stringify(filterParams);
 
-        let par = new HttpParams()
+        const par = new HttpParams()
             .set('start', params.request.startRow.toString())
             .set('end', params.request.endRow.toString())
             .set('filter', filter)
@@ -301,7 +301,7 @@ export class OrdersService implements IServerSideDatasource {
                     params.successCallback(res.data, res.total);
 
                     const allColumnIds: any[] = [];
-                    params.columnApi.getAllColumns().forEach(function(column: any) {
+                    params.columnApi.getAllColumns().forEach(function (column: any) {
                         allColumnIds.push(column.colId);
                     });
                     params.columnApi.autoSizeColumns(allColumnIds, false);
@@ -313,7 +313,7 @@ export class OrdersService implements IServerSideDatasource {
             error => {
                 params.failCallback();
             });
-    };
+    }
 
     addRow(data: any): Observable<any> {
         return this.httpService.postWithAuth(environment.routes.orders, data);
@@ -335,15 +335,15 @@ export class OrdersService implements IServerSideDatasource {
         return this.httpService.deleteWithAuth(environment.routes.orders + `/${id}`);
     }
 
-    loadOrdersByRange(startDate: any, endDate: any, type: string) {
-        let par = new HttpParams()
+    loadOrdersByRange(startDate: any, endDate: any, type: string): Observable<any> {
+        const par = new HttpParams()
             .set('start', startDate)
             .set('end', endDate)
             .set('type', type);
         return this.httpService.getWithAuth(environment.routes.ordersQueuedRange, {params: par});
     }
 
-    exportOrders(data: any) {
+    exportOrders(data: any): Observable<any> {
         return this.httpService.postWithAuth(environment.routes.exportOrders, data, {
             responseType: 'blob',
             observe: 'response'
