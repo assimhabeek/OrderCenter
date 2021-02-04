@@ -44,6 +44,12 @@ jobs:
       - name: Copy Server files
         run: cp -R ./server/*  ./output/api
 
+      - name: Add .env file
+        run: touch ./output/api/.env
+
+      - name: Load Production Values
+        run: echo ${{ secrets.PRODUCTION_ENV_VALUES }} > ./output/api/.env
+
       - name: Display Output Content
         run: ls ./output
 
