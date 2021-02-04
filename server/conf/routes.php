@@ -29,7 +29,6 @@ return function (App $app) {
     $app->get('/generateToken', ShopifyConnector::class . ':generateToken');
 
 
-
     $app->group("", function (Group $shopifyGroup) {
         $shopifyGroup->post('/shopify/orders/create', WebhooksController::class . ':create');
         $shopifyGroup->post('/shopify/orders/updated', WebhooksController::class . ':update');
@@ -89,6 +88,9 @@ return function (App $app) {
             $adminGroup->get('/shopify-orders', ShopifyController::class . ':index');
             $adminGroup->post('/orders-all', ShopifyController::class . ':import');
             $adminGroup->post('/upload', OrderUploadController::class . ':upload');
+
+            $adminGroup->post('/shopify-webhooks', ShopifyConnector::class . ':createWebhooks');
+            $adminGroup->get('/shopify-webhooks', ShopifyConnector::class . ':getWebhooks');
 
 
         })->add(AdminMiddleware::class);
