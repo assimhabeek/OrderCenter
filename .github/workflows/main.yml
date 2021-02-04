@@ -12,12 +12,8 @@ on:
 
 
 jobs:
-  build-server:
+  build-deply:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: './server'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,19 +30,8 @@ jobs:
 
       - name: Install Composer Dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+        working-directory: './server'
 
-      - name: Display content
-        run: ls
-
-  deploy:
-    needs: [ build-server ]
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get latest code
-        uses: actions/checkout@v2.3.2
-      - name: Include vendor
-        run:  echo "vendor/:composer.lock" > .git-ftp-include
       - name: Sync Client files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
@@ -57,6 +42,7 @@ jobs:
           local-dir: ./client/dist/
           server-dir: /site/wwwroot/
           dangerous-clean-slate: true
+
       - name: Sync Server files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
@@ -66,4 +52,6 @@ jobs:
           protocol: ftps
           local-dir: ./server/
           server-dir: /site/wwwroot/api/
+
+
 
