@@ -48,7 +48,9 @@ jobs:
         run: touch ./output/api/.env
 
       - name: Load Production Values
-        run: echo ${{ secrets.PRODUCTION_ENV_VALUES }} > ./output/api/.env
+        run: echo $PRODUCTION_VALUES > ./output/api/.env
+        with:
+            PRODUCTION_VALUES: ${{ secrets.PRODUCTION_ENV_VALUES }}
 
       - name: Display Output Content
         run: ls ./output
