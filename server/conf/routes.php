@@ -24,6 +24,10 @@ return function (App $app) {
     $app->post('/login', AuthController::class . ':login');
     $app->get('/isLoggedIn', AuthController::class . ':isLoggedIn');
 
+    $app->get('/install', \App\Controller\ShopifyConnector::class . 'install');
+    $app->get('/generate_token', \App\Controller\ShopifyConnector::class . 'generateToken');
+
+
 
     $app->group("", function (Group $shopifyGroup) {
         $shopifyGroup->post('/shopify/orders/create', WebhooksController::class . ':create');
