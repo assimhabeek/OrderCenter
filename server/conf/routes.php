@@ -6,6 +6,7 @@ use App\Controller\ExportHistoryController;
 use App\Controller\OrderController;
 use App\Controller\OrderExportController;
 use App\Controller\OrderUploadController;
+use App\Controller\ShopifyConnector;
 use App\Controller\ShopifyController;
 use App\Controller\SkuController;
 use App\Controller\UserController;
@@ -24,8 +25,8 @@ return function (App $app) {
     $app->post('/login', AuthController::class . ':login');
     $app->get('/isLoggedIn', AuthController::class . ':isLoggedIn');
 
-    $app->get('/install', \App\Controller\ShopifyConnector::class . 'install');
-    $app->get('/generate_token', \App\Controller\ShopifyConnector::class . 'generateToken');
+    $app->get('/install', ShopifyConnector::class . ':install');
+    $app->get('/generate_token', ShopifyConnector::class . ':generateToken');
 
 
 
