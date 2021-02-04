@@ -29,7 +29,7 @@ class ShopifyWebhooksMiddleware implements MiddlewareInterface
         if (hash_equals($request->getHeaderLine("HTTP_X_SHOPIFY_HMAC_SHA256"), $calculated_hmac)) {
             $response = $handler->handle($request);
         } else {
-            $response->getBody()->write(json_encode(['message' => 'Only Admin is Authorised']));
+            $response->getBody()->write(json_encode(['message' => 'This is a shopify webhook']));
             $response->withStatus(401);
         }
         return $response;

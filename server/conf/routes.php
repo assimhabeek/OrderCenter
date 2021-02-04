@@ -14,6 +14,7 @@ use App\Controller\VehicleController;
 use App\Controller\WebhooksController;
 use App\Middleware\AdminMiddleware;
 use App\Middleware\AuthMiddleware as AuthMiddleware;
+use App\Middleware\ShopifyWebhooksMiddleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy as Group;
 
@@ -37,7 +38,7 @@ return function (App $app) {
         $shopifyGroup->post('/shopify/orders/partially_fulfilled', WebhooksController::class . ':partiallyFulfilled');
         $shopifyGroup->post('/shopify/orders/cancelled', WebhooksController::class . ':canceled');
         $shopifyGroup->post('/shopify/orders/delete', WebhooksController::class . ':fulfilled');
-    })->add(AdminMiddleware::class);
+    })->add(ShopifyWebhooksMiddleware::class);
 
     $app->group('', function (Group $authGroup) {
 
