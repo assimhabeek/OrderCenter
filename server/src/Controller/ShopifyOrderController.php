@@ -36,6 +36,7 @@ final class ShopifyOrderController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
+        $nonParsed = [];
         $allOrders = [];
 
         do {
@@ -51,6 +52,7 @@ final class ShopifyOrderController extends BaseController
             $orders = json_decode($payload['response'], TRUE)['orders'];
 
             if (sizeof($orders) != 0) {
+                $nonParsed = array_merge($nonParsed, $orders);
                 $allOrders = array_merge($allOrders, $this->orderParser->parseOrders($orders));
             }
 
@@ -65,6 +67,7 @@ final class ShopifyOrderController extends BaseController
             [
                 'status' => true,
                 'data' => $allOrders,
+                'nonParased' => $nonParsed,
                 'total' => sizeof($allOrders),
                 'duplication' => $duplications
             ]
@@ -81,7 +84,7 @@ final class ShopifyOrderController extends BaseController
     public function delete($shId)
     {
         $orders = $this->em->getRepository(Order::class)->findBy(['shopifyId' => $shId]);
-        foreach ($orders as $order){
+        foreach ($orders as $order) {
             $this->em->remove($order);
         }
         $this->em->flush();
@@ -90,7 +93,7 @@ final class ShopifyOrderController extends BaseController
     public function deleteByLineId($lineId)
     {
         $orders = $this->em->getRepository(Order::class)->findBy(['itemLineId' => $lineId]);
-        foreach ($orders as $order){
+        foreach ($orders as $order) {
             $this->em->remove($order);
         }
         $this->em->flush();
