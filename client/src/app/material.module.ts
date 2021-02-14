@@ -18,33 +18,35 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MatMomentDateModule} from '@angular/material-moment-adapter';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
-  declarations: [],
-  exports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatProgressBarModule,
-    MatInputModule,
-    MatStepperModule,
-    MatIconModule,
-    MatSelectModule,
-    MatListModule,
-    MatSidenavModule,
-    MatMenuModule,
-    MatChipsModule,
-    MatCardModule,
-    MatMomentDateModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatCheckboxModule,
-    MatTooltipModule,
-    MatSnackBarModule
-  ],
-  providers: [
-    {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}}
-  ]
+    declarations: [],
+    exports: [
+        MatToolbarModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatProgressBarModule,
+        MatInputModule,
+        MatStepperModule,
+        MatIconModule,
+        MatSelectModule,
+        MatListModule,
+        MatSidenavModule,
+        MatMenuModule,
+        MatChipsModule,
+        MatCardModule,
+        MatMomentDateModule,
+        MatDatepickerModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatTooltipModule,
+        MatSnackBarModule,
+        MatTabsModule
+    ],
+    providers: [
+        {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}}
+    ]
 })
 export class MaterialModule {
 

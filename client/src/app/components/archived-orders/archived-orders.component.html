@@ -31,13 +31,15 @@
     </button>
 
   </mat-menu>
-  <button mat-flat-button matTooltip="Reset Filters" color="accent" (click)="clearFilters()">Reset Filters</button>
+  <button mat-icon-button matTooltip="Reset Filters" color="accent" (click)="clearFilters()">
+    <mat-icon>cancel</mat-icon>
+  </button>
 
 
 </mat-card>
 
 <div *ngIf="columns" class="ct-table-wrapper">
-  <ag-grid-angular class="ag-theme-material"
+  <ag-grid-angular class="ag-theme-balham"
                    [gridOptions]="options"
                    [modules]="modules"
                    [rowData]="rowData"></ag-grid-angular>

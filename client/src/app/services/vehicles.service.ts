@@ -6,6 +6,7 @@ import {HttpParams} from '@angular/common/http';
 import {IServerSideDatasource, IServerSideGetRowsParams} from '@ag-grid-enterprise/all-modules';
 import {map} from 'rxjs/operators';
 import {SkusService} from './skus.service';
+import {Helpers} from '../ultils/Helpers';
 
 @Injectable({
     providedIn: 'root'
@@ -38,9 +39,9 @@ export class VehiclesService implements IServerSideDatasource {
     getHeader(): Observable<any[]> {
         return this.getSKUs().pipe(
             map((skus) => {
-                const highBeam = skus['HIGH_BEAM'];
-                const lowBeam = skus['LOW_BEAM'];
-                const fogLight = skus['FOG_LIGHT'];
+                const highBeam = skus.HIGH_BEAM || this.addEmptyAndCompletedToSkus([]);
+                const lowBeam = skus.LOW_BEAM || this.addEmptyAndCompletedToSkus([]);
+                const fogLight = skus.FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
                 return this.buildHeader(highBeam, lowBeam, fogLight);
             }));
     }
@@ -48,7 +49,7 @@ export class VehiclesService implements IServerSideDatasource {
     addEmptyAndCompletedToSkus(list: any): any {
         if (list) {
             list = list.map((x: any) => x.name);
-            list.unshift('-');
+            list.unshift(Helpers.NOT_EMPTY_CHAR);
             list.unshift('');
         }
         return list || [];
@@ -115,7 +116,7 @@ export class VehiclesService implements IServerSideDatasource {
 
         const filter = JSON.stringify(filterParams);
 
-        let par = new HttpParams()
+        const par = new HttpParams()
             .set('start', params.request.startRow.toString())
             .set('end', params.request.endRow.toString())
             .set('filter', filter)
@@ -123,11 +124,11 @@ export class VehiclesService implements IServerSideDatasource {
             .set('sortDirection', params.request.sortModel[0] ? params.request.sortModel[0].sort : '');
 
         this.httpService.getWithAuth(environment.routes.vehicles, {params: par}).subscribe(res => {
-                if (res.status == true) {
+                if (res.status) {
                     params.successCallback(res.data, res.total);
 
                     const allColumnIds: any[] = [];
-                    params.columnApi.getAllColumns().forEach(function(column: any) {
+                    params.columnApi.getAllColumns().forEach((column: any) => {
                         allColumnIds.push(column.colId);
                     });
                     params.columnApi.autoSizeColumns(allColumnIds, false);
@@ -139,12 +140,8 @@ export class VehiclesService implements IServerSideDatasource {
             error => {
                 params.failCallback();
             });
-    };
-
-
-    getVehicles(): Observable<any> {
-        return this.httpService.getWithAuth(environment.routes.vehicles);
     }
+
 
     addRow(data: any): Observable<any> {
         return this.httpService.postWithAuth(environment.routes.vehicles, data);
@@ -158,15 +155,15 @@ export class VehiclesService implements IServerSideDatasource {
         return this.httpService.deleteWithAuth(environment.routes.vehicles + `/${id}`);
     }
 
-    getYear() {
+    getYear(): Observable<any> {
         return this.httpService.get(environment.routes.year);
     }
 
-    getMake(year: any) {
+    getMake(year: any): Promise<any> {
         return this.httpService.get(environment.routes.make, {params: new HttpParams().set('year', year)}).toPromise();
     }
 
-    getModel(year: any, make: any) {
+    getModel(year: any, make: any): Promise<any> {
         return this.httpService.get(environment.routes.model,
             {
                 params: new HttpParams()

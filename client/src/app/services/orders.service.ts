@@ -45,13 +45,13 @@ export class OrdersService implements IServerSideDatasource {
                 this.vehiclesService.getYear()
             ])
             .pipe(map(([skus, years]) => {
-                const bulbTypes = skus.BULB_TYPE;
-                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT;
-                const highBeam = skus.HIGH_BEAM;
-                const lowBeam = skus.LOW_BEAM;
-                const fogLight = skus.FOG_LIGHT;
-                const hbCanBus = skus.HB_CAN_BUS;
-                const lbCanBus = skus.LB_CAN_BUS;
+                const bulbTypes = skus.BULB_TYPE || this.addEmptyAndCompletedToSkus([]);
+                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);;
+                const highBeam = skus.HIGH_BEAM || this.addEmptyAndCompletedToSkus([]);
+                const lowBeam = skus.LOW_BEAM || this.addEmptyAndCompletedToSkus([]);
+                const fogLight = skus.FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
+                const hbCanBus = skus.HB_CAN_BUS || this.addEmptyAndCompletedToSkus([]);
+                const lbCanBus = skus.LB_CAN_BUS || this.addEmptyAndCompletedToSkus([]);
                 return this.buildHeader(bulbTypes, bulbTypeFogLight, highBeam, lowBeam, fogLight, hbCanBus, lbCanBus, years);
             }));
     }
@@ -59,7 +59,7 @@ export class OrdersService implements IServerSideDatasource {
     addEmptyAndCompletedToSkus(list: any): any {
         if (list) {
             list = list.map((x: any) => x.name);
-            list.unshift('-');
+            list.unshift(Helpers.NOT_EMPTY_CHAR);
             list.unshift('');
         }
         return list || [];
@@ -108,48 +108,25 @@ export class OrdersService implements IServerSideDatasource {
             },
             {
                 field: 'productName',
-                headerName: 'Product name',
+                headerName: 'Product name'
             },
             {
                 field: 'productTitle',
                 headerName: 'Product title'
             },
             {
-                field: 'vehicleYear',
-                headerName: 'Vehicle Year',
-                cellEditor: 'selectEditor',
-                cellEditorParams: {
-                    elements: years
-                }
-            },
-            {
-                field: 'vehicleMake',
-                headerName: 'Vehicle Make',
-                cellEditor: 'makeSelectEditor',
-                cellEditorParams: {
-                    requested: 'make'
-                }
-            },
-            {
-                field: 'vehicleModel',
-                headerName: 'Vehicle Model',
-                cellEditor: 'makeSelectEditor',
-                cellEditorParams: {
-                    requested: 'model'
-                }
-            },
-            {
                 field: 'bulbType',
                 headerName: 'Bulb type',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: bulbTypes
                 }
-
             },
             {
                 field: 'bulbTypeFogLight',
                 headerName: 'bulb Type Fog Light',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: bulbTypeFogLight
@@ -158,6 +135,7 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'highBeam',
                 headerName: 'High beam',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: highBeam
@@ -167,6 +145,7 @@ export class OrdersService implements IServerSideDatasource {
                 field: 'lowBeam',
                 headerName: 'Low beam',
                 cellEditor: 'selectEditor',
+                width: 100,
                 cellEditorParams: {
                     elements: lowBeam
                 }
@@ -174,8 +153,8 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'fogLight',
                 headerName: 'Fog light',
-
                 cellEditor: 'selectEditor',
+                width: 100,
                 cellEditorParams: {
                     elements: fogLight
                 }
@@ -183,6 +162,7 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'hbCanBus',
                 headerName: 'Hb can bus',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: hbCanBus
@@ -191,7 +171,7 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'lbCanBus',
                 headerName: 'Lb can bus',
-
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: lbCanBus
@@ -297,14 +277,13 @@ export class OrdersService implements IServerSideDatasource {
             .set('sortDirection', params.request.sortModel[0] ? params.request.sortModel[0].sort : '');
 
         this.httpService.getWithAuth(environment.routes.orders, {params: par}).subscribe(res => {
-                if (res.status == true) {
+                if (res.status === true) {
                     params.successCallback(res.data, res.total);
 
-                    const allColumnIds: any[] = [];
-                    params.columnApi.getAllColumns().forEach(function (column: any) {
-                        allColumnIds.push(column.colId);
-                    });
-                    params.columnApi.autoSizeColumns(allColumnIds, false);
+                    const allColumnIds: any[] = params.columnApi.getAllColumns()
+                        .filter((x: any) => !x.colDef.width)
+                        .map((x: any) => x.colId);
+                    params.columnApi.autoSizeColumns(allColumnIds, true);
 
                 } else {
                     params.failCallback();

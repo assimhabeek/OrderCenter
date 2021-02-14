@@ -1,30 +1,33 @@
-import * as moment from 'moment';
-import {Moment} from 'moment';
+import * as moment from 'moment-timezone';
+import {Moment} from 'moment-timezone';
 
 export class Helpers {
 
-  static orderStatus = {
-    ORDER_ACTIVE: 1,
-    ORDER_QUEUED: 2,
-    ORDER_ARCHIVED: 3,
-  };
+    static NOT_EMPTY_CHAR = 'NIL';
+    static TIMEZONE = 'America/Chicago';
 
-  static now() {
-    return moment().utc();
-  }
+    static orderStatus = {
+        ORDER_ACTIVE: 1,
+        ORDER_QUEUED: 2,
+        ORDER_ARCHIVED: 3,
+    };
 
-  static fromMysqlDateTime(value: string): Moment {
-    return moment.utc(value, 'YYYY-MM-DD HH:mm:ss');
-  }
+    static now(): Moment {
+        return moment().tz(Helpers.TIMEZONE);
+    }
 
-  static toMysqlDate(date: Moment): string {
-    return date ? date.format('YYYY-MM-DD') : '';
-  }
+    static fromMysqlDateTime(value: string): Moment {
+        return moment.tz(value, 'YYYY-MM-DD HH:mm:ss', Helpers.TIMEZONE);
+    }
+
+    static toMysqlDate(date: Moment): string {
+        return date ? date.format('YYYY-MM-DD') : '';
+    }
 
 
-  static formatDate(date: Moment): string {
-    return date.format('YYYY-MM-DD HH:mm:ss');
-  }
+    static formatDate(date: Moment): string {
+        return date.format('YYYY-MM-DD HH:mm:ss');
+    }
 
 
 }

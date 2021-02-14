@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {Observable, ReplaySubject} from 'rxjs';
-import {TokenStorage} from '../shared/token.storage';
+import {TokenStorage} from './token.storage';
 import {HttpService} from './http.service';
 
 @Injectable({

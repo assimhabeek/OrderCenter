@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "theme";
 @import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-material.min.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.min.css";
 
 html, body {
   height: 100%;
@@ -23,4 +23,15 @@ body {
 
 .rag-red {
   background: rgb(226, 103, 97) !important;
+}
+
+
+.ag-theme-balham .ag-cell,
+.ag-theme-balham .ag-row > .ag-cell-wrapper {
+  padding: 0 !important;
+  white-space: normal !important;
+}
+
+.ag-theme-balham{
+  font-size: 10px !important;
 }

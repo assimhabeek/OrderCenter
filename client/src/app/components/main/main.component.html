@@ -1,88 +1,75 @@
 <div class="ct-container mat-typography" [class.ct-is-mobile]="mobileQuery.matches">
-  <mat-toolbar color="primary" class="ct-toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <h1 class="ct-app-name">Orders Center</h1>
-    <span class="ct-spacer"></span>
-    <!--
-        <button mat-icon-button (click)="showNotifications()"><mat-icon>notifications</mat-icon></button>
-    -->
-    <button mat-icon-button (click)="logout()" matTooltip="Logout">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-toolbar>
-
-  <mat-sidenav-container class="ct-sidenav-container mat-elevation-z4"
-                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav
-                 [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [opened]="!mobileQuery.matches"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-      <mat-nav-list>
-        <div mat-subheader>General</div>
-        <a mat-list-item routerLink="active-orders">
-          <mat-icon matListIcon>reorder</mat-icon>
-          <h3 matLine>Active orders</h3>
+    <mat-toolbar color="primary" class="ct-toolbar">
+        <h1 class="ct-app-name">Orders Center</h1>
+        <span class="ct-spacer"></span>
+        <button mat-icon-button (click)="logout()" matTooltip="Logout">
+            <mat-icon>logout</mat-icon>
+        </button>
+    </mat-toolbar>
+    <nav class="ct-nav" mat-tab-nav-bar>
+        <a mat-tab-link routerLink="active-orders" routerLinkActive="ct-accent">
+            <mat-icon>reorder</mat-icon>
+            <h3 matLine>Active orders</h3>
         </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="update-queue">
-          <mat-icon matListIcon>queue</mat-icon>
-          <h3 matLine>Export Queue</h3>
+        <mat-divider vertical="vertical"></mat-divider>
+        <a mat-tab-link routerLink="update-queue" routerLinkActive="ct-accent">
+            <mat-icon>queue</mat-icon>
+            <h3 matLine>Export Queue</h3>
         </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="export">
-          <mat-icon matListIcon>get_app</mat-icon>
-          <h3 matLine>Export</h3>
+        <mat-divider vertical="vertical"></mat-divider>
+        <a mat-tab-link routerLink="export" routerLinkActive="ct-accent">
+            <mat-icon>get_app</mat-icon>
+            <h3 matLine>Export</h3>
         </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="archived-orders">
-          <mat-icon matListIcon>archive</mat-icon>
-          <h3 matLine>Archived orders</h3>
+        <mat-divider vertical="vertical"></mat-divider>
+        <a mat-tab-link routerLink="archived-orders" routerLinkActive="ct-accent">
+            <mat-icon>archive</mat-icon>
+            <h3 matLine>Archived orders</h3>
         </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="export-history">
-          <mat-icon matListIcon>history</mat-icon>
-          <h3 matLine>Export History</h3>
+        <mat-divider vertical="vertical"></mat-divider>
+        <a mat-tab-link routerLink="export-history" routerLinkActive="ct-accent">
+            <mat-icon>history</mat-icon>
+            <h3 matLine>Export History</h3>
         </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="skus">
-          <mat-icon matListIcon>qr_code_2</mat-icon>
-          <h3 matLine>SKUs</h3>
+        <mat-divider vertical="vertical"></mat-divider>
+        <a mat-tab-link routerLink="skus" routerLinkActive="ct-accent">
+            <mat-icon>qr_code_2</mat-icon>
+            <h3 matLine>SKUs</h3>
         </a>
-        <mat-divider></mat-divider>
+        <mat-divider vertical="vertical"></mat-divider>
+        <a mat-tab-link routerLink="productSkus" routerLinkActive="ct-accent">
+            <mat-icon>production_quantity_limits</mat-icon>
+            <h3 matLine>Product SKUs</h3>
+        </a>
+        <mat-divider vertical="vertical"></mat-divider>
         <ng-container *ngIf="isAdmin">
-          <div mat-subheader>Administration</div>
-          <a mat-list-item routerLink="upload-file">
-            <mat-icon matListIcon>upload</mat-icon>
-            <h3 matLine> Upload a File </h3>
-          </a>
-          <mat-divider></mat-divider>
-          <a mat-list-item routerLink="shopify-import">
-            <mat-icon matListIcon>import_export</mat-icon>
-            <h3 matLine> Import from Shopify </h3>
-          </a>
-          <mat-divider></mat-divider>
-          <a mat-list-item routerLink="vehicles">
-            <mat-icon matListIcon>commute</mat-icon>
-            <h3 matLine>Vehicles</h3>
-          </a>
-          <mat-divider></mat-divider>
-          <a mat-list-item routerLink="users">
-            <mat-icon matListIcon>account_box</mat-icon>
-            <h3 matLine>Users</h3>
-          </a>
-
-          <mat-divider></mat-divider>
+            <a mat-tab-link routerLink="upload-file" routerLinkActive="ct-accent">
+                <mat-icon>upload</mat-icon>
+                <h3 matLine> Upload a File </h3>
+            </a>
+            <mat-divider vertical="vertical"></mat-divider>
+            <a mat-tab-link routerLink="shopify-order-import" routerLinkActive="ct-accent">
+                <mat-icon>import_export</mat-icon>
+                <h3 matLine> Import Shopify Orders</h3>
+            </a>
+            <mat-divider vertical="vertical"></mat-divider>
+            <a mat-tab-link routerLink="shopify-product-import" routerLinkActive="ct-accent">
+                <mat-icon>import_export</mat-icon>
+                <h3 matLine> Import Shopify Products</h3>
+            </a>
+            <mat-divider vertical="vertical"></mat-divider>
+            <a mat-tab-link routerLink="vehicles" routerLinkActive="ct-accent">
+                <mat-icon>commute</mat-icon>
+                <h3 matLine>Vehicles</h3>
+            </a>
+            <mat-divider vertical="vertical"></mat-divider>
+            <a mat-tab-link routerLink="users" routerLinkActive="ct-accent">
+                <mat-icon>account_box</mat-icon>
+                <h3 matLine>Users</h3>
+            </a>
         </ng-container>
-
-      </mat-nav-list>
-
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    </nav>
+    <router-outlet></router-outlet>
 </div>
 
 

@@ -6,11 +6,11 @@ import {MatDialog} from '@angular/material/dialog';
 import {AlertService} from '../../services/alert.service';
 import {ConfirmService} from '../../services/confirm.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {TooltipComponent} from '../tooltip.component';
+import {TooltipComponent} from '../../shared/tooltip.component';
 import {GridApi, ServerSideRowModelModule} from '@ag-grid-enterprise/all-modules';
 import {Helpers} from '../../ultils/Helpers';
 import {FocusMonitor} from '@angular/cdk/a11y';
-import {ArchiveButtonComponent} from '../archive-button.component';
+import {ArchiveButtonComponent} from './archive-button.component';
 
 
 @Component({
@@ -87,7 +87,6 @@ export class ArchivedOrdersComponent {
 
   setupOptions(): void {
     this.options = {
-      rowHeight: 48,
       pagination: false,
       tooltipShowDelay: 0,
       defaultColDef: {

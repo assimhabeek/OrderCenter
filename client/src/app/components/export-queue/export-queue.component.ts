@@ -6,11 +6,11 @@ import {MatDialog} from '@angular/material/dialog';
 import {AlertService} from '../../services/alert.service';
 import {ConfirmService} from '../../services/confirm.service';
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
-import {TooltipComponent} from '../tooltip.component';
+import {TooltipComponent} from '../../shared/tooltip.component';
 import {GridApi, RowNode} from 'ag-grid-community';
 import {Helpers} from '../../ultils/Helpers';
 import {FocusMonitor} from '@angular/cdk/a11y';
-import {QueueButtonComponent} from '../queue-button.component';
+import {QueueButtonComponent} from './queue-button.component';
 import {Moment} from 'moment/moment';
 
 
@@ -78,7 +78,6 @@ export class ExportQueueComponent {
 
     setupOptions(): void {
         this.options = {
-            rowHeight: 48,
             pagination: false,
             tooltipShowDelay: 0,
             defaultColDef: {

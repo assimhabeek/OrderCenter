@@ -2,12 +2,12 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  box-sizing: border-box;
-  padding: 8px 24px;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-.ct-toolbar mat-form-field {
-  margin: auto 8px;
+.ct-spacer {
+  flex: 1 1 auto;
 }
 
 
@@ -20,11 +20,22 @@
 .ct-table-wrapper ag-grid-angular {
   display: inline-block;
   flex: 1 1 auto;
-  height: calc(100vh - 172px);;
-  margin: 16px;
+  height: calc(100vh - 148px);;
 }
 
-.ct-table-wrapper .ct-next-button {
-  align-self: center;
+button  {
+  height: 36px !important;
 }
 
+button mat-icon {
+  font-size: 18px !important;
+}
+
+.ct-order-date{
+  height: 36px;
+  font-size: 12px;
+}
+
+mat-form-field{
+  margin: 4px 4px;
+}
