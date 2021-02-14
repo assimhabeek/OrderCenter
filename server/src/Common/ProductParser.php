@@ -3,7 +3,6 @@
 
 namespace App\Common;
 
-use App\Entity\Order;
 use App\Entity\ProductSku;
 
 class ProductParser
