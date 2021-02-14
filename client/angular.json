@@ -27,7 +27,8 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
-              "file-saver"
+              "file-saver",
+              "moment-timezone"
             ],
             "assets": [
               "src/favicon.ico",

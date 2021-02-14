@@ -4,6 +4,7 @@
 namespace App\Common;
 
 use App\Common\VehicleMatch\VehicleMatcher;
+use App\Controller\ProductSkuController;
 use App\Entity\Order;
 use Datetime;
 use DateTimeZone;
@@ -12,9 +13,13 @@ class OrderParser
 {
     private $vehicleMatcher;
 
-    public function __construct(VehicleMatcher $vehicleMatcher)
+    private $productSkuController;
+
+    public function __construct(VehicleMatcher $vehicleMatcher,
+                                ProductSkuController $productSkuController)
     {
         $this->vehicleMatcher = $vehicleMatcher;
+        $this->productSkuController = $productSkuController;
     }
 
 
@@ -39,7 +44,7 @@ class OrderParser
             $modelMatcher = $this->vehicleMatcher->matchVehicle($vehicleInputText);
             $vehicle = $modelMatcher ? $modelMatcher->getBestMatchedVehicle() : null;
             $score = $modelMatcher ? $modelMatcher->getBestScore() : null;
-
+            $productSkus = $this->productSkuController->getProductSkusById($ln['product_id']);
 
             $o->setShopifyId($order['id']);
             $o->setItemLineId($ln['id']);
@@ -54,25 +59,48 @@ class OrderParser
             $o->setVehicleModel($vehicle ? $vehicle->getModel() : null);
             $o->vehicle = $vehicleInputText;
             $o->matchScore = $score;
+
             $o->setHighBeam($vehicle ? ($vehicle->getHighBeam() ?: $vehicle->getHighLowBeam()) : null);
             $o->setLowBeam($vehicle ? ($vehicle->getLowBeam() ?: $vehicle->getHighLowBeam()) : null);
             $o->setFogLight($vehicle ? $vehicle->getFogLight() : null);
+
             $o->setOrderNotes($order['note']);
             $o->setAdditionalDetails(sizeof($order['note_attributes']) > 0 ? $order['note_attributes'][0]['value'] : '');
-            $o->setShippingName($order['shipping_address']['first_name'] . " " . $order['shipping_address']['last_name']);
-            $o->setShippingAddress1($order['shipping_address']['address1']);
-            $o->setAddress2($order['shipping_address']['address2']);
-            $o->setShippingCity($order['shipping_address']['city']);
-            $o->setShippingZip($order['shipping_address']['zip']);
-            $o->setShippingProvince($order['shipping_address']['province']);
-            $o->setShippingCountryCode($order['shipping_address']['country_code']);
-            $o->setShippingCountry($order['shipping_address']['country']);
-            $o->setShippingPhone($order['shipping_address']['phone']);
-            $o->setShippingCompany($order['shipping_address']['company']);
+
+            if (isset($order['shipping_address'])) {
+                $o->setShippingName($order['shipping_address']['first_name'] . " " . $order['shipping_address']['last_name']);
+                $o->setShippingAddress1($order['shipping_address']['address1']);
+                $o->setAddress2($order['shipping_address']['address2']);
+                $o->setShippingCity($order['shipping_address']['city']);
+                $o->setShippingZip($order['shipping_address']['zip']);
+                $o->setShippingProvince($order['shipping_address']['province']);
+                $o->setShippingCountryCode($order['shipping_address']['country_code']);
+                $o->setShippingCountry($order['shipping_address']['country']);
+                $o->setShippingPhone($order['shipping_address']['phone']);
+                $o->setShippingCompany($order['shipping_address']['company']);
+            }
+
             $o->setOrderStatus($this->getOrderStatus($order, $ln));
+
+            if ($productSkus != null) {
+                $o->setBulbType($this->getIfNotEmpty($productSkus->getBulbType(), $o->getBulbType()));
+                $o->setBulbTypeFogLight($this->getIfNotEmpty($productSkus->getBulbTypeFogLight(), $o->getBulbTypeFogLight()));
+                $o->setHighBeam($this->getIfNotEmpty($productSkus->getHighBeam(), $o->getHighBeam()));
+                $o->setLowBeam($this->getIfNotEmpty($productSkus->getLowBeam(), $o->getLowBeam()));
+                $o->setFogLight($this->getIfNotEmpty($productSkus->getFogLight(), $o->getFogLight()));
+                $o->setHbCanBus($this->getIfNotEmpty($productSkus->getHbCanBus(), $o->getHbCanBus()));
+                $o->setLbCanBus($this->getIfNotEmpty($productSkus->getLbCanBus(), $o->getLbCanBus()));
+            }
+
+
             array_push($newOrders, $o);
         }
         return $newOrders;
+    }
+
+    function getIfNotEmpty($new, $original)
+    {
+        return $new !== null || $new !== '' ? $new : $original;
     }
 
     function getOrderStatus($order, $ln)
@@ -86,7 +114,6 @@ class OrderParser
     function shopifyParseDate($dateStr)
     {
         $date = new DateTime($dateStr, new DateTimeZone('America/Chicago'));
-        $date->setTimezone(new DateTimeZone('UTC'));
         return $date->format('Y-m-d  H:i:s');
     }
 

@@ -82,7 +82,7 @@ class MakeMatcher implements MatcherInterface
 
     private function makeShouldHaveOneSegment(): bool
     {
-        return $this->separatorUsed || sizeof($this->makeModelSegments) == self::SEGMENTS_EXPECTED_SIZE;
+        return $this->separatorUsed || sizeof($this->makeModelSegments) === self::SEGMENTS_EXPECTED_SIZE;
     }
 
     private function makeCouldHaveMoreSegments(): bool
@@ -92,8 +92,9 @@ class MakeMatcher implements MatcherInterface
 
     private function oneSegmentScore($dbMake): int
     {
-        $inputMake = $this->makeModelSegments[self::MAKE_DEFAULT_INDEX];
-        return MatchHelper::calculateSimilarity($dbMake, $inputMake);
+        return sizeof($this->makeModelSegments) > 0 ?
+            MatchHelper::calculateSimilarity($dbMake, $this->makeModelSegments[self::MAKE_DEFAULT_INDEX]) :
+            0;
     }
 
 

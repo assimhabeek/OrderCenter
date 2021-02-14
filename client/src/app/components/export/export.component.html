@@ -30,9 +30,8 @@
       </mat-error>
     </mat-form-field>
 
-    <button mat-raised-button type="button" color="primary" (click)="exportOrders()">
+    <button mat-icon-button type="button" color="primary" (click)="exportOrders()">
       <mat-icon>get_app</mat-icon>
-      Export
     </button>
 
   </div>
@@ -42,7 +41,7 @@
 </mat-card>
 
 <div *ngIf="columns" class="ct-table-wrapper">
-  <ag-grid-angular class="ag-theme-material"
+  <ag-grid-angular class="ag-theme-balham"
                    [gridOptions]="options"
                    [modules]="modules"
                    [rowData]="rowData"></ag-grid-angular>

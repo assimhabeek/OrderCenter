@@ -157,7 +157,7 @@ final class OrderExportController extends BaseController
         $writer = $writer->openToFile($fileUrl);
         $writer->setDefaultColumnWidth(30);
         $writer->setDefaultRowHeight(20);
-        $writer->getCurrentSheet()->setName(date('Y-m-d'));
+        $writer->getCurrentSheet()->setName(Utils::getCurrentDateTime());
         return $writer;
     }
 

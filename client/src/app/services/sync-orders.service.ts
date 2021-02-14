@@ -11,7 +11,7 @@ export class SyncOrdersService {
   constructor(protected httpService: HttpService) {
   }
 
-  getShopifyOrders(): Observable<any> {
+  getShopifyProducts(): Observable<any> {
     return this.httpService.getWithAuth(environment.routes.shopifyOrders);
   }
 

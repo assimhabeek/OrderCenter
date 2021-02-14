@@ -10,7 +10,7 @@ import {ConfirmService} from '../../services/confirm.service';
 import {AlertService} from '../../services/alert.service';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {TooltipComponent} from '../tooltip.component';
+import {TooltipComponent} from '../../shared/tooltip.component';
 import {HttpResponse} from '@angular/common/http';
 import {Moment} from 'moment/moment';
 
@@ -133,7 +133,6 @@ export class ExportComponent {
 
     setupOptions(): void {
         this.options = {
-            rowHeight: 48,
             pagination: false,
             tooltipShowDelay: 0,
             defaultColDef: {

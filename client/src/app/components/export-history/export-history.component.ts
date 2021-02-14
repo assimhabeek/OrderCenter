@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ConfirmService} from '../../services/confirm.service';
 import {AlertService} from '../../services/alert.service';
 import {ExportHistoryService} from '../../services/export-history.service';
-import {DownloadExportButtonComponent} from '../download-export-button.component';
+import {DownloadExportButtonComponent} from './download-export-button.component';
 
 @Component({
   selector: 'ct-skus-list',
@@ -77,7 +77,6 @@ export class ExportHistoryComponent {
 
   setupOptions() {
     this.options = {
-      rowHeight: 48,
       pagination: false,
       defaultColDef: {
         filter: true,

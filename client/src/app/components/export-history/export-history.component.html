@@ -1,13 +1,14 @@
-<mat-toolbar class="ct-toolbar mat-elevation-z1">
-  <button mat-flat-button [disabled]="noRowSelected()" color="warn" (click)="onRemove()">
-    <mat-icon>delete</mat-icon>
-    Remove
-  </button>
-</mat-toolbar>
+<mat-card class="ct-toolbar mat-elevation-z1">
+    <button mat-icon-button
+            matTooltip="Remove"
+            [disabled]="noRowSelected()" color="warn" (click)="onRemove()">
+        <mat-icon>delete</mat-icon>
+    </button>
+</mat-card>
 
 <div *ngIf="columns" class="ct-table-wrapper">
-  <ag-grid-angular class="ag-theme-material"
-                   [gridOptions]="options"
-                   [modules]="modules"
-                   [rowData]="rowData"></ag-grid-angular>
+    <ag-grid-angular class="ag-theme-balham"
+                     [gridOptions]="options"
+                     [modules]="modules"
+                     [rowData]="rowData"></ag-grid-angular>
 </div>

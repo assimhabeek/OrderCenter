@@ -6,8 +6,10 @@ use App\Controller\ExportHistoryController;
 use App\Controller\OrderController;
 use App\Controller\OrderExportController;
 use App\Controller\OrderUploadController;
+use App\Controller\ProductSkuController;
 use App\Controller\ShopifyConnector;
-use App\Controller\ShopifyController;
+use App\Controller\ShopifyOrderController;
+use App\Controller\ShopifyProductController;
 use App\Controller\SkuController;
 use App\Controller\UserController;
 use App\Controller\VehicleController;
@@ -28,6 +30,8 @@ return function (App $app) {
 
     $app->get('/install', ShopifyConnector::class . ':install');
     $app->get('/generateToken', ShopifyConnector::class . ':generateToken');
+    $app->get('/shop', ShopifyConnector::class . ':shop');
+
 
 
     $app->group("", function (Group $shopifyGroup) {
@@ -60,6 +64,11 @@ return function (App $app) {
             $group->delete('/{id}', SkuController::class . ':delete');
         });
 
+        $authGroup->group('/productSkus', function (Group $group) {
+            $group->get('', ProductSkuController::class . ':index');
+            $group->put('', ProductSkuController::class . ':update');
+        });
+
         $authGroup->group('/history', function (Group $group) {
             $group->get('', ExportHistoryController::class . ':index');
             $group->post('', ExportHistoryController::class . ':create');
@@ -86,10 +95,15 @@ return function (App $app) {
                 $group->delete('/{id}', UserController::class . ':delete');
             });
 
-            $adminGroup->get('/shopify-orders', ShopifyController::class . ':index');
-            $adminGroup->post('/orders-all', ShopifyController::class . ':import');
+            $adminGroup->get('/shopify-orders', ShopifyOrderController::class . ':index');
+            $adminGroup->post('/orders-all', ShopifyOrderController::class . ':import');
             $adminGroup->post('/upload', OrderUploadController::class . ':upload');
 
+            $adminGroup->get('/shopify-products', ShopifyProductController::class . ':index');
+            $adminGroup->post('/shopify-products', ShopifyProductController::class . ':import');
+
+            
+            
             $adminGroup->post('/shopify-webhooks', ShopifyConnector::class . ':createWebhooks');
             $adminGroup->get('/shopify-webhooks', ShopifyConnector::class . ':getWebhooks');
 
