@@ -34,17 +34,19 @@ class OrderParser
     public function parseOrderLines($order): array
     {
         $newOrders = [];
+        $globalVehicle = null;
 
         foreach ($order["line_items"] as $ln) {
 
-            if ($this->notRemoved($ln['id'], $order)) {
+            if ($this->notRefunded($ln['id'], $order)) {
 
 
                 $o = new Order();
 
                 $vehicleInputText = sizeof($ln['properties']) > 0 ? $ln['properties'][0]['value'] : null;
                 $modelMatcher = $this->vehicleMatcher->matchVehicle($vehicleInputText);
-                $vehicle = $modelMatcher ? $modelMatcher->getBestMatchedVehicle() : null;
+                $vehicle = $modelMatcher ? $modelMatcher->getBestMatchedVehicle() : $globalVehicle;
+                $globalVehicle = $vehicle;
                 $score = $modelMatcher ? $modelMatcher->getBestScore() : null;
                 $productSkus = $this->productSkuController->getProductSkusById($ln['product_id']);
 
@@ -120,7 +122,7 @@ class OrderParser
         return $date->format('Y-m-d  H:i:s');
     }
 
-    function notRemoved($itemID, $order)
+    function notRefunded($itemID, $order)
     {
         $refunds = [];
         foreach ($order['refunds'] as $refund) {

@@ -15,6 +15,8 @@ export const environment = {
     history: '/history',
     users: '/users',
     shopifyOrders: '/shopify-orders',
+    shopifyProducts: '/shopify-products',
+    productSkus: '/productSkus',
     ordersAll: '/orders-all',
     notification: '/notification',
     files: '/files',

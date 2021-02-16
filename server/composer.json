@@ -37,7 +37,7 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.4",
     "slim/slim": "^4.7.1",
     "slim/psr7": "^1.0",
     "php-di/php-di": "^6.0",
