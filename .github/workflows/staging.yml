@@ -1,17 +1,17 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Production CI
+name: Staging CI
 
 # Controls when the action will run. 
 on:
   push:
-    branches: [ main ]
+    branches: [ stage ]
   pull_request:
-    branches: [ main ]
+    branches: [ stage ]
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: orders-center    # set this to your application's name
+  AZURE_WEBAPP_NAME: order-center-staging    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: './output'      # set this to the path to your web app project, defaults to the repository root
 
 jobs:
@@ -47,11 +47,11 @@ jobs:
       - name: Add .env file
         run: touch ./output/api/.env
 
-      - name: Load Production Values
-        run: echo $PRODUCTION_VALUES | base64 -d > ./output/api/.env
+      - name: Load STATGING Values
+        run: echo $STATGING_VALUES | base64 -d > ./output/api/.env
         shell: bash
         env:
-            PRODUCTION_VALUES: ${{ secrets.PRODUCTION_ENV_VALUES }}
+          STATGING_VALUES: ${{ secrets.STAGING_ENV_VALUES }}
 
       - name: Display Output Content
         run: ls ./output
@@ -60,7 +60,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.STAGING_AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Delete Output File
