@@ -1,7 +1,7 @@
 
 export const environment = {
   production: true,
-  url: 'https://orders-center.azurewebsites.net/api/public',
+  url: 'https://order-center-staging.azurewebsites.net/api/public',
   authHeader: 'Authorization',
   routes: {
     upload: '/upload',
