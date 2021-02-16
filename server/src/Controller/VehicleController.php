@@ -3,6 +3,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Entity\ProductSku;
 use App\Entity\Vehicle;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -44,6 +46,9 @@ final class VehicleController extends BaseController
         $vehicle = $this->hydrator->hydrate(Vehicle::class, $request->getParsedBody());
         $this->em->persist($vehicle);
         $this->em->flush();
+
+        $this->updateOrders($vehicle);
+
         return $this->responseToJson($response, $payload = ["status" => true, "message" => 'Row added successfully']);
     }
 
@@ -56,6 +61,8 @@ final class VehicleController extends BaseController
         $query->setParameter('id', $updateInfo['id']);
         $query->getResult();
         $this->em->flush();
+
+        $this->updateOrders($this->em->find(Vehicle::class, $updateInfo['id']));
         return $this->responseToJson($response, ["status" => true, "message" => 'Row updated successfully']);
     }
 
@@ -99,6 +106,40 @@ final class VehicleController extends BaseController
         $models = array_column($query->getResult(), 'model');
 
         return $this->responseToJson($response, $models);
+    }
+
+    public function updateOrders(Vehicle $vehicle)
+    {
+
+        $lowBeam = $vehicle->getLowBeam() ?: $vehicle->getHighLowBeam();
+        $highBeam = $vehicle->getHighBeam() ?: $vehicle->getHighLowBeam();
+        $fogLight = $vehicle->getFogLight();
+
+        $query = "UPDATE " . Order::class . " o
+                    SET  o.highBeam=:high_beam, 
+                         o.lowBeam=:low_beam,  
+                         o.fogLight=:fog_light 
+                    WHERE o.vehicleYear =:year 
+                      AND o.vehicleModel =:model 
+                      AND o.vehicleMake =:make 
+                      AND o.id not in ( SELECT p.id FROM " . ProductSku::class . " p 
+                                       WHERE (p.bulbType is not null)
+                                          or (p.bulbTypeFogLight is not null)
+                                          or (p.highBeam is not null)
+                                          or (p.lowBeam is not null)
+                                          or (p.fogLight is not null)
+                                          or (p.hbCanBus is not null)
+                                          or (p.lbCanBus is not null))";
+
+        $stmt = $this->em->createQuery($query);
+        $stmt->setParameter('high_beam', $highBeam);
+        $stmt->setParameter('low_beam', $lowBeam);
+        $stmt->setParameter('fog_light', $fogLight);
+        $stmt->setParameter('year', $vehicle->getYear());
+        $stmt->setParameter('model', $vehicle->getModel());
+        $stmt->setParameter('make', $vehicle->getMake());
+        $stmt->getResult();
+        $this->em->flush();
     }
 
 }

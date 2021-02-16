@@ -188,7 +188,7 @@ final class OrderExportController extends BaseController
                 array_push($registeredOrder, $order['orderNo']);
                 $firstRow = $this->createCarifixFirstRow($carifixMap, $order);
                 $writer->addRow($firstRow->writterRow);
-                $order[$firstRow->sku] = '-';
+                $order[$firstRow->sku] = 'NIL';
             }
 
             $rows = $this->generateRowsFromSkus($order);
@@ -280,6 +280,7 @@ final class OrderExportController extends BaseController
 
         foreach ($map as $key => $value) {
             $it = isset($value) && isset($datum[$value]) ? $datum[$value] : '';
+            $it = $it === 'NIL' ? '-' : $it;
             $string = str_replace("\r", "", $it);
             $string = str_replace("\n", "", $string);
             array_push($row, WriterEntityFactory::createCell($string));
@@ -292,7 +293,7 @@ final class OrderExportController extends BaseController
     {
         $rows = [];
         foreach (Order::CARIFEX_TYPE_COLUMNS as $col) {
-            if ($order[$col] != '-') {
+            if ($order[$col] != 'NIL') {
                 $line = WriterEntityFactory::createRowFromArray(
                     $this->carifixRow(
                         $order['orderNo'],
