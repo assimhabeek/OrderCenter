@@ -79,7 +79,7 @@ final class VehicleController extends BaseController
 
     public function getYears(Request $request, Response $response, array $args = []): Response
     {
-        $query = $this->em->createQuery("SELECT DISTINCT v.year FROM " . Vehicle::class . " v ");
+        $query = $this->em->createQuery("SELECT DISTINCT v.year FROM " . Vehicle::class . " v ORDER BY v.year");
         $years = array_column($query->getResult(), 'year');
         return $this->responseToJson($response, $years);
     }
@@ -88,7 +88,7 @@ final class VehicleController extends BaseController
     public function getMakesByYear(Request $request, Response $response, array $args = []): Response
     {
         $year = $request->getQueryParams()['year'];
-        $query = $this->em->createQuery("SELECT DISTINCT v.make FROM " . Vehicle::class . " v WHERE v.year=:year ");
+        $query = $this->em->createQuery("SELECT DISTINCT v.make FROM " . Vehicle::class . " v WHERE v.year=:year ORDER BY v.make");
         $query->setParameter('year', $year);
         $makes = array_column($query->getResult(), 'make');
         return $this->responseToJson($response, $makes);
@@ -100,7 +100,7 @@ final class VehicleController extends BaseController
         $year = $request->getQueryParams()['year'];
         $make = $request->getQueryParams()['make'];
 
-        $query = $this->em->createQuery("SELECT DISTINCT v.model FROM " . Vehicle::class . " v WHERE v.year=:year and v.make=:make ");
+        $query = $this->em->createQuery("SELECT DISTINCT v.model FROM " . Vehicle::class . " v WHERE v.year=:year and v.make=:make ORDER BY v.model ");
         $query->setParameter('year', $year);
         $query->setParameter('make', $make);
         $models = array_column($query->getResult(), 'model');
