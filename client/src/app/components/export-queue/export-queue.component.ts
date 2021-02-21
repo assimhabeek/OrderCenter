@@ -244,7 +244,7 @@ export class ExportQueueComponent {
     }
 
     filterRows(node: RowNode) {
-        return this.filterByDate(node.data.lastModification, this.orderDateForm.value.orderDate);
+        return this.filterByDate(node.data.orderDate, this.orderDateForm.value.orderDate);
     }
 
     filterByDate(sourceDate: string, searchDate: Moment) {

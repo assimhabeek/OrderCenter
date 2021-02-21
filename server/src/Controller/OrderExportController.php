@@ -50,8 +50,8 @@ final class OrderExportController extends BaseController
             $this->orderCompletion->nonCarifexCompleted();
 
         $timeExpression = new CompositeExpression(CompositeExpression::TYPE_AND, [
-            Criteria::expr()->gte('lastModification', $start),
-            Criteria::expr()->lte('lastModification', $end)
+            Criteria::expr()->gte('orderDate', $start),
+            Criteria::expr()->lte('orderDate', $end)
         ]);
 
         $statusExpression = Criteria::expr()->eq('orderStatus', Order::ORDER_STATUS_QUEUED);

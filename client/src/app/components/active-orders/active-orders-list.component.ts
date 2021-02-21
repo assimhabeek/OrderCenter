@@ -61,7 +61,7 @@ export class ActiveOrdersListComponent {
     onGridReady(params: any): void {
         this.gridApi = params.api;
         this.gridColumnApi = params.columnApi;
-        this.addFilter({lastModification: {filter: Helpers.toMysqlDate(this.orderDateForm.value.orderDate)}});
+        this.addFilter({orderDate: {filter: Helpers.toMysqlDate(this.orderDateForm.value.orderDate)}});
         this.addFilter({orderStatus: {filter: Helpers.orderStatus.ORDER_ACTIVE}});
         this.gridApi!.setServerSideDatasource(this.ordersService);
         this.listenToOrderDateForm();
@@ -77,7 +77,7 @@ export class ActiveOrdersListComponent {
 
     listenToOrderDateForm(): void {
         this.orderDateForm.valueChanges.subscribe(x => {
-            this.addFilter({lastModification: {filter: Helpers.toMysqlDate(x.orderDate)}});
+            this.addFilter({orderDate: {filter: Helpers.toMysqlDate(x.orderDate)}});
         });
     }
 

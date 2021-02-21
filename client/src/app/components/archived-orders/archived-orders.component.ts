@@ -56,7 +56,7 @@ export class ArchivedOrdersComponent {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
 
-    this.addFilter({lastModification: {filter: Helpers.toMysqlDate(this.orderDateForm.value.orderDate)}});
+    this.addFilter({orderDate: {filter: Helpers.toMysqlDate(this.orderDateForm.value.orderDate)}});
     this.addFilter({orderStatus: {filter: Helpers.orderStatus.ORDER_ARCHIVED}});
     this.gridApi!.setServerSideDatasource(this.ordersService);
     this.listenToOrderDateForm();
@@ -71,7 +71,7 @@ export class ArchivedOrdersComponent {
 
   listenToOrderDateForm(): void {
     this.orderDateForm.valueChanges.subscribe(x => {
-      this.addFilter({lastModification: {filter: Helpers.toMysqlDate(x.orderDate)}});
+      this.addFilter({orderDate: {filter: Helpers.toMysqlDate(x.orderDate)}});
     });
   }
 

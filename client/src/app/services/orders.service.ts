@@ -87,19 +87,10 @@ export class OrdersService implements IServerSideDatasource {
                 headerName: 'Order No',
             },
             {
-                field: 'lastModification',
-                headerName: 'Last modification',
-                tooltipField: 'lastModification',
-                valueSetter: (params: any) => {
-                    params.data.lastModification = params.newValue;
-                    return true;
-                },
-                cellRenderer: (col: any) => {
-                    return Helpers.fromMysqlDateTime(col.value).fromNow();
-                },
+                field: 'orderDate',
+                headerName: 'Order date',
                 cellStyle: {'background-color': 'rgba(60,60,60,0.3)'},
                 editable: false,
-                filter: false
             },
             {
                 field: 'quantity',
@@ -109,10 +100,6 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'productName',
                 headerName: 'Product name'
-            },
-            {
-                field: 'productTitle',
-                headerName: 'Product title'
             },
             {
                 field: 'bulbType',
@@ -234,10 +221,19 @@ export class OrdersService implements IServerSideDatasource {
 
             },
             {
-                field: 'orderDate',
-                headerName: 'Order date',
+                field: 'lastModification',
+                headerName: 'Last modification',
+                tooltipField: 'lastModification',
+                valueSetter: (params: any) => {
+                    params.data.lastModification = params.newValue;
+                    return true;
+                },
+                cellRenderer: (col: any) => {
+                    return Helpers.fromMysqlDateTime(col.value).fromNow();
+                },
                 cellStyle: {'background-color': 'rgba(60,60,60,0.3)'},
                 editable: false,
+                filter: false
             },
             {
                 field: 'modifiedBy',
