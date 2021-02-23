@@ -63,7 +63,7 @@ jobs:
           SOURCE: ${{ env.WEBAPP_PATH }}
           REMOTE_HOST: ${{ secrets.CARIFIX_HOST }}
           REMOTE_USER: ${{ secrets.CARIFIX_USERNAME }}
-          TARGET: ''
+          TARGET: '.'
 
       - name: Delete Output File
         run: rm -Rf ./output
