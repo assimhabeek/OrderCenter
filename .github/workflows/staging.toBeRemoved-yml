@@ -2,7 +2,7 @@
 
 name: Staging CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   push:
     branches: [ stage ]
