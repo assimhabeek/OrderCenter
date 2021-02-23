@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ViewChild, ViewContainerRef} from '@angular/core';
-import {ICellEditorAngularComp} from 'ag-grid-angular';
+import {ICellEditorAngularComp} from '@ag-grid-community/angular';
 import {MatSelect} from '@angular/material/select';
 
 @Component({
@@ -36,16 +36,12 @@ import {MatSelect} from '@angular/material/select';
 })
 
 export class MatSelectComponent implements AfterViewInit, ICellEditorAngularComp {
-    private params: any;
-
-
     elements!: string[];
     currentElement!: string;
-    private selectedIndex!: any;
-
     @ViewChild('group', {read: ViewContainerRef}) group!: any;
     @ViewChild(MatSelect) select!: MatSelect;
-
+    private params: any;
+    private selectedIndex!: any;
 
     agInit(params: any): void {
         this.params = params;
@@ -66,10 +62,6 @@ export class MatSelectComponent implements AfterViewInit, ICellEditorAngularComp
         this.selectCurrentElementBasedOnSelectedIndex();
         this.select.open();
         this.select.focus({preventScroll: false});
-    }
-
-    private selectCurrentElementBasedOnSelectedIndex(): void {
-        this.currentElement = this.elements[this.selectedIndex];
     }
 
     getValue(): string {
@@ -98,6 +90,10 @@ export class MatSelectComponent implements AfterViewInit, ICellEditorAngularComp
     preventDefaultAndPropagation(event: any): void {
         event.preventDefault();
         event.stopPropagation();
+    }
+
+    private selectCurrentElementBasedOnSelectedIndex(): void {
+        this.currentElement = this.elements[this.selectedIndex];
     }
 
 }

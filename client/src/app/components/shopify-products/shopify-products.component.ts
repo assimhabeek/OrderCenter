@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {GridApi} from '@ag-grid-enterprise/all-modules';
+import {GridApi} from '@ag-grid-community/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmService} from '../../services/confirm.service';
 import {AlertService} from '../../services/alert.service';

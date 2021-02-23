@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {GridApi} from '@ag-grid-enterprise/all-modules';
+import {GridApi} from '@ag-grid-community/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmService} from '../../services/confirm.service';
 import {AlertService} from '../../services/alert.service';
@@ -190,10 +190,6 @@ export class ShopifyOrdersComponent {
             paginationAutoPageSize: true,
         };
 
-    }
-
-    getRowStyle(params: any): any {
-        return params.node.data.MATCH_SCORE === 100 ? {background: 'rgba(0,219,0,0.1)'} : {background: 'rgb(255,249,102)'};
     }
 
     insertOrders(): void {

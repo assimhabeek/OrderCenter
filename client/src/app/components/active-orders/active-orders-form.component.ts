@@ -46,13 +46,13 @@ export class ActiveOrdersFormComponent implements OnInit {
         });
     }
 
-    onYearChange() {
+    onYearChange(): void {
         this.vehiclesService.getMake(this.data.vehicleYear).then(make => {
             this.make = make;
         });
     }
 
-    onMakeChange() {
+    onMakeChange(): void {
         this.vehiclesService.getModel(this.data.vehicleYear, this.data.vehicleMake).then(model => {
             this.model = model;
         });

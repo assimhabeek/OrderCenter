@@ -1,8 +1,8 @@
-<div class="ct-container mat-typography" [class.ct-is-mobile]="mobileQuery.matches">
-    <mat-toolbar color="primary" class="ct-toolbar">
+<div [class.ct-is-mobile]="mobileQuery.matches" class="ct-container mat-typography">
+    <mat-toolbar class="ct-toolbar" color="primary">
         <h1 class="ct-app-name">Orders Center</h1>
         <span class="ct-spacer"></span>
-        <button mat-icon-button (click)="logout()" matTooltip="Logout">
+        <button (click)="logout()" mat-icon-button matTooltip="Logout">
             <mat-icon>logout</mat-icon>
         </button>
     </mat-toolbar>

@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {environment} from '../../environments/environment';
 import {HttpParams} from '@angular/common/http';
-import {IServerSideDatasource, IServerSideGetRowsParams} from '@ag-grid-enterprise/all-modules';
+import {IServerSideDatasource, IServerSideGetRowsParams} from '@ag-grid-community/core';
 import {SkusService} from './skus.service';
 import {map} from 'rxjs/operators';
-import {forkJoin, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Helpers} from '../ultils/Helpers';
 import {VehiclesService} from './vehicles.service';
 
@@ -15,8 +15,7 @@ import {VehiclesService} from './vehicles.service';
 export class OrdersService implements IServerSideDatasource {
 
     constructor(protected httpService: HttpService,
-                protected skusService: SkusService,
-                protected vehiclesService: VehiclesService) {
+                protected skusService: SkusService) {
     }
 
     getSKUs(): Observable<any> {
@@ -39,20 +38,16 @@ export class OrdersService implements IServerSideDatasource {
 
 
     getHeader(): Observable<any[]> {
-        return forkJoin(
-            [
-                this.getSKUs(),
-                this.vehiclesService.getYear()
-            ])
-            .pipe(map(([skus, years]) => {
+        return this.getSKUs()
+            .pipe(map((skus) => {
                 const bulbTypes = skus.BULB_TYPE || this.addEmptyAndCompletedToSkus([]);
-                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);;
+                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
                 const highBeam = skus.HIGH_BEAM || this.addEmptyAndCompletedToSkus([]);
                 const lowBeam = skus.LOW_BEAM || this.addEmptyAndCompletedToSkus([]);
                 const fogLight = skus.FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
                 const hbCanBus = skus.HB_CAN_BUS || this.addEmptyAndCompletedToSkus([]);
                 const lbCanBus = skus.LB_CAN_BUS || this.addEmptyAndCompletedToSkus([]);
-                return this.buildHeader(bulbTypes, bulbTypeFogLight, highBeam, lowBeam, fogLight, hbCanBus, lbCanBus, years);
+                return this.buildHeader(bulbTypes, bulbTypeFogLight, highBeam, lowBeam, fogLight, hbCanBus, lbCanBus);
             }));
     }
 
@@ -71,8 +66,7 @@ export class OrdersService implements IServerSideDatasource {
                 lowBeam: any,
                 fogLight: any,
                 hbCanBus: any,
-                lbCanBus: any,
-                years: any): any {
+                lbCanBus: any): any {
         return [
             {
                 field: 'orderStatus',
@@ -274,19 +268,19 @@ export class OrdersService implements IServerSideDatasource {
 
         this.httpService.getWithAuth(environment.routes.orders, {params: par}).subscribe(res => {
                 if (res.status === true) {
-                    params.successCallback(res.data, res.total);
+                    params.success({rowData: res.data, rowCount: res.total});
 
-                    const allColumnIds: any[] = params.columnApi.getAllColumns()
-                        .filter((x: any) => !x.colDef.width)
+                    const allColumnIds: any = params.columnApi.getAllColumns()
+                        ?.filter((x: any) => !x.colDef.width)
                         .map((x: any) => x.colId);
                     params.columnApi.autoSizeColumns(allColumnIds, true);
 
                 } else {
-                    params.failCallback();
+                    params.fail();
                 }
             },
-            error => {
-                params.failCallback();
+            () => {
+                params.fail();
             });
     }
 

@@ -89,13 +89,9 @@ final class OrderExportController extends BaseController
         $exportHistory->setFileUrl($rootPath . $fileName);
         $exportHistory->setExportedBy($this->authController->getCurrentUser($request));
 
-        if (!$this->createXlsxFile($data, $exportHistory)) {
-            return $this->responseToJson($response,
-                [
-                    'status' => false,
-                    'message' => 'Could not create file'
-                ]
-            );
+        $output = $this->createXlsxFile($data, $exportHistory);
+        if (!$output['status']) {
+            return $this->responseToJson($response, $output);
         }
 
         $this->em->persist($exportHistory);
@@ -157,11 +153,11 @@ final class OrderExportController extends BaseController
         $writer = $writer->openToFile($fileUrl);
         $writer->setDefaultColumnWidth(30);
         $writer->setDefaultRowHeight(20);
-        $writer->getCurrentSheet()->setName(Utils::getCurrentDateTime());
+        $writer->getCurrentSheet()->setName(Utils::getSheetName());
         return $writer;
     }
 
-    private function createCarifixFile($data, $exportHistory): bool
+    private function createCarifixFile($data, $exportHistory): array
     {
 
         try {
@@ -169,9 +165,9 @@ final class OrderExportController extends BaseController
             $writer = $this->appendCarifixHeader($writer);
             $writer = $this->writeCarifixOrders($writer, $data);
             $writer->close();
-            return true;
+            return ["status" => true];
         } catch (\Exception $exception) {
-            return false;
+            return ["status" => false, "message" => $exception->getMessage()];
         }
     }
 
@@ -230,9 +226,9 @@ final class OrderExportController extends BaseController
             }
             $writer->close();
 
-            return true;
+            return ["status" => true];
         } catch (\Exception $exception) {
-            return false;
+            return ["status" => false, "message" => $exception->getMessage()];
         }
     }
 
@@ -264,20 +260,19 @@ final class OrderExportController extends BaseController
 
     private function getFirstValidSkus($datum)
     {
-        $first_valid = null;
+        $firstValid = null;
         foreach (Order::CARIFEX_TYPE_COLUMNS as $item) {
-            if ($datum[$item] != '-') {
-                $first_valid = $item;
+            if ($datum[$item] != 'NIL') {
+                $firstValid = $item;
                 continue;
             }
         }
-        return $first_valid;
+        return $firstValid;
     }
 
     private function generateRowFromMap($map, $datum)
     {
         $row = [];
-
         foreach ($map as $key => $value) {
             $it = isset($value) && isset($datum[$value]) ? $datum[$value] : '';
             $it = $it === 'NIL' ? '-' : $it;

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ViewChild, ViewContainerRef} from '@angular/core';
-import {ICellEditorAngularComp} from 'ag-grid-angular';
+import {ICellEditorAngularComp} from '@ag-grid-community/angular';
 import {MatSelect} from '@angular/material/select';
 import {VehiclesService} from '../../services/vehicles.service';
 
@@ -31,24 +31,19 @@ import {VehiclesService} from '../../services/vehicles.service';
 })
 
 export class MatMakeModelSelectComponent implements AfterViewInit, ICellEditorAngularComp {
-    private params: any;
-
-
     elements: string[] = [];
     currentElement!: string;
-
-    private selectedIndex!: number;
-
-
     @ViewChild('group', {read: ViewContainerRef}) group!: any;
     @ViewChild(MatSelect) select!: MatSelect;
+    private params: any;
+    private selectedIndex!: number;
+
+    constructor(public vehicleService: VehiclesService) {
+    }
 
     static preventDefaultAndPropagation($event: any): void {
         $event.preventDefault();
         $event.stopPropagation();
-    }
-
-    constructor(public vehicleService: VehiclesService) {
     }
 
     async agInit(params: any): Promise<void> {
@@ -79,10 +74,6 @@ export class MatMakeModelSelectComponent implements AfterViewInit, ICellEditorAn
         this.selectCurrentElementBasedOnSelectedIndex();
     }
 
-    private selectCurrentElementBasedOnSelectedIndex(): void {
-        this.currentElement = this.elements[this.selectedIndex];
-    }
-
     getValue(): string {
         return this.currentElement;
     }
@@ -103,6 +94,10 @@ export class MatMakeModelSelectComponent implements AfterViewInit, ICellEditorAn
             }
             this.selectCurrentElementBasedOnSelectedIndex();
         }
+    }
+
+    private selectCurrentElementBasedOnSelectedIndex(): void {
+        this.currentElement = this.elements[this.selectedIndex];
     }
 
 
