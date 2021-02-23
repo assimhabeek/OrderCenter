@@ -57,8 +57,8 @@ jobs:
         run: ls ./output
 
       - name: Deploy to Staging server
-          uses: easingthemes/ssh-deploy@v2.1.5
-          env:
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
             SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
             SOURCE: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
             REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
