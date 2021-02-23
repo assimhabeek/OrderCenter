@@ -154,7 +154,7 @@ export class ArchivedOrdersComponent {
 
     clearFilters(): void {
         this.orderDateForm.reset({orderDate: null});
-        this.gridApi.setFilterModel({orderStatus: {filter: Helpers.orderStatus.ORDER_ARCHIVED}});
+        this.gridApi?.setFilterModel({orderStatus: {filter: Helpers.orderStatus.ORDER_ARCHIVED}});
         this.refresh();
     }
 }

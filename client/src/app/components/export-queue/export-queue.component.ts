@@ -243,7 +243,7 @@ export class ExportQueueComponent {
     clearFilters(): void {
         this.orderDateForm.reset({orderDate: null});
         this.orderStatus = 0;
-        this.gridApi.setFilterModel({});
+        this.gridApi?.setFilterModel({});
         this.refresh();
     }
 }

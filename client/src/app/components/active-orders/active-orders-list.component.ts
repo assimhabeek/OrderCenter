@@ -246,7 +246,7 @@ export class ActiveOrdersListComponent {
     clearFilters(): void {
         this.orderDateForm.reset({orderDate: null});
         this.orderType = 'all';
-        this.gridApi.setFilterModel({orderStatus: {filter: Helpers.orderStatus.ORDER_ACTIVE}});
+        this.gridApi?.setFilterModel({orderStatus: {filter: Helpers.orderStatus.ORDER_ACTIVE}});
     }
 
 

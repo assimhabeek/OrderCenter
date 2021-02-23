@@ -195,7 +195,7 @@ export class ExportComponent {
 
     clearFilters(): void {
         this.orderDateRange.reset({orderDate: null});
-        this.gridApi.setFilterModel({});
+        this.gridApi?.setFilterModel({});
         this.refresh();
     }
 
