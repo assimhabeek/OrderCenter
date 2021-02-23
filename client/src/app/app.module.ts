@@ -1,15 +1,17 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from './material.module';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import {AgGridModule} from 'ag-grid-angular';
 import {RoutingModule} from './routing.module';
 import {MainComponent} from './components/main/main.component';
-import {SharedModule} from './shared/shared.module';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from '@angular/material/card';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
     declarations: [
@@ -19,7 +21,13 @@ import {SharedModule} from './shared/shared.module';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        MaterialModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        MatDividerModule,
+        MatSnackBarModule,
+        MatTabsModule,
         HttpClientModule,
         RoutingModule,
     ],

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ICellRendererAngularComp} from 'ag-grid-angular';
+import {ICellRendererAngularComp} from '@ag-grid-community/angular';
 
 @Component({
     selector: 'ct-order-status-button',
@@ -30,7 +30,7 @@ export class QueueButtonComponent implements ICellRendererAngularComp {
         this.params.node.setDataValue(this.params.colDef, this.value);
     }
 
-    refresh(params: any): boolean {
+    refresh(): boolean {
         return true;
     }
 }

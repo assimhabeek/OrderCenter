@@ -5,13 +5,12 @@ import {forkJoin, Observable} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {AlertService} from '../../services/alert.service';
 import {ConfirmService} from '../../services/confirm.service';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {TooltipComponent} from '../../shared/tooltip.component';
-import {GridApi, RowNode} from 'ag-grid-community';
+import {GridApi, RowNode} from '@ag-grid-community/core';
 import {Helpers} from '../../ultils/Helpers';
-import {FocusMonitor} from '@angular/cdk/a11y';
 import {QueueButtonComponent} from './queue-button.component';
-import {Moment} from 'moment/moment';
+import {ClientSideRowModelModule} from '@ag-grid-community/client-side-row-model';
 
 
 @Component({
@@ -27,7 +26,7 @@ export class ExportQueueComponent {
 
     gridApi!: GridApi;
     gridColumnApi: any;
-    orderStatus: number = 0;
+    orderStatus = 0;
     rowData = [];
     columns: any;
     options!: any;
@@ -36,11 +35,11 @@ export class ExportQueueComponent {
 
     constructor(public ordersService: OrdersService,
                 public dialog: MatDialog,
-                private _focusMonitor: FocusMonitor,
                 public confirmService: ConfirmService,
                 public alertService: AlertService) {
 
-        this.loadHeaders().subscribe(x => {
+        this.modules = [ClientSideRowModelModule];
+        this.loadHeaders().subscribe(() => {
                 this.setupOptions();
             },
             error => {
@@ -61,7 +60,7 @@ export class ExportQueueComponent {
 
 
     listenToOrderDateForm(): void {
-        this.orderDateForm.valueChanges.subscribe(x => {
+        this.orderDateForm.valueChanges.subscribe(() => {
             this.gridApi.onFilterChanged();
         });
     }
@@ -115,25 +114,27 @@ export class ExportQueueComponent {
         }
     }
 
-    loadBoth() {
-        forkJoin([this.ordersService.getQueueOrders(Helpers.orderStatus.ORDER_ACTIVE), this.ordersService.getQueueOrders(Helpers.orderStatus.ORDER_QUEUED)])
-            .subscribe(res => {
-                if (res[0].status && res[1].status) {
-                    this.gridApi.setRowData(res[0].data.concat(res[1].data));
-                    this.setAutoSize();
-                } else {
-                    this.onError('Couldn\'t load the data');
-                }
-            }, error => {
-                this.onError(error.message);
-            });
+    loadBoth(): void {
+        forkJoin([
+            this.ordersService.getQueueOrders(Helpers.orderStatus.ORDER_ACTIVE),
+            this.ordersService.getQueueOrders(Helpers.orderStatus.ORDER_QUEUED)
+        ]).subscribe(res => {
+            if (res[0].status && res[1].status) {
+                this.gridApi.setRowData(res[0].data.concat(res[1].data));
+                this.setAutoSize();
+            } else {
+                this.onError('Couldn\'t load the data');
+            }
+        }, error => {
+            this.onError(error.message);
+        });
     }
 
-    loadOne() {
+    loadOne(): void {
         this.ordersService.getQueueOrders(this.orderStatus)
             .subscribe(res => {
                 if (res.status) {
-                    this.gridApi.setRowData(res.data)
+                    this.gridApi.setRowData(res.data);
                     this.setAutoSize();
                 } else {
                     this.onError('Couldn\'t load the data');
@@ -143,7 +144,7 @@ export class ExportQueueComponent {
             });
     }
 
-    setAutoSize() {
+    setAutoSize(): void {
         const allColumnIds: any[] = [];
         this.gridColumnApi.getAllColumns()?.forEach((column: any) => {
             allColumnIds.push(column.colId);
@@ -151,7 +152,7 @@ export class ExportQueueComponent {
         this.gridColumnApi?.autoSizeColumns(allColumnIds, false);
     }
 
-    async setValue(params: any) {
+    async setValue(params: any): Promise<any> {
         const toUpdate = {id: params.data.id, name: params.colDef.field, value: params.newValue};
         console.log(toUpdate);
 
@@ -164,25 +165,13 @@ export class ExportQueueComponent {
         return response.status;
     }
 
-    autoFocusNext(control: AbstractControl, nextElement?: HTMLInputElement): void {
-        if (!control.errors && nextElement) {
-            this._focusMonitor.focusVia(nextElement, 'program');
-        }
-    }
-
-    autoFocusPrev(control: AbstractControl, prevElement: HTMLInputElement): void {
-        if (control.value.length < 1) {
-            this._focusMonitor.focusVia(prevElement, 'program');
-        }
-    }
-
-    noRowSelected() {
+    noRowSelected(): any {
         const selectedRows = this.gridApi ? this.gridApi.getSelectedNodes() : null;
         return !selectedRows || selectedRows.length === 0;
     }
 
 
-    onSuccess(message: string) {
+    onSuccess(message: string): void {
         this.alertService.alertSuccess(message);
     }
 
@@ -191,7 +180,7 @@ export class ExportQueueComponent {
         this.alertService.alertError(error);
     }
 
-    queueAll() {
+    queueAll(): void {
         this.confirmService.requestConfirmation(
             'Queue all orders',
             'Are you sure you want to add all the visible orders to the export queue.'
@@ -202,7 +191,7 @@ export class ExportQueueComponent {
         });
     }
 
-    unQueueAll() {
+    unQueueAll(): void {
         this.confirmService.requestConfirmation(
             'UnQueue all orders',
             'Are you sure you want to remove all the visible orders from the export queue.'
@@ -214,7 +203,7 @@ export class ExportQueueComponent {
     }
 
 
-    updateAllRows(orderStatus: number) {
+    updateAllRows(orderStatus: number): void {
         let ids: any[];
         ids = [];
         this.gridApi.forEachNode((row: RowNode) => {
@@ -239,19 +228,19 @@ export class ExportQueueComponent {
         });
     }
 
-    isExternalFilterPresent() {
+    isExternalFilterPresent(): boolean {
         return this.orderDateForm.value.orderDate != null;
     }
 
-    filterRows(node: RowNode) {
+    filterRows(node: RowNode): boolean {
         return this.filterByDate(node.data.orderDate, this.orderDateForm.value.orderDate);
     }
 
-    filterByDate(sourceDate: string, searchDate: Moment) {
+    filterByDate(sourceDate: string, searchDate: any): boolean {
         return sourceDate.includes(Helpers.toMysqlDate(searchDate));
     }
 
-    clearFilters() {
+    clearFilters(): void {
         this.orderDateForm.reset({orderDate: null});
         this.orderStatus = 0;
         this.gridApi.setFilterModel({});

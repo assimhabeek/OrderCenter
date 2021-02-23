@@ -4,15 +4,15 @@ import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SyncOrdersService {
 
-  constructor(protected httpService: HttpService) {
-  }
+    constructor(protected httpService: HttpService) {
+    }
 
-  getShopifyProducts(): Observable<any> {
-    return this.httpService.getWithAuth(environment.routes.shopifyOrders);
-  }
+    getShopifyProducts(): Observable<any> {
+        return this.httpService.getWithAuth(environment.routes.shopifyOrders);
+    }
 
 }

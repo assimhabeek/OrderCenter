@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {GridApi} from '@ag-grid-enterprise/all-modules';
+import {GridApi} from '@ag-grid-community/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSelectComponent} from '../../shared/mat-select.component';
 import {ConfirmService} from '../../services/confirm.service';
@@ -28,7 +28,7 @@ export class ProductSkusComponent {
                 public confirmService: ConfirmService,
                 public alertService: AlertService) {
 
-        this.loadHeaders().subscribe(x => {
+        this.loadHeaders().subscribe(() => {
                 this.setupOptions();
             },
             error => {

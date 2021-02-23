@@ -5,20 +5,20 @@ import {Observable, of} from 'rxjs';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class FileUploaderService {
 
-  constructor(public httpService: HttpService) {
-  }
-
-  upload(file: any): Observable<any> {
-    if (!file && file.name) {
-      return of(null);
+    constructor(public httpService: HttpService) {
     }
-    const formData = new FormData();
-    formData.append('file', file, file.name);
-    return this.httpService.postWithAuth(environment.routes.upload, formData);
-  }
+
+    upload(file: any): Observable<any> {
+        if (!file && file.name) {
+            return of(null);
+        }
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        return this.httpService.postWithAuth(environment.routes.upload, formData);
+    }
 
 }

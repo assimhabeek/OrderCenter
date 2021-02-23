@@ -3,11 +3,11 @@ import {RouterModule} from '@angular/router';
 import {UsersListComponent} from './users-list.component';
 import {UsersFormComponent} from './users-form.component';
 import {SharedModule} from '../../shared/shared.module';
-import {AgGridModule} from 'ag-grid-angular';
 import {MaterialModule} from '../../material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatCheckboxComponent} from './mat-checkbox.component';
 import {CommonModule} from '@angular/common';
+import {AgGridModule} from '@ag-grid-community/angular';
 
 
 @NgModule({

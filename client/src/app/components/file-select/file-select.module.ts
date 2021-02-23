@@ -3,7 +3,6 @@ import {RouterModule} from '@angular/router';
 import {FileSelectComponent} from './file-select.component';
 import {DndDirective} from './dnd.directive';
 import {SharedModule} from '../../shared/shared.module';
-import {AgGridModule} from 'ag-grid-angular';
 import {MaterialModule} from '../../material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';

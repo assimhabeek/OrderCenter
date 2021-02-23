@@ -1,13 +1,13 @@
 <mat-card class="ct-toolbar mat-elevation-z1">
-  <button mat-icon-button matTooltip="Refresh" (click)="refresh()">
-    <mat-icon>refresh</mat-icon>
-  </button>
+    <button (click)="refresh()" mat-icon-button matTooltip="Refresh">
+        <mat-icon>refresh</mat-icon>
+    </button>
 
 </mat-card>
 
 <div *ngIf="columns" class="ct-table-wrapper">
-  <ag-grid-angular class="ag-theme-balham"
-                   [gridOptions]="options"
-                   [modules]="modules"
-                   [rowData]="rowData"></ag-grid-angular>
+    <ag-grid-angular [gridOptions]="options"
+                     [modules]="modules"
+                     [rowData]="rowData"
+                     class="ag-theme-balham"></ag-grid-angular>
 </div>

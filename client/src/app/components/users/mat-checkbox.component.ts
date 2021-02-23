@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ICellRendererAngularComp} from 'ag-grid-angular';
+import {ICellRendererAngularComp} from '@ag-grid-community/angular';
 
 @Component({
     selector: `ct-checkbox-cell`,
@@ -51,7 +51,7 @@ export class MatCheckboxComponent implements ICellRendererAngularComp {
         }
     }
 
-    refresh(params: any): boolean {
+    refresh(): boolean {
         return false;
     }
 }

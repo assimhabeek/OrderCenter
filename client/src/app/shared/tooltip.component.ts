@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {ITooltipAngularComp} from 'ag-grid-angular';
+import {ITooltipAngularComp} from '@ag-grid-community/angular';
 import {Helpers} from '../ultils/Helpers';
 
 @Component({
-    selector: 'tooltip-component',
+    selector: 'ct-tooltip-component',
     template: `
         <div class="tooltip">
             <p>

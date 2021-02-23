@@ -3,7 +3,7 @@ import {HttpService} from './http.service';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpParams} from '@angular/common/http';
-import {IServerSideDatasource, IServerSideGetRowsParams} from '@ag-grid-enterprise/all-modules';
+import {IServerSideDatasource, IServerSideGetRowsParams} from '@ag-grid-community/core';
 import {map} from 'rxjs/operators';
 import {SkusService} from './skus.service';
 import {Helpers} from '../ultils/Helpers';
@@ -125,20 +125,20 @@ export class VehiclesService implements IServerSideDatasource {
 
         this.httpService.getWithAuth(environment.routes.vehicles, {params: par}).subscribe(res => {
                 if (res.status) {
-                    params.successCallback(res.data, res.total);
+                    params.success({rowData: res.data, rowCount: res.total});
 
                     const allColumnIds: any[] = [];
-                    params.columnApi.getAllColumns().forEach((column: any) => {
+                    params.columnApi.getAllColumns()?.forEach((column: any) => {
                         allColumnIds.push(column.colId);
                     });
                     params.columnApi.autoSizeColumns(allColumnIds, false);
 
                 } else {
-                    params.failCallback();
+                    params.fail();
                 }
             },
-            error => {
-                params.failCallback();
+            () => {
+                params.fail();
             });
     }
 

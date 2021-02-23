@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {GridApi} from '@ag-grid-enterprise/all-modules';
+import {GridApi} from '@ag-grid-community/core';
 import {UsersService} from '../../services/users.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSelectComponent} from '../../shared/mat-select.component';
@@ -33,7 +33,7 @@ export class UsersListComponent {
     }
 
 
-    onGridReady(params: any) {
+    onGridReady(params: any): void {
         this.gridApi = params.api;
         this.gridColumnApi = params.columnApi;
         this.refresh();
@@ -72,7 +72,7 @@ export class UsersListComponent {
         ];
     }
 
-    setupOptions() {
+    setupOptions(): void {
         this.options = {
             pagination: false,
             defaultColDef: {
@@ -94,7 +94,7 @@ export class UsersListComponent {
 
     }
 
-    async setValue(params: any) {
+    async setValue(params: any): Promise<any> {
         const toUpdate = {id: params.data.id, name: params.colDef.field, value: params.newValue};
         params.data[params.colDef.field] = params.newValue;
         const response = await this.usersService.updateCell(toUpdate);
@@ -105,12 +105,12 @@ export class UsersListComponent {
         return response.status;
     }
 
-    noRowSelected() {
+    noRowSelected(): any {
         const selectedRows = this.gridApi ? this.gridApi.getSelectedNodes() : null;
         return !selectedRows || selectedRows.length === 0;
     }
 
-    onRemove() {
+    onRemove(): void {
         const selectedRows = this.gridApi.getSelectedNodes();
         if (!selectedRows || selectedRows.length === 0) {
             return;
@@ -139,12 +139,12 @@ export class UsersListComponent {
     }
 
 
-    onAdd() {
+    onAdd(): void {
         this.openDialog({});
     }
 
 
-    onDuplicate() {
+    onDuplicate(): void {
         const selectedRows = this.gridApi.getSelectedNodes();
         if (!selectedRows || selectedRows.length === 0) {
             return;
@@ -180,7 +180,7 @@ export class UsersListComponent {
     }
 
 
-    onSuccess(message: string) {
+    onSuccess(message: string): void {
         this.alertService.alertSuccess(message);
     }
 

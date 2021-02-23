@@ -3,10 +3,10 @@ import {RouterModule} from '@angular/router';
 import {VehiclesListComponent} from './vehicles-list.component';
 import {VehiclesFormComponent} from './vehicles-form.component';
 import {SharedModule} from '../../shared/shared.module';
-import {AgGridModule} from 'ag-grid-angular';
 import {MaterialModule} from '../../material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import {AgGridModule} from '@ag-grid-community/angular';
 
 
 @NgModule({

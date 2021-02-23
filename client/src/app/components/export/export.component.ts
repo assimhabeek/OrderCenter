@@ -1,21 +1,19 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {OrdersService} from '../../services/orders.service';
-import * as FileSaver from 'file-saver';
 import {Helpers} from '../../ultils/Helpers';
-import {GridApi, RowNode} from 'ag-grid-community';
+import {GridApi, RowNode} from '@ag-grid-community/core';
 import {MatDialog} from '@angular/material/dialog';
-import {FocusMonitor} from '@angular/cdk/a11y';
 import {ConfirmService} from '../../services/confirm.service';
 import {AlertService} from '../../services/alert.service';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {TooltipComponent} from '../../shared/tooltip.component';
 import {HttpResponse} from '@angular/common/http';
-import {Moment} from 'moment/moment';
+import {ClientSideRowModelModule} from '@ag-grid-community/client-side-row-model';
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-const EXCEL_EXTENSION = '.xlsx';
+
 
 @Component({
     selector: 'ct-export',
@@ -26,12 +24,12 @@ export class ExportComponent {
 
     gridApi!: GridApi;
     gridColumnApi: any;
-    orderStatus: number = 2;
+    orderStatus = 2;
     rowData = [];
     columns: any;
     options!: any;
     selected!: any;
-    modules: any = [];
+    modules: any = [ClientSideRowModelModule];
 
     currentFileParams: any = {};
 
@@ -44,12 +42,11 @@ export class ExportComponent {
 
     constructor(public ordersService: OrdersService,
                 public dialog: MatDialog,
-                private _focusMonitor: FocusMonitor,
                 public confirmService: ConfirmService,
                 public alertService: AlertService) {
 
 
-        this.loadHeaders().subscribe(x => {
+        this.loadHeaders().subscribe(() => {
                 this.setupOptions();
             },
             error => {
@@ -86,14 +83,10 @@ export class ExportComponent {
 
     }
 
-    ordersLinkedToFiles(data: any) {
-        return data.some((x: any) => x.EXPORT_FILE != null);
-    }
-
     getFormattedDates(): {} {
         const value = this.orderDateRange.value;
-        const startDate: Moment = value.startDate;
-        const endDate: Moment = value.endDate;
+        const startDate: any = value.startDate;
+        const endDate: any = value.endDate;
         startDate.startOf('day');
         endDate.endOf('day');
         return {
@@ -104,9 +97,19 @@ export class ExportComponent {
 
     saveAsExcelFile(buffer: any, fileName: string): void {
         const data: Blob = new Blob([buffer], {type: EXCEL_TYPE});
-        FileSaver.saveAs(data, fileName);
+        this.save(data, fileName);
     }
 
+    save(content: Blob, filename: string): void {
+        const element = document.createElement('a');
+        element.setAttribute('href', (window.webkitURL || window.URL).createObjectURL(content));
+        element.setAttribute('download', filename);
+        element.dataset.downloadurl = ['text/plain', element.download, element.href].join(':');
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
 
     onGridReady(params: any): void {
         this.gridApi = params.api;
@@ -119,7 +122,7 @@ export class ExportComponent {
 
     listenToOrderDateForm(): void {
         if (this.orderDateRange.valid) {
-            this.orderDateRange.valueChanges.subscribe(x => {
+            this.orderDateRange.valueChanges.subscribe(() => {
                 this.refresh();
             });
         }
@@ -181,7 +184,7 @@ export class ExportComponent {
         }
     }
 
-    onSuccess(message: string) {
+    onSuccess(message: string): any {
         this.alertService.alertSuccess(message);
     }
 
@@ -190,7 +193,7 @@ export class ExportComponent {
         this.alertService.alertError(error);
     }
 
-    clearFilters() {
+    clearFilters(): void {
         this.orderDateRange.reset({orderDate: null});
         this.gridApi.setFilterModel({});
         this.refresh();

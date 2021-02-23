@@ -16,4 +16,10 @@ class Utils
         return $date->format('Y-m-d  H:i:s');
     }
 
+    public static function getSheetName()
+    {
+        $date = new DateTime('now', new DateTimeZone('America/Chicago'));
+        return $date->format('Y-m-d');
+    }
+
 }

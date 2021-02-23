@@ -3,14 +3,14 @@ import {MatSelectComponent} from '../../shared/mat-select.component';
 import {OrdersService} from '../../services/orders.service';
 import {tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {GridApi, ServerSideRowModelModule} from '@ag-grid-enterprise/all-modules';
+import {ServerSideRowModelModule} from '@ag-grid-enterprise/server-side-row-model';
+import {GridApi, RowNode} from '@ag-grid-community/core';
 import {MatDialog} from '@angular/material/dialog';
 import {AlertService} from '../../services/alert.service';
 import {ConfirmService} from '../../services/confirm.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Helpers} from '../../ultils/Helpers';
 import {TooltipComponent} from '../../shared/tooltip.component';
-import {RowNode} from 'ag-grid-community';
 import {MatCheckboxComponent} from '../users/mat-checkbox.component';
 import {MatMakeModelSelectComponent} from './mat-make-model-select.component';
 import {ActiveOrdersFormComponent} from './active-orders-form.component';
@@ -47,7 +47,7 @@ export class ActiveOrdersListComponent {
 
         this.modules = [ServerSideRowModelModule];
 
-        this.loadHeaders().subscribe(x => {
+        this.loadHeaders().subscribe(() => {
                 this.setupOptions();
             },
             error => {
@@ -63,12 +63,12 @@ export class ActiveOrdersListComponent {
         this.gridColumnApi = params.columnApi;
         this.addFilter({orderDate: {filter: Helpers.toMysqlDate(this.orderDateForm.value.orderDate)}});
         this.addFilter({orderStatus: {filter: Helpers.orderStatus.ORDER_ACTIVE}});
-        this.gridApi!.setServerSideDatasource(this.ordersService);
+        this.gridApi?.setServerSideDatasource(this.ordersService);
         this.listenToOrderDateForm();
     }
 
 
-    addFilter(filter: any) {
+    addFilter(filter: any): void {
         if (this.gridApi) {
             const filterModel = this.gridApi.getFilterModel() ? this.gridApi.getFilterModel() : {};
             this.gridApi.setFilterModel(Object.assign(filterModel, filter));
@@ -113,8 +113,9 @@ export class ActiveOrdersListComponent {
             },
             animateRows: true,
             rowModelType: 'serverSide',
+            serverSideStoreType: 'partial',
             rowSelection: 'single',
-            cacheBlockSize: 10,
+            cacheBlockSize: 100,
             columnDefs: this.columns,
             onGridReady: this.onGridReady.bind(this),
             paginationAutoPageSize: true,
@@ -129,10 +130,10 @@ export class ActiveOrdersListComponent {
     }
 
     refresh(): void {
-        this.gridApi.purgeServerSideCache();
+        this.gridApi.refreshServerSideStore({});
     }
 
-    async setValue(params: any) {
+    async setValue(params: any): Promise<any> {
 
         const toUpdate = {id: params.data.id, name: params.colDef.field, value: params.newValue};
         params.data[params.colDef.field] = params.newValue;
@@ -158,13 +159,13 @@ export class ActiveOrdersListComponent {
     }
 
 
-    noRowSelected() {
+    noRowSelected(): any {
         const selectedRows = this.gridApi ? this.gridApi.getSelectedNodes() : null;
         return !selectedRows || selectedRows.length === 0;
     }
 
 
-    onRemove() {
+    onRemove(): void {
         const selectedRows = this.gridApi.getSelectedNodes();
         if (!selectedRows || selectedRows.length === 0) {
             return;
@@ -183,7 +184,7 @@ export class ActiveOrdersListComponent {
         this.ordersService.deleteRow(+selectedRow.data.id).subscribe(x => {
             if (x.status) {
                 this.gridApi.deselectAll();
-                this.gridApi.purgeServerSideCache();
+                this.gridApi.refreshServerSideStore({});
                 this.onSuccess(x.message);
             } else {
                 this.onError(x.message);
@@ -191,15 +192,15 @@ export class ActiveOrdersListComponent {
         });
     }
 
-    onAdd() {
+    onAdd(): void {
         this.openDialog({});
     }
 
-    isExternalFilterPresent() {
+    isExternalFilterPresent(): boolean {
         return this.orderType !== 'all';
     }
 
-    onDuplicate() {
+    onDuplicate(): void {
         const selectedRows = this.gridApi.getSelectedNodes();
         if (!selectedRows || selectedRows.length === 0) {
             return;
@@ -222,7 +223,7 @@ export class ActiveOrdersListComponent {
                 this.ordersService.addRow(result).subscribe(x => {
                     if (x.status) {
                         this.gridApi.deselectAll();
-                        this.gridApi.purgeServerSideCache();
+                        this.gridApi.refreshServerSideStore({});
                         this.onSuccess(x.message);
                     } else {
                         console.log(x);
@@ -233,7 +234,7 @@ export class ActiveOrdersListComponent {
         });
     }
 
-    onSuccess(message: string) {
+    onSuccess(message: string): void {
         this.alertService.alertSuccess(message);
     }
 
@@ -242,7 +243,7 @@ export class ActiveOrdersListComponent {
         this.alertService.alertError(error);
     }
 
-    clearFilters() {
+    clearFilters(): void {
         this.orderDateForm.reset({orderDate: null});
         this.orderType = 'all';
         this.gridApi.setFilterModel({orderStatus: {filter: Helpers.orderStatus.ORDER_ACTIVE}});

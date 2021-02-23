@@ -1,47 +1,47 @@
 <mat-card class="ct-toolbar mat-elevation-z1">
     <div>
-      <button class="ct-toolbar-btn" mat-flat-button color="primary" (click)="queueAll()">
-        Queue All
-      </button>
-      <button class="ct-toolbar-btn" mat-flat-button color="warn" (click)="unQueueAll()">
-        UnQueue All
-      </button>
+        <button (click)="queueAll()" class="ct-toolbar-btn" color="primary" mat-flat-button>
+            Queue All
+        </button>
+        <button (click)="unQueueAll()" class="ct-toolbar-btn" color="warn" mat-flat-button>
+            UnQueue All
+        </button>
     </div>
 
     <span class="ct-spacer"></span>
     <div [formGroup]="orderDateForm">
         <mat-form-field class="ct-order-date">
             <mat-label>Choose a date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="orderDate">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <input [matDatepicker]="picker" formControlName="orderDate" matInput>
+            <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     </div>
 
-    <button class="ct-filter" [color]="orderStatus!=0 ? 'primary': ''" mat-icon-button [matMenuTriggerFor]="menu">
+    <button [color]="orderStatus!=0 ? 'primary': ''" [matMenuTriggerFor]="menu" class="ct-filter" mat-icon-button>
         <mat-icon>filter_alt</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Refresh" (click)="refresh()">
+    <button (click)="refresh()" mat-icon-button matTooltip="Refresh">
         <mat-icon>refresh</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
 
-        <button mat-menu-item (click)="orderStatus=0;refresh()">
+        <button (click)="orderStatus=0;refresh()" mat-menu-item>
             <span>Both</span>
         </button>
 
-        <button mat-menu-item (click)="orderStatus=1;refresh()">
+        <button (click)="orderStatus=1;refresh()" mat-menu-item>
             <span>Pending</span>
         </button>
 
-        <button mat-menu-item (click)="orderStatus=2;refresh()">
+        <button (click)="orderStatus=2;refresh()" mat-menu-item>
             <span>Queued</span>
         </button>
 
     </mat-menu>
-    <button mat-icon-button matTooltip="Reset Filters" color="accent" (click)="clearFilters()">
+    <button (click)="clearFilters()" color="accent" mat-icon-button matTooltip="Reset Filters">
         <mat-icon>
-          cancel
+            cancel
         </mat-icon>
     </button>
 
@@ -49,8 +49,8 @@
 </mat-card>
 
 <div *ngIf="columns" class="ct-table-wrapper">
-    <ag-grid-angular class="ag-theme-balham"
-                     [gridOptions]="options"
+    <ag-grid-angular [gridOptions]="options"
                      [modules]="modules"
-                     [rowData]="rowData"></ag-grid-angular>
+                     [rowData]="rowData"
+                     class="ag-theme-balham"></ag-grid-angular>
 </div>
