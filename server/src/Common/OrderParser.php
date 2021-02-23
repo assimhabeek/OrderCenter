@@ -48,7 +48,7 @@ class OrderParser
                 $vehicle = $modelMatcher ? $modelMatcher->getBestMatchedVehicle() : $globalVehicle;
                 $globalVehicle = $vehicle;
                 $score = $modelMatcher ? $modelMatcher->getBestScore() : null;
-                $productSkus = $this->productSkuController->getProductSkusById($ln['product_id']);
+                $productSkus = $ln['product_id'] ? $this->productSkuController->getProductSkusById($ln['product_id']) : null;
 
                 $o->setShopifyId($order['id']);
                 $o->setItemLineId($ln['id']);
