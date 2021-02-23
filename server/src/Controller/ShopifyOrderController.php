@@ -67,7 +67,7 @@ final class ShopifyOrderController extends BaseController
             [
                 'status' => true,
                 'data' => $allOrders,
-                'nonParased' => $nonParsed,
+                'nonParsed' => $nonParsed,
                 'total' => sizeof($allOrders),
                 'duplication' => $duplications
             ]
