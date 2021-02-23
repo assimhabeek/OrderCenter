@@ -11,8 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: orders-center    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './output'      # set this to the path to your web app project, defaults to the repository root
+  WEBAPP_PATH: './output'      # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   build-deply:
@@ -56,13 +55,14 @@ jobs:
       - name: Display Output Content
         run: ls ./output
 
-      - name: Deploy to Staging server
-        uses: easingthemes/ssh-deploy@v2.1.5
+      - name: Send Files to server
+        uses: hengkx/ssh-deploy@v1.0.1
         env:
-            SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-            SOURCE: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-            REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          REMOTE_HOST: ${{ secrets.CARIFIX_HOST }}
+          PORT: ${{ secrets.CARIFIX_PORT }}
+          USERNAME: ${{ secrets.CARIFIX_USERNAME }}
+          PASSWORD: ${{ secrets.CARIFIX_PASSWORD }}
+          SOURCE: ${{ env.WEBAPP_PATH }}
 
       - name: Delete Output File
         run: rm -Rf ./output
