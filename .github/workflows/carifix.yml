@@ -58,12 +58,11 @@ jobs:
       - name: copy file via ssh password
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.CARIFIX_HOST }}
-          username: ${{ secrets.CARIFIX_USERNAME }}
-          password: ${{ secrets.CARIFIX_PASSWORD }}
-          port: ${{ secrets.CARIFIX_PORT }}
-          source: ${{ env.WEBAPP_PATH }}
-          target: "."
+          HOST: ${{ secrets.CARIFIX_HOST }}
+          USERNAME: ${{ secrets.CARIFIX_USERNAME }}
+          PASSWORD: ${{ secrets.CARIFIX_PASSWORD }}
+          PORT: ${{ secrets.CARIFIX_PORT }}
+          SOURCE: ${{ env.WEBAPP_PATH }}
 
       - name: Delete Output File
         run: rm -Rf ./output
