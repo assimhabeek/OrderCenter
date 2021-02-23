@@ -7,6 +7,7 @@ import {AlertService} from '../../services/alert.service';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {ProductSkusService} from '../../services/product-skus.service';
+import {ClientSideRowModelModule} from '@ag-grid-community/client-side-row-model';
 
 @Component({
     selector: 'ct-skus-list',
@@ -21,7 +22,7 @@ export class ProductSkusComponent {
     columns: any;
     options!: any;
     selected!: any;
-    modules: any = [];
+    modules: any = [ClientSideRowModelModule];
 
     constructor(public productSkusService: ProductSkusService,
                 public dialog: MatDialog,
