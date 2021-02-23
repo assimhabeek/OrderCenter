@@ -1,0 +1,69 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Carifix Production CI
+
+# Controls when the action will run. 
+on:
+  push:
+    branches: [ staging ]
+  pull_request:
+    branches: [ staging ]
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: orders-center    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './output'      # set this to the path to your web app project, defaults to the repository root
+
+jobs:
+  build-deply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, json
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+          tools: php-cs-fixer, phpunit
+
+      - name: Install Composer Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+        working-directory: './server'
+
+      - name: Create Dist Folder
+        run: mkdir -p ./output/api
+
+      - name: Copy Client files
+        run: cp -R ./client/dist/*  ./output
+
+      - name: Copy Server files
+        run: cp -R ./server/*  ./output/api
+
+      - name: Add .env file
+        run: touch ./output/api/.env
+
+      - name: Load Production Values
+        run: echo $PRODUCTION_VALUES | base64 -d > ./output/api/.env
+        shell: bash
+        env:
+          PRODUCTION_VALUES: ${{ secrets.PRODUCTION_ENV_VALUES }}
+
+      - name: Display Output Content
+        run: ls ./output
+
+      - name: Deploy to Staging server
+          uses: easingthemes/ssh-deploy@v2.1.5
+          env:
+            SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+            SOURCE: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+            REMOTE_USER: ${{ secrets.REMOTE_USER }}
+
+      - name: Delete Output File
+        run: rm -Rf ./output
+
