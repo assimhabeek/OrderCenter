@@ -60,7 +60,6 @@ jobs:
         with:
           HOST: ${{ secrets.CARIFIX_HOST }}
           USERNAME: ${{ secrets.CARIFIX_USERNAME }}
-          PASSWORD: ${{ secrets.CARIFIX_PASSWORD }}
           PORT: ${{ secrets.CARIFIX_PORT }}
           SOURCE: ${{ env.WEBAPP_PATH }}
 
