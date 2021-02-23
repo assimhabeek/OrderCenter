@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  WEBAPP_PATH: './output'      # set this to the path to your web app project, defaults to the repository root
+  WEBAPP_PATH: './output/*'      # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   build-deply:
@@ -55,14 +55,15 @@ jobs:
       - name: Display Output Content
         run: ls ./output
 
-      - name: Send Files to server
-        uses: hengkx/ssh-deploy@v1.0.1
-        env:
-          REMOTE_HOST: ${{ secrets.CARIFIX_HOST }}
-          PORT: ${{ secrets.CARIFIX_PORT }}
-          USERNAME: ${{ secrets.CARIFIX_USERNAME }}
-          PASSWORD: ${{ secrets.CARIFIX_PASSWORD }}
-          SOURCE: ${{ env.WEBAPP_PATH }}
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.CARIFIX_HOST }}
+          username: ${{ secrets.CARIFIX_USERNAME }}
+          password: ${{ secrets.CARIFIX_PASSWORD }}
+          port: ${{ secrets.CARIFIX_PORT }}
+          source: ${{ env.WEBAPP_PATH }}
+          target: "."
 
       - name: Delete Output File
         run: rm -Rf ./output
