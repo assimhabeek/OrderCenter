@@ -1,13 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Carifix Production CI
+name: Production CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   push:
-    branches: [ staging ]
+    branches: [ stage ]
   pull_request:
-    branches: [ staging ]
+    branches: [ stage ]
   workflow_dispatch:
 
 env:
