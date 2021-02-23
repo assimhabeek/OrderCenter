@@ -38,7 +38,7 @@ class OrderParser
 
         foreach ($order["line_items"] as $ln) {
 
-            if ($this->notRefunded($ln['id'], $order)) {
+            if ($this->notRefunded($ln['id'], $order) && $ln['product_id'] != null) {
 
 
                 $o = new Order();
@@ -48,7 +48,7 @@ class OrderParser
                 $vehicle = $modelMatcher ? $modelMatcher->getBestMatchedVehicle() : $globalVehicle;
                 $globalVehicle = $vehicle;
                 $score = $modelMatcher ? $modelMatcher->getBestScore() : null;
-                $productSkus = $ln['product_id'] ? $this->productSkuController->getProductSkusById($ln['product_id']) : null;
+                $productSkus = $this->productSkuController->getProductSkusById($ln['product_id']);
 
                 $o->setShopifyId($order['id']);
                 $o->setItemLineId($ln['id']);
@@ -105,7 +105,7 @@ class OrderParser
 
     function getIfNotEmpty($new, $original)
     {
-        return $new !== null || $new !== '' ? $new : $original;
+        return ($new !== null && $new !== '') ? $new : $original;
     }
 
     function getOrderStatus($order, $ln)
