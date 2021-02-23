@@ -55,13 +55,14 @@ jobs:
       - name: Display Output Content
         run: ls ./output
 
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@master
-        with:
-          HOST: ${{ secrets.CARIFIX_HOST }}
-          USERNAME: ${{ secrets.CARIFIX_USERNAME }}
-          PORT: ${{ secrets.CARIFIX_PORT }}
+      - name: Deploy to Staging server
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          ARGS: "-rltgoDzvO"
           SOURCE: ${{ env.WEBAPP_PATH }}
+          REMOTE_HOST: ${{ secrets.CARIFIX_HOST }}
+          REMOTE_USER: ${{ secrets.CARIFIX_USERNAME }}
 
       - name: Delete Output File
         run: rm -Rf ./output
