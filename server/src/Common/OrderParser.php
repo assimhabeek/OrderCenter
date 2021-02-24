@@ -67,6 +67,8 @@ class OrderParser
                 $o->setHighBeam($vehicle ? ($vehicle->getHighBeam() ?: $vehicle->getHighLowBeam()) : null);
                 $o->setLowBeam($vehicle ? ($vehicle->getLowBeam() ?: $vehicle->getHighLowBeam()) : null);
                 $o->setFogLight($vehicle ? $vehicle->getFogLight() : null);
+                $o->setHbCanBus($o->getHighBeam() != null ? $o->getHighBeam() . '_CB' : null);
+                $o->setLbCanBus($o->getLowBeam() != null ? $o->getLowBeam() . '_CB' : null);
 
                 $o->setOrderNotes($order['note']);
                 $o->setAdditionalDetails(sizeof($order['note_attributes']) > 0 ? $order['note_attributes'][0]['value'] : '');
