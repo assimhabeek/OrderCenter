@@ -89,6 +89,14 @@ export class ShopifyOrdersComponent {
                 headerName: 'Low Beam',
             },
             {
+                field: 'hbCanBus',
+                headerName: 'HB Can Bus',
+            },
+            {
+                field: 'lbCanBus',
+                headerName: 'LB Can Bus',
+            },
+            {
                 field: 'fogLight',
                 headerName: 'Fog Light',
             },
