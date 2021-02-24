@@ -117,7 +117,7 @@ export class ArchivedOrdersComponent {
     }
 
     refresh(): void {
-        this.gridApi.refreshServerSideStore({});
+        this.gridApi.refreshServerSideStore({purge: true});
     }
 
 
