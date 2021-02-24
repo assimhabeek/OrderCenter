@@ -167,7 +167,7 @@ final class OrderUploadController extends BaseController
         $order->setShippingCountry($item[14]);
         $order->setShippingPhone($item[15]);
         $order->setShippingCompany($item[16]);
-        $order->setOrderStatus(Order::ORDER_STATUS_ACTIVE);
+        $order->setOrderStatus(Order::ORDER_STATUS_ARCHIVED);
         $order->setModifiedBy($extras->user);
         $order->setOrderDate($extras->orderDate);
         $order->setLastModification($extras->lastModificationDate);
