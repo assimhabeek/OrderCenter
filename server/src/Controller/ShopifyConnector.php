@@ -67,8 +67,8 @@ class ShopifyConnector
             $result = json_decode($result, true);
             $accessToken = $result['access_token'];
 
-            $this->envFile->addOrChangeKey('SHOP_NAME',$params['shop']);
-            $this->envFile->addOrChangeKey('SHOP_SECRET',$accessToken);
+            $this->envFile->addOrChangeKey('SHOP_NAME', $params['shop']);
+            $this->envFile->addOrChangeKey('SHOP_SECRET', $accessToken);
             $this->envFile->save();
 
             $head_to_login = $currentHost . '/login?installed=1';
@@ -126,6 +126,15 @@ class ShopifyConnector
         $payload = $this->shopifyCall("/admin/api/2021-01/webhooks.json", array());
         $webhooks = json_decode($payload['response'], TRUE)['webhooks'];
         $response->getBody()->write(json_encode(['status' => true, 'data' => $webhooks]));
+        return $response;
+    }
+
+    public function deleteWebhooks(Request $request, Response $response, array $args)
+    {
+        $id = $request->getQueryParams()['id'];
+        $payload = $this->shopifyCall("/admin/api/2021-01/webhooks/" . $id . ".json", array(),"DELETE");
+        $resp = json_decode($payload['response'], TRUE);
+        $response->getBody()->write(json_encode(['status' => true, 'data' => $resp]));
         return $response;
     }
 
