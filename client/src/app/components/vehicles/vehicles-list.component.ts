@@ -100,7 +100,7 @@ export class VehiclesListComponent {
     }
 
     refresh(): void {
-        this.gridApi.refreshServerSideStore({});
+        this.gridApi.refreshServerSideStore({purge: true});
     }
 
     async setValue(params: any): Promise<any> {
@@ -141,7 +141,7 @@ export class VehiclesListComponent {
         this.vehiclesService.deleteRow(+selectedRow.data.id).subscribe(x => {
             if (x.status) {
                 this.gridApi.deselectAll();
-                this.gridApi.refreshServerSideStore({});
+                this.gridApi.refreshServerSideStore({purge: true});
                 this.onSuccess(x.message);
             } else {
                 this.onError(x.message);
@@ -177,7 +177,7 @@ export class VehiclesListComponent {
                 this.vehiclesService.addRow(result).subscribe(x => {
                     if (x.status) {
                         this.gridApi.deselectAll();
-                        this.gridApi.refreshServerSideStore({});
+                        this.gridApi.refreshServerSideStore({purge: true});
                         this.onSuccess(x.message);
                     } else {
                         console.log(x);

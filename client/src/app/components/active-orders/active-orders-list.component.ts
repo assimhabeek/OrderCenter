@@ -130,7 +130,7 @@ export class ActiveOrdersListComponent {
     }
 
     refresh(): void {
-        this.gridApi.refreshServerSideStore({});
+        this.gridApi.refreshServerSideStore({purge: true});
     }
 
     async setValue(params: any): Promise<any> {
@@ -184,7 +184,7 @@ export class ActiveOrdersListComponent {
         this.ordersService.deleteRow(+selectedRow.data.id).subscribe(x => {
             if (x.status) {
                 this.gridApi.deselectAll();
-                this.gridApi.refreshServerSideStore({});
+                this.gridApi.refreshServerSideStore({purge: true});
                 this.onSuccess(x.message);
             } else {
                 this.onError(x.message);
@@ -223,7 +223,7 @@ export class ActiveOrdersListComponent {
                 this.ordersService.addRow(result).subscribe(x => {
                     if (x.status) {
                         this.gridApi.deselectAll();
-                        this.gridApi.refreshServerSideStore({});
+                        this.gridApi.refreshServerSideStore({purge: true});
                         this.onSuccess(x.message);
                     } else {
                         console.log(x);
