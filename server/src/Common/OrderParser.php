@@ -34,7 +34,7 @@ class OrderParser
     public function parseOrderLines($order): array
     {
         $newOrders = [];
-        $globalVehicle = $this->findGlobal($order);
+        $globalMatcher = $this->findGlobal($order);
 
         foreach ($order["line_items"] as $ln) {
 
@@ -45,7 +45,8 @@ class OrderParser
 
                 $vehicleInputText = sizeof($ln['properties']) > 0 ? $ln['properties'][0]['value'] : null;
                 $modelMatcher = $this->vehicleMatcher->matchVehicle($vehicleInputText);
-                $vehicle = $modelMatcher ? $modelMatcher->getBestMatchedVehicle() : $globalVehicle;
+                $modelMatcher = $modelMatcher ?: $globalMatcher;
+                $vehicle = $modelMatcher ? $modelMatcher->getBestMatchedVehicle() : null;
                 $score = $modelMatcher ? $modelMatcher->getBestScore() : null;
                 $productSkus = $this->productSkuController->getProductSkusById($ln['product_id']);
 
@@ -104,23 +105,16 @@ class OrderParser
 
     function findGlobal($order)
     {
-        $globalVehicle = null;
         $vehicleInputTexts = array();
 
         foreach ($order["line_items"] as $ln) {
-            if (sizeof($ln['properties']) > 0)
+            if (sizeof($ln['properties']) > 0 && $ln['properties'][0]['value'] != null)
                 array_push($vehicleInputTexts, $ln['properties'][0]['value']);
         }
 
         if (sizeof($vehicleInputTexts) !== 1) return null;
 
-        $modelMatcher = $this->vehicleMatcher->matchVehicle($vehicleInputTexts[0]);
-
-        if ($modelMatcher !== null) {
-            $globalVehicle = $modelMatcher->getBestMatchedVehicle();
-        }
-
-        return $globalVehicle;
+        return $this->vehicleMatcher->matchVehicle($vehicleInputTexts[0]);
     }
 
     function getIfNotEmpty($new, $original)
