@@ -6,6 +6,7 @@ import {AlertService} from '../../services/alert.service';
 import {OrdersService} from '../../services/orders.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {SyncProductsService} from '../../services/sync-products.service';
+import {ClientSideRowModelModule} from '@ag-grid-community/client-side-row-model';
 
 @Component({
     selector: 'ct-users-list',
@@ -21,7 +22,7 @@ export class ShopifyProductsComponent {
     options!: any;
     duplications: [] = [];
     selected!: any;
-    modules: any = [];
+    modules: any = [ClientSideRowModelModule];
     disableImport = false;
 
     constructor(public syncProductsService: SyncProductsService,
