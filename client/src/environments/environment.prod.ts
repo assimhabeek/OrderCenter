@@ -1,7 +1,7 @@
 
 export const environment = {
   production: true,
-  url: 'https://order-center-staging.azurewebsites.net/api/public',
+  url: 'https://phpstack-516150-1779082.cloudwaysapps.com/api/public',
   authHeader: 'Authorization',
   routes: {
     upload: '/upload',
