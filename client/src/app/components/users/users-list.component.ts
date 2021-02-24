@@ -7,6 +7,7 @@ import {UsersFormComponent} from './users-form.component';
 import {MatCheckboxComponent} from './mat-checkbox.component';
 import {ConfirmService} from '../../services/confirm.service';
 import {AlertService} from '../../services/alert.service';
+import {ClientSideRowModelModule} from '@ag-grid-community/client-side-row-model';
 
 @Component({
     selector: 'ct-users-list',
@@ -21,7 +22,7 @@ export class UsersListComponent {
     columns: any;
     options!: any;
     selected!: any;
-    modules: any = [];
+    modules: any = [ClientSideRowModelModule];
 
     constructor(public usersService: UsersService,
                 public dialog: MatDialog,
