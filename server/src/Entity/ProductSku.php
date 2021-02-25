@@ -23,9 +23,9 @@ class ProductSku implements JsonSerializable
     /**
      * @var string|null
      *
-     * @ORM\Column(name="product_name", type="string", length=400, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="product_id", type="string", length=400, nullable=true, options={"fixed"=true})
      */
-    private $productName;
+    private $productId;
 
     /**
      * @var string|null
@@ -117,18 +117,18 @@ class ProductSku implements JsonSerializable
     /**
      * @return string|null
      */
-    public function getProductName()
+    public function getProductId()
     {
-        return $this->productName;
+        return $this->productId;
     }
 
     /**
-     * @param string|null $productName
+     * @param string|null $productId
      * @return Order
      */
-    public function setProductName($productName)
+    public function setProductId($productId)
     {
-        $this->productName = $productName;
+        $this->productId = $productId;
 
         return $this;
     }
@@ -285,7 +285,7 @@ class ProductSku implements JsonSerializable
     {
         return [
             "id" => $this->id,
-            "productName" => $this->productName,
+            "productId" => $this->productId,
             "productTitle" => $this->productTitle,
             "bulbType" => $this->bulbType,
             "bulbTypeFogLight" => $this->bulbTypeFogLight,

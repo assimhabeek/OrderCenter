@@ -18,7 +18,12 @@ class ProductParser
         $newProducts = [];
 
         foreach ($products as $product)
-            array_push($newProducts, $this->parseProduct($product));
+            foreach ($product['variants'] as $variant) {
+                $variant['product_title'] = $product['title'];
+                $variant['product_handle'] = $product['handle'];
+                array_push($newProducts, $this->parseProduct($product));
+
+            }
 
         return $newProducts;
     }
@@ -28,8 +33,8 @@ class ProductParser
 
         $p = new ProductSku();
         $p->setId($product['id']);
-        $p->setProductName($product['handle']);
-        $p->setProductTitle($product['title']);
+        $p->setProductId($product['product_id']);
+        $p->setProductTitle($product['product_title'] . ' | ' . $product['title']);
         return $p;
     }
 
