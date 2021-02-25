@@ -60,11 +60,6 @@ export class ShopifyProductsComponent {
 
             },
             {
-                field: 'productName',
-                headerName: 'Product name',
-
-            },
-            {
                 field: 'productTitle',
                 headerName: 'Product title',
             }
