@@ -37,14 +37,16 @@ export class ProductSkusService {
     getHeader(): Observable<any[]> {
         return this.getSKUs().pipe(
             map((skus) => {
-                const bulbTypes = skus.BULB_TYPE || this.addEmptyAndCompletedToSkus([]);
-                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
+                /*
+                                const bulbTypes = skus.BULB_TYPE || this.addEmptyAndCompletedToSkus([]);
+                                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
+                */
                 const highBeam = skus.HIGH_BEAM || this.addEmptyAndCompletedToSkus([]);
                 const lowBeam = skus.LOW_BEAM || this.addEmptyAndCompletedToSkus([]);
                 const fogLight = skus.FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
                 const hbCanBus = skus.HB_CAN_BUS || this.addEmptyAndCompletedToSkus([]);
                 const lbCanBus = skus.LB_CAN_BUS || this.addEmptyAndCompletedToSkus([]);
-                return this.buildHeader(bulbTypes, bulbTypeFogLight, highBeam, lowBeam, fogLight, hbCanBus, lbCanBus);
+                return this.buildHeader(highBeam, lowBeam, fogLight, hbCanBus, lbCanBus);
             }));
     }
 
@@ -58,9 +60,7 @@ export class ProductSkusService {
         return list || [];
     }
 
-    buildHeader(bulbTypes: any,
-                bulbTypeFogLight: any,
-                highBeam: any,
+    buildHeader(highBeam: any,
                 lowBeam: any,
                 fogLight: any,
                 hbCanBus: any,
@@ -81,19 +81,11 @@ export class ProductSkusService {
             },
             {
                 field: 'bulbType',
-                headerName: 'Bulb type',
-                cellEditor: 'selectEditor',
-                cellEditorParams: {
-                    elements: bulbTypes
-                }
+                headerName: 'Bulb type'
             },
             {
                 field: 'bulbTypeFogLight',
-                headerName: 'bulb Type Fog Light',
-                cellEditor: 'selectEditor',
-                cellEditorParams: {
-                    elements: bulbTypeFogLight
-                }
+                headerName: 'bulb Type Fog Light'
             },
             {
                 field: 'highBeam',
