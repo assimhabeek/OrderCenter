@@ -51,6 +51,7 @@ export class ProductSkusService {
     addEmptyAndCompletedToSkus(list: any): any {
         if (list) {
             list = list.map((x: any) => x.name);
+            list.unshift('IGNORE_MATCHING');
             list.unshift(Helpers.NOT_EMPTY_CHAR);
             list.unshift('');
         }
