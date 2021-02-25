@@ -73,15 +73,18 @@ export class ProductSkusService {
             },
             {
                 field: 'bulbType',
-                headerName: 'Bulb type'
+                headerName: 'Bulb type',
+                width: 100
             },
             {
                 field: 'bulbTypeFogLight',
-                headerName: 'bulb Type Fog Light'
+                headerName: 'bulb Type Fog Light',
+                width: 100
             },
             {
                 field: 'highBeam',
                 headerName: 'High beam',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: highBeam
@@ -90,6 +93,7 @@ export class ProductSkusService {
             {
                 field: 'lowBeam',
                 headerName: 'Low beam',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: lowBeam
@@ -98,6 +102,7 @@ export class ProductSkusService {
             {
                 field: 'fogLight',
                 headerName: 'Fog light',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: fogLight
@@ -106,6 +111,7 @@ export class ProductSkusService {
             {
                 field: 'hbCanBus',
                 headerName: 'Hb can bus',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: hbCanBus
@@ -114,6 +120,7 @@ export class ProductSkusService {
             {
                 field: 'lbCanBus',
                 headerName: 'Lb can bus',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: lbCanBus
