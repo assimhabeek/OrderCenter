@@ -38,7 +38,7 @@ class OrderParser
 
         foreach ($order["line_items"] as $ln) {
 
-            if ($this->notRefunded($ln['id'], $order) && $ln['product_id'] != null) {
+            if ($this->notRefunded($ln['id'], $order) && $ln['product_id'] != null && $ln['variant_id'] != null) {
 
 
                 $o = new Order();
@@ -48,7 +48,7 @@ class OrderParser
                 $modelMatcher = $modelMatcher ?: $globalMatcher;
                 $vehicle = $modelMatcher ? $modelMatcher->getBestMatchedVehicle() : null;
                 $score = $modelMatcher ? $modelMatcher->getBestScore() : null;
-                $productSkus = $this->productSkuController->getProductSkusById($ln['product_id']);
+                $productSkus = $this->productSkuController->getProductSkusById($ln['variant_id']);
 
                 $o->setShopifyId($order['id']);
                 $o->setItemLineId($ln['id']);
