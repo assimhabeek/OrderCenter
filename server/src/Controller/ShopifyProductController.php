@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Common\ProductParser;
+use App\Controller\ShopifyConnector;
 use App\Entity\ProductSku;
 use Exception;
 use Psr\Container\ContainerInterface;
