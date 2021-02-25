@@ -81,6 +81,14 @@ export class ShopifyOrdersComponent {
                 headerName: 'Product title',
             },
             {
+                field: 'bulbType',
+                headerName: 'Bulb Type',
+            },
+            {
+                field: 'bulbTypeFogLight',
+                headerName: 'Bulb Type Fog Light',
+            },
+            {
                 field: 'highBeam',
                 headerName: 'High Beam',
             },
@@ -114,7 +122,7 @@ export class ShopifyOrdersComponent {
             },
             {
                 field: 'vehicle',
-                headerName: 'Original',
+                headerName: 'Client Input',
             },
             {
                 field: 'orderNotes',
