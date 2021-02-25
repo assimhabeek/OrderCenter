@@ -59,8 +59,6 @@ export class SkusListComponent {
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: [
-                        'BULB_TYPE',
-                        'BULB_TYPE_FOG_LIGHT',
                         'HIGH_BEAM',
                         'LOW_BEAM',
                         'FOG_LIGHT',
