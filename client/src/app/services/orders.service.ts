@@ -98,20 +98,12 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'bulbType',
                 headerName: 'Bulb type',
-                width: 100,
-                cellEditor: 'selectEditor',
-                cellEditorParams: {
-                    elements: bulbTypes
-                }
+                width: 100
             },
             {
                 field: 'bulbTypeFogLight',
                 headerName: 'bulb Type Fog Light',
-                width: 100,
-                cellEditor: 'selectEditor',
-                cellEditorParams: {
-                    elements: bulbTypeFogLight
-                }
+                width: 100
             },
             {
                 field: 'highBeam',

@@ -89,13 +89,13 @@ class OrderParser
                 $o->setOrderStatus($this->getOrderStatus($order, $ln));
 
                 if ($productSkus != null) {
-                    $o->setBulbType($this->getIfNotEmpty($productSkus->getBulbType(), $o->getBulbType()));
-                    $o->setBulbTypeFogLight($this->getIfNotEmpty($productSkus->getBulbTypeFogLight(), $o->getBulbTypeFogLight()));
-                    $o->setHighBeam($this->getIfNotEmpty($productSkus->getHighBeam(), $o->getHighBeam()));
-                    $o->setLowBeam($this->getIfNotEmpty($productSkus->getLowBeam(), $o->getLowBeam()));
-                    $o->setFogLight($this->getIfNotEmpty($productSkus->getFogLight(), $o->getFogLight()));
-                    $o->setHbCanBus($this->getIfNotEmpty($productSkus->getHbCanBus(), $o->getHbCanBus()));
-                    $o->setLbCanBus($this->getIfNotEmpty($productSkus->getLbCanBus(), $o->getLbCanBus()));
+                    $o->setBulbType($this->getIfNotEmptyOrIgnored($productSkus->getBulbType(), $o->getBulbType()));
+                    $o->setBulbTypeFogLight($this->getIfNotEmptyOrIgnored($productSkus->getBulbTypeFogLight(), $o->getBulbTypeFogLight()));
+                    $o->setHighBeam($this->getIfNotEmptyOrIgnored($productSkus->getHighBeam(), $o->getHighBeam()));
+                    $o->setLowBeam($this->getIfNotEmptyOrIgnored($productSkus->getLowBeam(), $o->getLowBeam()));
+                    $o->setFogLight($this->getIfNotEmptyOrIgnored($productSkus->getFogLight(), $o->getFogLight()));
+                    $o->setHbCanBus($this->getIfNotEmptyOrIgnored($productSkus->getHbCanBus(), $o->getHbCanBus()));
+                    $o->setLbCanBus($this->getIfNotEmptyOrIgnored($productSkus->getLbCanBus(), $o->getLbCanBus()));
                 }
 
                 array_push($newOrders, $o);
@@ -119,9 +119,9 @@ class OrderParser
         return $this->vehicleMatcher->matchVehicle($vehicleInputTexts[0]);
     }
 
-    function getIfNotEmpty($new, $original)
+    function getIfNotEmptyOrIgnored($new, $original)
     {
-        return ($new !== null && $new !== '') ? $new : $original;
+        return ($new !== null && $new !== '') ? ($new === 'IGNORE_MATCHING' ? null : $new) : $original;
     }
 
     function getOrderStatus($order, $ln)
