@@ -68,10 +68,6 @@ export class ProductSkusService {
                 headerName: 'Product ID'
             },
             {
-                field: 'productName',
-                headerName: 'Product Name'
-            },
-            {
                 field: 'productTitle',
                 headerName: 'Product Title',
             },

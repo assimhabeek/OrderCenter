@@ -21,7 +21,7 @@ class ProductParser
             foreach ($product['variants'] as $variant) {
                 $variant['product_title'] = $product['title'];
                 $variant['product_handle'] = $product['handle'];
-                array_push($newProducts, $this->parseProduct($product));
+                array_push($newProducts, $this->parseProduct($variant));
 
             }
 
