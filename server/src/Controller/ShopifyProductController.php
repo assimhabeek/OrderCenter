@@ -82,11 +82,16 @@ final class ShopifyProductController extends BaseController
             foreach ($products as $p) {
                 $pp = $this->hydrator->hydrate(ProductSku::class, $p);
                 $pp->setId($p['id']);
-                $this->em->merge($pp);
+                $dbProduct = $this->em->find(ProductSku::class, $pp->getId());
+                if ($dbProduct === null) {
+                    $this->em->persist($pp);
+                } else {
+                    $dbProduct->setProductTitle($pp->getProductTitle());
+                }
+                $this->em->flush();
             }
 
 
-            $this->em->flush();
             $this->em->getConnection()->commit();
 
             $responsePayload = ["status" => true, '$products' => $products, "message" => "Imported successfully"];

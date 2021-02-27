@@ -206,7 +206,7 @@ export class ExportQueueComponent {
     updateAllRows(orderStatus: number): void {
         let ids: any[];
         ids = [];
-        this.gridApi.forEachNode((row: RowNode) => {
+        this.gridApi.forEachNodeAfterFilter((row: RowNode) => {
             ids.push(row.data.id);
         });
 

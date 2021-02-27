@@ -218,9 +218,11 @@ final class ShopifyOrderController extends BaseController
             $copy->setVehicleYear($new->getVehicleYear());
             $copy->setVehicleMake($new->getVehicleMake());
             $copy->setVehicleModel($new->getVehicleModel());
-            $copy->setHighBeam($new->getHighBeam());
+
+/*            $copy->setHighBeam($new->getHighBeam());
             $copy->setLowBeam($new->getLowBeam());
-            $copy->setFogLight($new->getFogLight());
+            $copy->setFogLight($new->getFogLight());*/
+
             $copy->setOrderNotes($new->getOrderNotes());
             $copy->setAdditionalDetails($new->getAdditionalDetails());
             $copy->setShippingName($new->getShippingName());

@@ -103,9 +103,13 @@ class OrderCompletion
         return new CompositeExpression(CompositeExpression::TYPE_AND, $expressions);
     }
 
-    private function notNullColumn($col): Comparison
+    private function notNullColumn($col): CompositeExpression
     {
-        return Criteria::expr()->neq($col, null);
+        $expressions = [
+            Criteria::expr()->neq($col, null),
+            Criteria::expr()->neq($col, "")
+        ];
+        return new CompositeExpression(CompositeExpression::TYPE_AND, $expressions);
     }
 
     private function nullColumn($col): Comparison

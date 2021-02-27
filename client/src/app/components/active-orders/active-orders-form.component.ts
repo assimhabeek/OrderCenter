@@ -30,10 +30,6 @@ export class ActiveOrdersFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.ordersService.getSKUs().subscribe(skus => {
-/*
-            this.bulbTypes = skus.BULB_TYPE || this.ordersService.addEmptyAndCompletedToSkus([]);
-            this.bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.ordersService.addEmptyAndCompletedToSkus([]);
-*/
             this.highBeam = skus.HIGH_BEAM || this.ordersService.addEmptyAndCompletedToSkus([]);
             this.lowBeam = skus.LOW_BEAM || this.ordersService.addEmptyAndCompletedToSkus([]);
             this.fogLight = skus.FOG_LIGHT || this.ordersService.addEmptyAndCompletedToSkus([]);
