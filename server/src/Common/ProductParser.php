@@ -34,7 +34,11 @@ class ProductParser
         $p = new ProductSku();
         $p->setId($product['id']);
         $p->setProductId($product['product_id']);
-        $p->setProductTitle($product['product_title'] . ' | ' . $product['title']);
+        $title = $product['title'] === 'Default Title' ?
+            $product['product_title'] :
+            $product['product_title'] . ' | ' . $product['title'];
+
+        $p->setProductTitle($title);
         return $p;
     }
 

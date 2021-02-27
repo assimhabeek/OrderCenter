@@ -36,7 +36,7 @@ export class ExportComponent {
     orderDateRange = new FormGroup({
         startDate: new FormControl(Helpers.now(), Validators.required),
         endDate: new FormControl(Helpers.now(), Validators.required),
-        type: new FormControl('carifix', Validators.required),
+        type: new FormControl('carifex', Validators.required),
     });
 
 
