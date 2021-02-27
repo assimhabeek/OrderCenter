@@ -22,8 +22,8 @@
         <mat-form-field class="ct-order-type">
             <mat-label>Select orders type</mat-label>
             <mat-select formControlName="type">
-                <mat-option value="carifix">CariFix</mat-option>
-                <mat-option value="non-carifix">Non CariFix</mat-option>
+                <mat-option value="carifex">AZMPL Orders</mat-option>
+                <mat-option value="non-carifex">China Suppliers</mat-option>
             </mat-select>
             <mat-error *ngIf="orderDateRange.controls.type.hasError('required')">
                 You must select a type.

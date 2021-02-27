@@ -81,7 +81,7 @@ final class OrderController extends BaseController
              s.lastModification = '" . Utils::getCurrentDateTime() . "' where s.id = :id ";
 
         $query = $this->em->createQuery($sql);
-        $query->setParameter('value', $updateInfo['value'] ?? null);
+        $query->setParameter('value', trim($updateInfo['value']) !== '' ? $updateInfo['value'] : null);
         $query->setParameter('userId', $this->authController->getCurrentUser($request)->getId());
         $query->setParameter('id', $updateInfo['id']);
         $query->getResult();
