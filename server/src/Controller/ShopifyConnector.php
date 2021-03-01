@@ -129,11 +129,13 @@ class ShopifyConnector
         return $response;
     }
 
-    public function removeWB(Request $request, Response $response, array $args)
+    public function deleteWebhooks(Request $request, Response $response, array $args)
     {
-        $payload = $this->shopifyCall("/admin/api/2021-01/webhooks.json", array());
-        $webhooks = json_decode($payload['response'], TRUE)['webhooks'];
-        $response->getBody()->write(json_encode(['status' => true, 'data' => $webhooks]));
+        $id = $request->getQueryParams()['id'];
+
+/*        $payload = $this->shopifyCall("/admin/api/2021-01/webhooks/" . $id . ".json", array(), "DELETE");
+        $resp = json_decode($payload, TRUE);*/
+        $response->getBody()->write(json_encode(['status' => true, 'id' => $id]));
         return $response;
     }
 
