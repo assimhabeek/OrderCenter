@@ -132,7 +132,7 @@ class ShopifyConnector
     public function deleteWebhooks(Request $request, Response $response, array $args)
     {
         $id = $request->getQueryParams()['id'];
-        $payload = $this->shopifyCall("/admin/api/2021-01/webhooks/" . $id . ".json", array(),"DELETE");
+        $payload = $this->shopifyCall("/admin/api/2020-10/webhooks/" . $id . ".json", array(),"DELETE");
         $resp = json_decode($payload['response'], TRUE);
         $response->getBody()->write(json_encode(['status' => true, 'data' => $resp]));
         return $response;
