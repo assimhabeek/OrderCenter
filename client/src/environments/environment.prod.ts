@@ -1,7 +1,7 @@
 
 export const environment = {
   production: true,
-  url: 'https://phpstack-516150-1779082.cloudwaysapps.com/api/public',
+  url: 'https://carifexfulfillment.com/api/public',
   authHeader: 'Authorization',
   routes: {
     upload: '/upload',

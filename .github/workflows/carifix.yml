@@ -50,7 +50,7 @@ jobs:
         run: echo $PRODUCTION_VALUES | base64 -d > ./output/api/.env
         shell: bash
         env:
-          PRODUCTION_VALUES: ${{ secrets.STAGING_ENV_VALUES }}
+          PRODUCTION_VALUES: ${{ secrets.PROD_SECRETS }}
 
       - name: Display Output Content
         run: ls ./output
