@@ -106,7 +106,7 @@ return function (App $app) {
             
             $adminGroup->post('/shopify-webhooks', ShopifyConnector::class . ':createWebhooks');
             $adminGroup->get('/shopify-webhooks', ShopifyConnector::class . ':getWebhooks');
-            $adminGroup->post('/shopify-webhooks/remove', ShopifyConnector::class . ':deleteWebhooks');
+            $adminGroup->delete('/shopify-webhooks/remove', ShopifyConnector::class . ':deleteWebhooks');
 
 
         })->add(AdminMiddleware::class);
