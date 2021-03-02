@@ -1,0 +1,10 @@
+<ng-container *ngIf="data">
+    <h1 mat-dialog-title>{{data.title}}</h1>
+    <div mat-dialog-content>
+        <p>{{data.description}}</p>
+    </div>
+    <div mat-dialog-actions>
+        <button [mat-dialog-close]="false" cdkFocusInitial mat-button>No</button>
+        <button [mat-dialog-close]="true" color="warn" mat-button>Yes</button>
+    </div>
+</ng-container>

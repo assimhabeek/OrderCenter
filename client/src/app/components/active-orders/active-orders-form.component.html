@@ -1,0 +1,177 @@
+<h1 mat-dialog-title>Add New</h1>
+<form #orderForm="ngForm" novalidate>
+    <mat-dialog-content>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>OrderNo</mat-label>
+            <input #orderNo="ngModel" [(ngModel)]="data.orderNo" [required]="true" matInput name="orderNo" type="text">
+            <mat-error *ngIf="orderNo.hasError('required')">
+                <strong>OrderNo is required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Quantity</mat-label>
+            <input [(ngModel)]="data.quantity" matInput name="quantity" type="number">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Product Name</mat-label>
+            <input [(ngModel)]="data.productName" matInput name="productName" type="text">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Product Title</mat-label>
+            <input [(ngModel)]="data.productTitle" matInput name="productTitle" type="text">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Bulb Type</mat-label>
+            <input [(ngModel)]="data.bulbType" matInput name="bulbType" type="text">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Bulb Type Fog Light</mat-label>
+            <input [(ngModel)]="data.bulbTypeFogLight" matInput name="bulbTypeFogLight" type="text">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>High Beam</mat-label>
+            <mat-select [(ngModel)]="data.highBeam" name="highBeam">
+                <mat-option *ngFor="let x of highBeam" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Low Beam</mat-label>
+            <mat-select [(ngModel)]="data.lowBeam" name="lowBeam">
+                <mat-option *ngFor="let x of lowBeam" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Fog Light</mat-label>
+            <mat-select [(ngModel)]="data.fogLight" name="fogLight">
+                <mat-option *ngFor="let x of fogLight" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Hb Can Bus</mat-label>
+            <mat-select [(ngModel)]="data.hbCanBus" name="hbCanBus">
+                <mat-option *ngFor="let x of hbCanBus" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Lb Can Bus</mat-label>
+            <mat-select [(ngModel)]="data.lbCanBus" name="hbCanBus">
+                <mat-option *ngFor="let x of lbCanBus" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Year</mat-label>
+            <mat-select (ngModelChange)="data.vehicleYear=$event;onYearChange()" [ngModel]="data.vehicleYear"
+                        name="vehicleYear">
+                <mat-option *ngFor="let x of years" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Make</mat-label>
+            <mat-select (ngModelChange)="data.vehicleMake=$event;onMakeChange()" [ngModel]="data.vehicleMake"
+                        name="vehicleMake">
+                <mat-option *ngFor="let x of make" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Model</mat-label>
+            <mat-select [(ngModel)]="data.vehicleModel" name="vehicleModel">
+                <mat-option *ngFor="let x of model" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Order Notes</mat-label>
+            <input [(ngModel)]="data.orderNotes" matInput name="orderNotes" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Additional Details</mat-label>
+            <input [(ngModel)]="data.additionalDetails" matInput name="additionalDetails" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Name</mat-label>
+            <input [(ngModel)]="data.shippingName" matInput name="shippingName" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Address1</mat-label>
+            <input [(ngModel)]="data.shippingAddress1" matInput name="shippingAddress1" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Address2</mat-label>
+            <input [(ngModel)]="data.address2" matInput name="address2" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping City</mat-label>
+            <input [(ngModel)]="data.shippingCity" matInput name="shippingCity" type="text">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Zip</mat-label>
+            <input [(ngModel)]="data.shippingZip" matInput name="shippingZip" type="text">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Province</mat-label>
+            <input [(ngModel)]="data.shippingProvince" matInput name="shippingProvince" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Country Code</mat-label>
+            <input [(ngModel)]="data.shippingCountryCode" matInput name="shippingCountryCode" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Country</mat-label>
+            <input [(ngModel)]="data.shippingCountry" matInput name="shippingCountry" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Phone</mat-label>
+            <input [(ngModel)]="data.shippingPhone" matInput name="shippingPhone" type="text">
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Shipping Company</mat-label>
+            <input [(ngModel)]="data.shippingCompany" matInput name="shippingCompany" type="text">
+        </mat-form-field>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button (click)="cancel()" mat-button>Cancel</button>
+        <button (click)="save(orderForm)" cdkFocusInitial color="primary" mat-button>Save</button>
+    </mat-dialog-actions>
+</form>

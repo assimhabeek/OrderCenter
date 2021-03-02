@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 

@@ -1,7 +1,7 @@
 
 export const environment = {
   production: true,
-  url: 'https://orders-center.azurewebsites.net/api/public',
+  url: 'https://carifexfulfillment.com/api/public',
   authHeader: 'Authorization',
   routes: {
     upload: '/upload',
@@ -15,6 +15,8 @@ export const environment = {
     history: '/history',
     users: '/users',
     shopifyOrders: '/shopify-orders',
+    shopifyProducts: '/shopify-products',
+    productSkus: '/productSkus',
     ordersAll: '/orders-all',
     notification: '/notification',
     files: '/files',

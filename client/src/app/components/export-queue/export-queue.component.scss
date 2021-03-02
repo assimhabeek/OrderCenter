@@ -2,12 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  box-sizing: border-box;
-  padding: 8px 24px;
-}
-
-.ct-toolbar button {
-  margin: auto 8px;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .ct-spacer {
@@ -27,11 +23,26 @@
 .ct-table-wrapper ag-grid-angular {
   display: inline-block;
   flex: 1 1 auto;
-  height: calc(100vh - 172px);;
-  margin: 16px;
+  height: calc(100vh - 118px);;
 }
 
 .ct-table-wrapper .ct-next-button {
   align-self: center;
 }
 
+.ct-toolbar-btn {
+  margin: 4px;
+  font-size: 12px !important;
+  height: 24px !important;
+  padding: 2px 4px !important;
+  line-height: 12px !important;
+}
+
+button mat-icon {
+  font-size: 18px !important;
+}
+
+.ct-order-date {
+  height: 36px;
+  font-size: 12px;
+}
