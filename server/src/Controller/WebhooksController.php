@@ -17,7 +17,7 @@ final class WebhooksController extends BaseController
 
     public function __construct(ContainerInterface $container,
                                 OrderParser $orderParser,
-                                ShopifyController $shopifyController)
+                                ShopifyOrderController $shopifyController)
     {
         parent::__construct($container);
         $this->orderParser = $orderParser;

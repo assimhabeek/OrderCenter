@@ -1,49 +1,47 @@
 <mat-card class="ct-toolbar mat-elevation-z1">
-  <div [formGroup]="orderDateRange">
-    <mat-form-field class="ct-order-date">
-      <mat-label>Enter a date range</mat-label>
+    <div [formGroup]="orderDateRange">
+        <mat-form-field class="ct-order-date">
+            <mat-label>Enter a date range</mat-label>
 
-      <mat-date-range-input [rangePicker]="datePicker">
-        <input matStartDate formControlName="startDate" placeholder="Start date">
-        <input matEndDate formControlName="endDate" placeholder="End date">
-      </mat-date-range-input>
+            <mat-date-range-input [rangePicker]="datePicker">
+                <input formControlName="startDate" matStartDate placeholder="Start date">
+                <input formControlName="endDate" matEndDate placeholder="End date">
+            </mat-date-range-input>
 
-      <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-      <mat-date-range-picker #datePicker></mat-date-range-picker>
-      <mat-error
-        *ngIf="orderDateRange.controls.startDate.hasError('required') || orderDateRange.controls.endDate.hasError('required')">
-        You must select a valid range.
-      </mat-error>
-
-
-    </mat-form-field>
+            <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+            <mat-date-range-picker #datePicker></mat-date-range-picker>
+            <mat-error
+                    *ngIf="orderDateRange.controls.startDate.hasError('required') || orderDateRange.controls.endDate.hasError('required')">
+                You must select a valid range.
+            </mat-error>
 
 
-    <mat-form-field class="ct-order-type">
-      <mat-label>Select orders type</mat-label>
-      <mat-select formControlName="type">
-        <mat-option value="carifix">CariFix</mat-option>
-        <mat-option value="non-carifix">Non CariFix</mat-option>
-      </mat-select>
-      <mat-error *ngIf="orderDateRange.controls.type.hasError('required')">
-        You must select a type.
-      </mat-error>
-    </mat-form-field>
+        </mat-form-field>
 
-    <button mat-raised-button type="button" color="primary" (click)="exportOrders()">
-      <mat-icon>get_app</mat-icon>
-      Export
-    </button>
 
-  </div>
+        <mat-form-field class="ct-order-type">
+            <mat-label>Select orders type</mat-label>
+            <mat-select formControlName="type">
+                <mat-option value="carifex">AZMPL Orders</mat-option>
+                <mat-option value="non-carifex">China Suppliers</mat-option>
+            </mat-select>
+            <mat-error *ngIf="orderDateRange.controls.type.hasError('required')">
+                You must select a type.
+            </mat-error>
+        </mat-form-field>
 
+        <button (click)="exportOrders()" color="primary" mat-icon-button type="button">
+            <mat-icon>get_app</mat-icon>
+        </button>
+
+    </div>
 
 
 </mat-card>
 
 <div *ngIf="columns" class="ct-table-wrapper">
-  <ag-grid-angular class="ag-theme-material"
-                   [gridOptions]="options"
-                   [modules]="modules"
-                   [rowData]="rowData"></ag-grid-angular>
+    <ag-grid-angular [gridOptions]="options"
+                     [modules]="modules"
+                     [rowData]="rowData"
+                     class="ag-theme-balham"></ag-grid-angular>
 </div>

@@ -1,0 +1,49 @@
+<form #orderForm="ngForm" novalidate>
+    <h1 mat-dialog-title>Add New</h1>
+    <mat-dialog-content>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Name</mat-label>
+            <input [(ngModel)]="data.name" matInput name="name" type="text">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input #username="ngModel" [(ngModel)]="data.username" [required]="true"
+                   matInput name="username" type="text">
+            <mat-error *ngIf="username.hasError('required')">
+                <strong>username is required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>
+                Password
+            </mat-label>
+            <input #password="ngModel" [(ngModel)]="data.password" [required]="true" [type]="showPassword?'text':'password'" autocomplete=""
+                   matInput name="password">
+            <mat-icon (click)="showPassword = !showPassword" [color]="showPassword ? 'accent' : 'auto'" class="indicator"
+                      matSuffix>
+                {{showPassword ? 'visibility' : 'visibility_off'}}
+            </mat-icon>
+            <mat-error *ngIf="password.hasError('required')">
+                <strong>password is required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <div class="mat-form-field">
+            <mat-checkbox [(ngModel)]="data.active" [checked]="true" name="active">
+                ACTIVE
+            </mat-checkbox>
+
+        </div>
+        <div class="mat-form-field">
+            <mat-checkbox [(ngModel)]="data.admin" [checked]="true" name="admin">
+                ADMIN
+            </mat-checkbox>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button (click)="cancel()" mat-button>Cancel</button>
+        <button (click)="save(orderForm)" cdkFocusInitial color="primary" mat-button>Save</button>
+    </mat-dialog-actions>
+</form>

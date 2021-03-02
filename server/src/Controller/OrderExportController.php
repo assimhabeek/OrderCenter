@@ -22,8 +22,8 @@ final class OrderExportController extends BaseController
     private $orderCompletion;
     private $exportHistoryController;
 
-    private const CARIFIX_TYPE = 'carifix';
-    private const NON_CARIFIX_TYPE = 'non-carifix';
+    private const CARIFEX_TYPE = 'carifex';
+    private const NON_CARIFEX_TYPE = 'non-carifex';
 
 
     public function __construct(ContainerInterface $container,
@@ -45,13 +45,13 @@ final class OrderExportController extends BaseController
         $end = $request->getQueryParams()["end"];
         $type = $request->getQueryParams()["type"];
 
-        $typeExpression = $type === self::CARIFIX_TYPE ?
+        $typeExpression = $type === self::CARIFEX_TYPE ?
             $this->orderCompletion->carifexCompleted() :
             $this->orderCompletion->nonCarifexCompleted();
 
         $timeExpression = new CompositeExpression(CompositeExpression::TYPE_AND, [
-            Criteria::expr()->gte('lastModification', $start),
-            Criteria::expr()->lte('lastModification', $end)
+            Criteria::expr()->gte('orderDate', $start),
+            Criteria::expr()->lte('orderDate', $end)
         ]);
 
         $statusExpression = Criteria::expr()->eq('orderStatus', Order::ORDER_STATUS_QUEUED);
@@ -66,9 +66,10 @@ final class OrderExportController extends BaseController
 
         $criteria = Criteria::create()->where($previewExpression);
 
+
         $orders = $this->em->getRepository(Order::class)->matching($criteria)->toArray();
 
-        return $this->responseToJson($response, ['status' => true, 'data' => $orders]);
+        return $this->responseToJson($response, ['status' => true, 'data' => $orders, 'query' => $criteria]);
     }
 
     public function export(Request $request, Response $response): Response
@@ -89,13 +90,9 @@ final class OrderExportController extends BaseController
         $exportHistory->setFileUrl($rootPath . $fileName);
         $exportHistory->setExportedBy($this->authController->getCurrentUser($request));
 
-        if (!$this->createXlsxFile($data, $exportHistory)) {
-            return $this->responseToJson($response,
-                [
-                    'status' => false,
-                    'message' => 'Could not create file'
-                ]
-            );
+        $output = $this->createXlsxFile($data, $exportHistory);
+        if (!$output['status']) {
+            return $this->responseToJson($response, $output);
         }
 
         $this->em->persist($exportHistory);
@@ -145,9 +142,9 @@ final class OrderExportController extends BaseController
 
     private function createXlsxFile($data, $exportHistory)
     {
-        return $exportHistory->getType() === self::CARIFIX_TYPE ?
-            $this->createCarifixFile($data, $exportHistory) :
-            $this->createNonCarifixFile($data, $exportHistory);
+        return $exportHistory->getType() === self::CARIFEX_TYPE ?
+            $this->createCarifexFile($data, $exportHistory) :
+            $this->createNonCarifexFile($data, $exportHistory);
     }
 
     private function createWriter($fileUrl): WriterInterface
@@ -157,28 +154,28 @@ final class OrderExportController extends BaseController
         $writer = $writer->openToFile($fileUrl);
         $writer->setDefaultColumnWidth(30);
         $writer->setDefaultRowHeight(20);
-        $writer->getCurrentSheet()->setName(date('Y-m-d'));
+        $writer->getCurrentSheet()->setName(Utils::getSheetName());
         return $writer;
     }
 
-    private function createCarifixFile($data, $exportHistory): bool
+    private function createCarifexFile($data, $exportHistory): array
     {
 
         try {
             $writer = $this->createWriter($exportHistory->getFileUrl());
-            $writer = $this->appendCarifixHeader($writer);
-            $writer = $this->writeCarifixOrders($writer, $data);
+            $writer = $this->appendCarifexHeader($writer);
+            $writer = $this->writeCarifexOrders($writer, $data);
             $writer->close();
-            return true;
+            return ["status" => true];
         } catch (\Exception $exception) {
-            return false;
+            return ["status" => false, "message" => $exception->getMessage()];
         }
     }
 
-    private function writeCarifixOrders($writer, $orders)
+    private function writeCarifexOrders($writer, $orders)
     {
         $registeredOrder = [];
-        $carifixMap = Order::CARIFIX_FILE_MAP;
+        $carifexMap = Order::CARIFEX_FILE_MAP;
 
         foreach ($orders as $order) {
 
@@ -186,9 +183,9 @@ final class OrderExportController extends BaseController
 
             if ($notExistsBefore) {
                 array_push($registeredOrder, $order['orderNo']);
-                $firstRow = $this->createCarifixFirstRow($carifixMap, $order);
+                $firstRow = $this->createCarifexFirstRow($carifexMap, $order);
                 $writer->addRow($firstRow->writterRow);
-                $order[$firstRow->sku] = '-';
+                $order[$firstRow->sku] = 'NIL';
             }
 
             $rows = $this->generateRowsFromSkus($order);
@@ -204,7 +201,7 @@ final class OrderExportController extends BaseController
         return !in_array($datum['orderNo'], $registeredOrder);
     }
 
-    private function createCarifixFirstRow($map, $datum)
+    private function createCarifexFirstRow($map, $datum)
     {
         $key = $this->getFirstValidSkus($datum);
         $map["SKU"] = $key !== null ? $key : 'TEMP';
@@ -218,39 +215,39 @@ final class OrderExportController extends BaseController
         return $firstRow;
     }
 
-    private function createNonCarifixFile($data, $exportHistory)
+    private function createNonCarifexFile($data, $exportHistory)
     {
         try {
             $writer = $this->createWriter($exportHistory->getFileUrl());
-            $writer = $this->appendNonCarifixHeader($writer);
+            $writer = $this->appendNonCarifexHeader($writer);
 
             foreach ($data as $datum) {
-                $row = WriterEntityFactory::createRow($this->generateRowFromMap(Order::NON_CARIFIX_MAP, $datum));
+                $row = WriterEntityFactory::createRow($this->generateRowFromMap(Order::NON_CARIFEX_MAP, $datum));
                 $writer->addRow($row);
             }
             $writer->close();
 
-            return true;
+            return ["status" => true];
         } catch (\Exception $exception) {
-            return false;
+            return ["status" => false, "message" => $exception->getMessage()];
         }
     }
 
-    private function appendCarifixHeader($writer)
+    private function appendCarifexHeader($writer)
     {
-        $header = $this->carifixFileTopNotes();
+        $header = $this->carifexFileTopNotes();
         $style = (new StyleBuilder())->setFontBold()->build();
         $writer->addRow(WriterEntityFactory::createRowFromArray($header, $style));
-        $writer->addRow(WriterEntityFactory::createRowFromArray(array_keys(Order::CARIFIX_FILE_MAP), $style));
+        $writer->addRow(WriterEntityFactory::createRowFromArray(array_keys(Order::CARIFEX_FILE_MAP), $style));
         return $writer;
     }
 
-    private function appendNonCarifixHeader($writer)
+    private function appendNonCarifexHeader($writer)
     {
         $style = (new StyleBuilder())->setFontBold()->build();
         $writer->addRow(
             WriterEntityFactory::createRowFromArray(
-                array_keys(Order::NON_CARIFIX_MAP),
+                array_keys(Order::NON_CARIFEX_MAP),
                 $style
             )
         );
@@ -264,22 +261,22 @@ final class OrderExportController extends BaseController
 
     private function getFirstValidSkus($datum)
     {
-        $first_valid = null;
+        $firstValid = null;
         foreach (Order::CARIFEX_TYPE_COLUMNS as $item) {
-            if ($datum[$item] != '-') {
-                $first_valid = $item;
+            if ($datum[$item] != 'NIL') {
+                $firstValid = $item;
                 continue;
             }
         }
-        return $first_valid;
+        return $firstValid;
     }
 
     private function generateRowFromMap($map, $datum)
     {
         $row = [];
-
         foreach ($map as $key => $value) {
             $it = isset($value) && isset($datum[$value]) ? $datum[$value] : '';
+            $it = $it === 'NIL' ? '-' : $it;
             $string = str_replace("\r", "", $it);
             $string = str_replace("\n", "", $string);
             array_push($row, WriterEntityFactory::createCell($string));
@@ -292,9 +289,9 @@ final class OrderExportController extends BaseController
     {
         $rows = [];
         foreach (Order::CARIFEX_TYPE_COLUMNS as $col) {
-            if ($order[$col] != '-') {
+            if ($order[$col] != 'NIL') {
                 $line = WriterEntityFactory::createRowFromArray(
-                    $this->carifixRow(
+                    $this->carifexRow(
                         $order['orderNo'],
                         $order[$col],
                         $order["quantity"]
@@ -307,7 +304,7 @@ final class OrderExportController extends BaseController
     }
 
 
-    private function carifixFileTopNotes()
+    private function carifexFileTopNotes()
     {
         $row = array_fill(0, 30, "");
         $row[3] = "Order Import Template";
@@ -315,7 +312,7 @@ final class OrderExportController extends BaseController
         return $row;
     }
 
-    private function carifixRow($orderNo, $sku, $qty)
+    private function carifexRow($orderNo, $sku, $qty)
     {
         $row = array_fill(0, 30, "");
         $row[0] = $orderNo;

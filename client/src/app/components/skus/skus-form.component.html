@@ -1,0 +1,32 @@
+<form #skuForm="ngForm" novalidate>
+    <h1 mat-dialog-title>Add New</h1>
+    <mat-dialog-content>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Name</mat-label>
+            <input #name="ngModel" [(ngModel)]="data.name" [required]="true" matInput name="name" type="text">
+            <mat-error *ngIf="name.hasError('required')">
+                Name is required
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Type</mat-label>
+            <mat-select #type="ngModel" [(ngModel)]="data.skuType" name="skuType">
+                <mat-option value="HIGH_BEAM">HIGH_BEAM</mat-option>
+                <mat-option value="LOW_BEAM">LOW_BEAM</mat-option>
+                <mat-option value="FOG_LIGHT">FOG_LIGHT</mat-option>
+                <mat-option value="HB_CAN_BUS">HB_CAN_BUS</mat-option>
+                <mat-option value="LB_CAN_BUS">LB_CAN_BUS</mat-option>
+            </mat-select>
+            <mat-error *ngIf="type.hasError('required')">
+                Type is required
+            </mat-error>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button (click)="cancel()" mat-button>Cancel</button>
+        <button (click)="save(skuForm)" cdkFocusInitial color="primary" mat-button>Save</button>
+    </mat-dialog-actions>
+</form>

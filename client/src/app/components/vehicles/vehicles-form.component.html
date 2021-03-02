@@ -1,0 +1,64 @@
+<h1 mat-dialog-title>Add New</h1>
+<form #orderForm="ngForm" novalidate>
+    <mat-dialog-content>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Year</mat-label>
+            <input #year="ngModel" [(ngModel)]="data.year" [required]="true" matInput name="year" type="number">
+            <mat-error *ngIf="year.hasError('required')">
+                <strong>Year is required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Make</mat-label>
+            <input #make="ngModel" [(ngModel)]="data.make" [required]="true" matInput name="make" type="text">
+            <mat-error *ngIf="make.hasError('required')">
+                <strong>Make is required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Model</mat-label>
+            <input #model="ngModel" [(ngModel)]="data.model" [required]="true" matInput name="model" type="text">
+            <mat-error *ngIf="model.hasError('required')">
+                <strong>Model is required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>High And Low Beam</mat-label>
+            <mat-select [(ngModel)]="data.highLowBeam" name="highLowBeam">
+                <mat-option *ngFor="let x of highLowBeam" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>High Beam</mat-label>
+            <mat-select [(ngModel)]="data.highBeam" name="highBeam">
+                <mat-option *ngFor="let x of highBeam" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Low Beam</mat-label>
+            <mat-select [(ngModel)]="data.lowBeam" name="lowBeam">
+                <mat-option *ngFor="let x of lowBeam" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field floatLabel="always">
+            <mat-label>Fog Light</mat-label>
+            <mat-select [(ngModel)]="data.fogLight" name="fogLight">
+                <mat-option *ngFor="let x of fogLight" [value]="x">{{ x }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button (click)="cancel()" mat-button>Cancel</button>
+        <button (click)="save(orderForm)" cdkFocusInitial color="primary" mat-button>Save</button>
+    </mat-dialog-actions>
+</form>

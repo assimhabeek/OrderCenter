@@ -2,12 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {environment} from '../../environments/environment';
 import {HttpParams} from '@angular/common/http';
-import {IServerSideDatasource, IServerSideGetRowsParams} from '@ag-grid-enterprise/all-modules';
+import {IServerSideDatasource, IServerSideGetRowsParams} from '@ag-grid-community/core';
 import {SkusService} from './skus.service';
 import {map} from 'rxjs/operators';
-import {forkJoin, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Helpers} from '../ultils/Helpers';
-import {VehiclesService} from './vehicles.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,8 +14,7 @@ import {VehiclesService} from './vehicles.service';
 export class OrdersService implements IServerSideDatasource {
 
     constructor(protected httpService: HttpService,
-                protected skusService: SkusService,
-                protected vehiclesService: VehiclesService) {
+                protected skusService: SkusService) {
     }
 
     getSKUs(): Observable<any> {
@@ -39,40 +37,35 @@ export class OrdersService implements IServerSideDatasource {
 
 
     getHeader(): Observable<any[]> {
-        return forkJoin(
-            [
-                this.getSKUs(),
-                this.vehiclesService.getYear()
-            ])
-            .pipe(map(([skus, years]) => {
-                const bulbTypes = skus.BULB_TYPE;
-                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT;
-                const highBeam = skus.HIGH_BEAM;
-                const lowBeam = skus.LOW_BEAM;
-                const fogLight = skus.FOG_LIGHT;
-                const hbCanBus = skus.HB_CAN_BUS;
-                const lbCanBus = skus.LB_CAN_BUS;
-                return this.buildHeader(bulbTypes, bulbTypeFogLight, highBeam, lowBeam, fogLight, hbCanBus, lbCanBus, years);
+        return this.getSKUs()
+            .pipe(map((skus) => {
+/*
+                const bulbTypes = skus.BULB_TYPE || this.addEmptyAndCompletedToSkus([]);
+                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
+*/
+                const highBeam = skus.HIGH_BEAM || this.addEmptyAndCompletedToSkus([]);
+                const lowBeam = skus.LOW_BEAM || this.addEmptyAndCompletedToSkus([]);
+                const fogLight = skus.FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
+                const hbCanBus = skus.HB_CAN_BUS || this.addEmptyAndCompletedToSkus([]);
+                const lbCanBus = skus.LB_CAN_BUS || this.addEmptyAndCompletedToSkus([]);
+                return this.buildHeader(highBeam, lowBeam, fogLight, hbCanBus, lbCanBus);
             }));
     }
 
     addEmptyAndCompletedToSkus(list: any): any {
         if (list) {
             list = list.map((x: any) => x.name);
-            list.unshift('-');
+            list.unshift(Helpers.NOT_EMPTY_CHAR);
             list.unshift('');
         }
         return list || [];
     }
 
-    buildHeader(bulbTypes: any,
-                bulbTypeFogLight: any,
-                highBeam: any,
+    buildHeader(highBeam: any,
                 lowBeam: any,
                 fogLight: any,
                 hbCanBus: any,
-                lbCanBus: any,
-                years: any): any {
+                lbCanBus: any): any {
         return [
             {
                 field: 'orderStatus',
@@ -87,19 +80,10 @@ export class OrdersService implements IServerSideDatasource {
                 headerName: 'Order No',
             },
             {
-                field: 'lastModification',
-                headerName: 'Last modification',
-                tooltipField: 'lastModification',
-                valueSetter: (params: any) => {
-                    params.data.lastModification = params.newValue;
-                    return true;
-                },
-                cellRenderer: (col: any) => {
-                    return Helpers.fromMysqlDateTime(col.value).fromNow();
-                },
+                field: 'orderDate',
+                headerName: 'Order date',
                 cellStyle: {'background-color': 'rgba(60,60,60,0.3)'},
                 editable: false,
-                filter: false
             },
             {
                 field: 'quantity',
@@ -108,56 +92,22 @@ export class OrdersService implements IServerSideDatasource {
             },
             {
                 field: 'productName',
-                headerName: 'Product name',
-            },
-            {
-                field: 'productTitle',
-                headerName: 'Product title'
-            },
-            {
-                field: 'vehicleYear',
-                headerName: 'Vehicle Year',
-                cellEditor: 'selectEditor',
-                cellEditorParams: {
-                    elements: years
-                }
-            },
-            {
-                field: 'vehicleMake',
-                headerName: 'Vehicle Make',
-                cellEditor: 'makeSelectEditor',
-                cellEditorParams: {
-                    requested: 'make'
-                }
-            },
-            {
-                field: 'vehicleModel',
-                headerName: 'Vehicle Model',
-                cellEditor: 'makeSelectEditor',
-                cellEditorParams: {
-                    requested: 'model'
-                }
+                headerName: 'Product name'
             },
             {
                 field: 'bulbType',
                 headerName: 'Bulb type',
-                cellEditor: 'selectEditor',
-                cellEditorParams: {
-                    elements: bulbTypes
-                }
-
+                width: 100
             },
             {
                 field: 'bulbTypeFogLight',
                 headerName: 'bulb Type Fog Light',
-                cellEditor: 'selectEditor',
-                cellEditorParams: {
-                    elements: bulbTypeFogLight
-                }
+                width: 100
             },
             {
                 field: 'highBeam',
                 headerName: 'High beam',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: highBeam
@@ -167,6 +117,7 @@ export class OrdersService implements IServerSideDatasource {
                 field: 'lowBeam',
                 headerName: 'Low beam',
                 cellEditor: 'selectEditor',
+                width: 100,
                 cellEditorParams: {
                     elements: lowBeam
                 }
@@ -174,8 +125,8 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'fogLight',
                 headerName: 'Fog light',
-
                 cellEditor: 'selectEditor',
+                width: 100,
                 cellEditorParams: {
                     elements: fogLight
                 }
@@ -183,6 +134,7 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'hbCanBus',
                 headerName: 'Hb can bus',
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: hbCanBus
@@ -191,7 +143,7 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'lbCanBus',
                 headerName: 'Lb can bus',
-
+                width: 100,
                 cellEditor: 'selectEditor',
                 cellEditorParams: {
                     elements: lbCanBus
@@ -254,10 +206,19 @@ export class OrdersService implements IServerSideDatasource {
 
             },
             {
-                field: 'orderDate',
-                headerName: 'Order date',
+                field: 'lastModification',
+                headerName: 'Last modification',
+                tooltipField: 'lastModification',
+                valueSetter: (params: any) => {
+                    params.data.lastModification = params.newValue;
+                    return true;
+                },
+                cellRenderer: (col: any) => {
+                    return Helpers.fromMysqlDateTime(col.value).fromNow();
+                },
                 cellStyle: {'background-color': 'rgba(60,60,60,0.3)'},
                 editable: false,
+                filter: false
             },
             {
                 field: 'modifiedBy',
@@ -297,21 +258,20 @@ export class OrdersService implements IServerSideDatasource {
             .set('sortDirection', params.request.sortModel[0] ? params.request.sortModel[0].sort : '');
 
         this.httpService.getWithAuth(environment.routes.orders, {params: par}).subscribe(res => {
-                if (res.status == true) {
-                    params.successCallback(res.data, res.total);
+                if (res.status === true) {
+                    params.success({rowData: res.data, rowCount: res.total});
 
-                    const allColumnIds: any[] = [];
-                    params.columnApi.getAllColumns().forEach(function (column: any) {
-                        allColumnIds.push(column.colId);
-                    });
-                    params.columnApi.autoSizeColumns(allColumnIds, false);
+                    const allColumnIds: any = params.columnApi.getAllColumns()
+                        ?.filter((x: any) => !x.colDef.width)
+                        .map((x: any) => x.colId);
+                    params.columnApi.autoSizeColumns(allColumnIds, true);
 
                 } else {
-                    params.failCallback();
+                    params.fail();
                 }
             },
-            error => {
-                params.failCallback();
+            () => {
+                params.fail();
             });
     }
 
