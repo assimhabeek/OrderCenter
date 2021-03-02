@@ -153,7 +153,7 @@ final class OrderExportController extends BaseController
         $writer->setShouldUseInlineStrings(false); // will use shared strings
         $writer = $writer->openToFile($fileUrl);
         $writer->setDefaultColumnWidth(30);
-        $writer->setDefaultRowHeight(20);
+     //   $writer->setDefaultRowHeight(20);
         $writer->getCurrentSheet()->setName(Utils::getSheetName());
         return $writer;
     }
