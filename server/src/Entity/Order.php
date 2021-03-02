@@ -71,7 +71,7 @@ class Order implements JsonSerializable
         "ShipToState" => "shippingProvince",
 
         "ShipToZip" => "shippingZip",
-        "ShipToCountry" => "shippingCountry",
+        "ShipToCountry" => "shippingCountryCode",
         "ShipToPhone" => "shippingPhone",
         "ShipToFax" => "",
         "ShipToEmail" => "",
