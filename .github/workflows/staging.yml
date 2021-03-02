@@ -47,11 +47,11 @@ jobs:
       - name: Add .env file
         run: touch ./output/api/.env
 
-      - name: Load Production Values
-        run: echo $PRODUCTION_VALUES | base64 -d > ./output/api/.env
+      - name: Load Staging Values
+        run: echo $STAGING_VALUES | base64 -d > ./output/api/.env
         shell: bash
         env:
-            PRODUCTION_VALUES: ${{ secrets.PRODUCTION_ENV_VALUES }}
+            STAGING_VALUES: ${{ secrets.STAGE_SECRETS }}
 
       - name: Display Output Content
         run: ls ./output
