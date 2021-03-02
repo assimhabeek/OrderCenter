@@ -15,7 +15,7 @@ final class AuthController extends BaseController
     {
         $username = $request->getParsedBody()["username"];
         $password = $request->getParsedBody()["password"];
-        $dbUser = $this->em->getRepository(User::Class)->findOneByUsername($username);
+        $dbUser = $this->em->getRepository(User::Class)->findOneBy(['username' => $username, 'active' => true]);
 
         if ($dbUser === null || !password_verify($password, $dbUser->getPassword())) {
             return $this->responseToJson($response, ["status" => false, "message" => "Wrong password or username"]);

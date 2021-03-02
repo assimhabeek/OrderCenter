@@ -7,3 +7,4 @@
 /server/composer.lock
 /server/.env
 /server/.env.prod
+/server/.env.staging

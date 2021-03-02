@@ -1,0 +1,28 @@
+<mat-card class="ct-toolbar mat-elevation-z1">
+    <button (click)="onAdd()"
+            color="primary"
+            mat-icon-button matTooltip="Add">
+        <mat-icon>add</mat-icon>
+    </button>
+    <button (click)="onDuplicate()"
+            [disabled]="noRowSelected()"
+            color="primary" mat-icon-button matTooltip="Duplicate">
+        <mat-icon>content_copy</mat-icon>
+    </button>
+    <button (click)="onRemove()"
+            [disabled]="noRowSelected()"
+            color="warn" mat-icon-button matTooltip="Remove">
+        <mat-icon>delete</mat-icon>
+    </button>
+    <button (click)="refresh()" mat-icon-button matTooltip="Refresh">
+        <mat-icon>refresh</mat-icon>
+    </button>
+
+</mat-card>
+
+<div *ngIf="columns" class="ct-table-wrapper">
+    <ag-grid-angular [gridOptions]="options"
+                     [modules]="modules"
+                     [rowData]="rowData"
+                     class="ag-theme-balham"></ag-grid-angular>
+</div>

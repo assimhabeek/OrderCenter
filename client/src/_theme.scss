@@ -27,6 +27,12 @@ ct-file-select {
   color: mat-color($ct-primary, 'default-contrast') !important;
 }
 
+
+.ct-accent {
+  background-color: mat-color($ct-accent) !important;
+  color: mat-color($ct-accent, 'default-contrast') !important;
+}
+
 .ct-warn {
   background-color: mat-color($ct-warn) !important;
   color: mat-color($ct-warn, 'default-contrast') !important;

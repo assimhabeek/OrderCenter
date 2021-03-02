@@ -67,8 +67,8 @@ class ShopifyConnector
             $result = json_decode($result, true);
             $accessToken = $result['access_token'];
 
-            $this->envFile->addOrChangeKey('SHOP_NAME',$params['shop']);
-            $this->envFile->addOrChangeKey('SHOP_SECRET',$accessToken);
+            $this->envFile->addOrChangeKey('SHOP_NAME', $params['shop']);
+            $this->envFile->addOrChangeKey('SHOP_SECRET', $accessToken);
             $this->envFile->save();
 
             $head_to_login = $currentHost . '/login?installed=1';
@@ -98,7 +98,7 @@ class ShopifyConnector
         $result = [];
         foreach ($webhooks as $wh) {
             $payload = $this->shopifyCall(
-                "/admin/api/2020-10/webhooks.json",
+                "/admin/api/2021-01/webhooks.json",
                 $wh,
                 'POST');
             array_push($result, json_decode($payload['response'], TRUE));
@@ -123,9 +123,27 @@ class ShopifyConnector
 
     public function getWebhooks(Request $request, Response $response, array $args)
     {
-        $payload = $this->shopifyCall("/admin/api/2020-10/webhooks.json", array());
+        $payload = $this->shopifyCall("/admin/api/2021-01/webhooks.json", array());
         $webhooks = json_decode($payload['response'], TRUE)['webhooks'];
         $response->getBody()->write(json_encode(['status' => true, 'data' => $webhooks]));
+        return $response;
+    }
+
+    public function deleteWebhooks(Request $request, Response $response, array $args)
+    {
+        $id = $request->getQueryParams()['id'];
+
+        $payload = $this->shopifyCall("/admin/api/2021-01/webhooks/" . $id . ".json", array(), "DELETE");
+        $resp = json_decode($payload, TRUE);
+        $response->getBody()->write(json_encode(['status' => true, 'id' => $id, 'data' => $resp]));
+        return $response;
+    }
+
+    public function shop(Request $request, Response $response, array $args)
+    {
+        $payload = $this->shopifyCall("/admin/api/2021-01/shop.json", array());
+        $shop = json_decode($payload['response'], TRUE);
+        $response->getBody()->write(json_encode(['status' => true, 'data' => $shop]));
         return $response;
     }
 

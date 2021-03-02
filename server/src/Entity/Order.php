@@ -30,10 +30,10 @@ class Order implements JsonSerializable
         "lbCanBus",
     ];
 
-    public const NON_CARIFIX_MAP = [
+    public const NON_CARIFEX_MAP = [
         "Order No" => "orderNo",
         "Qty" => "quantity",
-        "ProductTitle" => "productTitle",
+        "ProductTitle" => "productName",
         "Bulb Type" => "bulbType",
         "Bulb Type Fog Light" => "bulbTypeFogLight",
         "Tracking" => null,
@@ -51,7 +51,7 @@ class Order implements JsonSerializable
         "Shipping Company" => "shippingCompany"
     ];
 
-    public const CARIFIX_FILE_MAP = [
+    public const CARIFEX_FILE_MAP = [
         "ReferenceNumber" => "orderNo",
         "PurchaseOrderNumber" => "",
         "ShipCarrier" => "",
@@ -416,7 +416,7 @@ class Order implements JsonSerializable
      */
     public function setBulbType($bulbType)
     {
-        $this->bulbType = $bulbType;
+        $this->bulbType = trim($bulbType) === '' ? null : $bulbType;
         return $this;
     }
 
@@ -487,7 +487,7 @@ class Order implements JsonSerializable
      */
     public function setBulbTypeFogLight($bulbTypeFogLight)
     {
-        $this->bulbTypeFogLight = $bulbTypeFogLight;
+        $this->bulbTypeFogLight = trim($bulbTypeFogLight) === '' ? null : $bulbTypeFogLight;;
 
         return $this;
 
@@ -525,7 +525,7 @@ class Order implements JsonSerializable
      */
     public function setLowBeam($lowBeam)
     {
-        $this->lowBeam = $lowBeam;
+        $this->lowBeam = trim($lowBeam) === '' ? null : $lowBeam;
         return $this;
 
     }
@@ -543,7 +543,7 @@ class Order implements JsonSerializable
      */
     public function setFogLight($fogLight)
     {
-        $this->fogLight = $fogLight;
+        $this->fogLight = trim($fogLight) === '' ? null : $fogLight;
         return $this;
     }
 
@@ -560,7 +560,7 @@ class Order implements JsonSerializable
      */
     public function setHbCanBus($hbCanBus)
     {
-        $this->hbCanBus = $hbCanBus;
+        $this->hbCanBus = trim($hbCanBus) === '' ? null : $hbCanBus;
         return $this;
 
     }
@@ -578,7 +578,7 @@ class Order implements JsonSerializable
      */
     public function setLbCanBus($lbCanBus)
     {
-        $this->lbCanBus = $lbCanBus;
+        $this->lbCanBus = trim($lbCanBus) === '' ? null : $lbCanBus;
         return $this;
 
     }

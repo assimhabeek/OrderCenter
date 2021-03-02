@@ -1,10 +1,12 @@
 {
-  "name": "OrdersCenter",
+  "name": "orders-center",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
     "build": "ng build",
+    "build:stats": "ng build --prod --stats-json --extra-webpack-config webpack.extra.js",
+    "analyze": "webpack-bundle-analyzer dist/stats.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -12,7 +14,9 @@
   },
   "private": true,
   "dependencies": {
-    "@ag-grid-enterprise/all-modules": "^24.1.0",
+    "@ag-grid-community/angular": "latest",
+    "@ag-grid-community/client-side-row-model": "latest",
+    "@ag-grid-enterprise/server-side-row-model": "latest",
     "@angular/animations": "~11.0.1",
     "@angular/cdk": "^11.0.0",
     "@angular/common": "~11.0.1",
@@ -24,13 +28,11 @@
     "@angular/platform-browser": "~11.0.1",
     "@angular/platform-browser-dynamic": "~11.0.1",
     "@angular/router": "~11.0.1",
-    "ag-grid-angular": "^24.1.0",
-    "ag-grid-community": "^24.1.0",
-    "ag-grid-enterprise": "^24.1.0",
     "express": "^4.17.1",
-    "file-saver": "^2.0.5",
     "install": "^0.13.0",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
+    "ngx-build-plus": "^11.0.0",
     "ngx-webstorage-service": "^4.1.0",
     "npm": "^6.14.9",
     "path": "^0.12.7",
@@ -43,7 +45,6 @@
     "@angular-devkit/build-angular": "~0.1100.2",
     "@angular/cli": "~11.0.2",
     "@angular/compiler-cli": "~11.0.1",
-    "@types/file-saver": "^2.0.1",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
@@ -58,7 +59,8 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.0.2"
+    "typescript": "~4.0.2",
+    "webpack-bundle-analyzer": "^4.4.0"
   },
   "engines": {
     "node": "14.15.1",

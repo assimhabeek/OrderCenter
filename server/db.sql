@@ -282,9 +282,9 @@ values (95, 'CAR_HL_H13_CB_S', 'LB_CAN_BUS');
 insert into sku
 values (96, 'CAR_HL_H4_CB_S', 'LB_CAN_BUS');
 insert into sku
-values (110, 'NON_CARIFIX_TEST', 'bulbType');
+values (110, 'NON_CARIFEX_TEST', 'bulbType');
 insert into sku
-values (111, 'NON_CARIFIX_TEST2', 'bulbTypeFogLight');
+values (111, 'NON_CARIFEX_TEST2', 'bulbTypeFogLight');
 
 insert into vehicle
 values (1, 1988, 'Acura', 'Legend', 'CAR_HL_9004', null, null, 'CAR_FL_H3');
