@@ -33,7 +33,7 @@ class Order implements JsonSerializable
     public const NON_CARIFEX_MAP = [
         "Order No" => "orderNo",
         "Qty" => "quantity",
-        "ProductTitle" => "productTitle",
+        "ProductTitle" => "productName",
         "Bulb Type" => "bulbType",
         "Bulb Type Fog Light" => "bulbTypeFogLight",
         "Tracking" => null,

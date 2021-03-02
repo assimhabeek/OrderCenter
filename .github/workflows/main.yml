@@ -2,7 +2,7 @@
 
 name: Production CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   push:
     branches: [ main ]
@@ -11,8 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: orders-center    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './output'      # set this to the path to your web app project, defaults to the repository root
+  WEBAPP_PATH: './output/*'      # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   build-deply:
@@ -51,17 +50,20 @@ jobs:
         run: echo $PRODUCTION_VALUES | base64 -d > ./output/api/.env
         shell: bash
         env:
-            PRODUCTION_VALUES: ${{ secrets.PRODUCTION_ENV_VALUES }}
+          PRODUCTION_VALUES: ${{ secrets.PROD_SECRETS }}
 
       - name: Display Output Content
         run: ls ./output
 
-      - name: 'Deploy to Azure WebApp'
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: Deploy to Staging server
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          ARGS: "-rltgoDzvO"
+          SOURCE: ${{ env.WEBAPP_PATH }}
+          REMOTE_HOST: ${{ secrets.CARIFEX_HOST }}
+          REMOTE_USER: ${{ secrets.CARIFEX_USERNAME }}
+          TARGET: 'public_html/'
 
       - name: Delete Output File
         run: rm -Rf ./output
