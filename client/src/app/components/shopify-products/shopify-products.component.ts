@@ -9,7 +9,7 @@ import {SyncProductsService} from '../../services/sync-products.service';
 import {ClientSideRowModelModule} from '@ag-grid-community/client-side-row-model';
 
 @Component({
-    selector: 'ct-users-list',
+    selector: 'ct-shopify-products',
     templateUrl: './shopify-products.component.html',
     styleUrls: ['./shopify-products.component.scss']
 })
