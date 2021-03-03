@@ -74,9 +74,9 @@ return function (App $app) {
             $group->post('', ExportHistoryController::class . ':create');
             $group->put('', ExportHistoryController::class . ':update');
             $group->delete('/{id}', ExportHistoryController::class . ':delete');
-            $group->get('/files', ExportHistoryController::class . ':download');
-
         });
+
+        $authGroup->get('/files', ExportHistoryController::class . ':download');
 
 
         $authGroup->group('', function (Group $adminGroup) {
