@@ -12,6 +12,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDividerModule} from '@angular/material/divider';
+import {RouteReuseStrategy} from '@angular/router';
+import {RouterReuse} from './services/router.reuse';
 
 @NgModule({
     declarations: [
@@ -31,7 +33,12 @@ import {MatDividerModule} from '@angular/material/divider';
         HttpClientModule,
         RoutingModule,
     ],
-    providers: [],
+    providers: [
+        {
+            provide: RouteReuseStrategy,
+            useClass: RouterReuse
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
