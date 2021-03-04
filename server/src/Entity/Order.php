@@ -85,7 +85,7 @@ class Order implements JsonSerializable
         "UseCOD" => "",
         "UseInsurance" => "",
         "Saved Elements" => "",
-        "Order Item Saved Elements" => "productTitle",
+        "Order Item Saved Elements" => "",
         "Carrier Notes" => ""
     ];
 
