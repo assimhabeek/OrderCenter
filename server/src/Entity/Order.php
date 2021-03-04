@@ -58,7 +58,7 @@ class Order implements JsonSerializable
         "ShipService" => "ShipService",
         "ShipBilling" => "ShipBilling",
 
-        "ShipAccount" => "ShipAccount",
+        "ShipAccount" => "",
         "ShipDate" => "",
         "CancelDate" => "",
         "Notes" => "",
