@@ -208,7 +208,7 @@ final class OrderExportController extends BaseController
         if ($map["SKU"] === 'TEMP') $datum['TEMP'] = '-';
         $datum["ShipService"] = "PREPAID";
         $datum["ShipBilling"] = "PREPAID";
-        $datum["ShipAccount"] = "PREPAID";
+/*        $datum["ShipAccount"] = "PREPAID";*/
 
         $firstRow = new \stdClass();
         $firstRow->writterRow = WriterEntityFactory::createRow($this->generateRowFromMap($map, $datum));
@@ -319,7 +319,7 @@ final class OrderExportController extends BaseController
         $row[0] = $orderNo;
         $row[3] = 'PREPAID';
         $row[4] = 'PREPAID';
-        $row[5] = 'PREPAID';
+//        $row[5] = 'PREPAID';
         $row[23] = $sku;
         $row[24] = $qty;
         return $row;
