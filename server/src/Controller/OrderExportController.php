@@ -317,6 +317,7 @@ final class OrderExportController extends BaseController
     {
         $row = array_fill(0, 30, "");
         $row[0] = $orderNo;
+        $row[3] = 'PREPAID';
         $row[4] = 'PREPAID';
         $row[5] = 'PREPAID';
         $row[23] = $sku;
