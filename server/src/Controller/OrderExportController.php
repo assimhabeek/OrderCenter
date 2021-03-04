@@ -206,6 +206,7 @@ final class OrderExportController extends BaseController
         $key = $this->getFirstValidSkus($datum);
         $map["SKU"] = $key !== null ? $key : 'TEMP';
         if ($map["SKU"] === 'TEMP') $datum['TEMP'] = '-';
+        $datum["ShipService"] = "PREPAID";
         $datum["ShipBilling"] = "PREPAID";
         $datum["ShipAccount"] = "PREPAID";
 

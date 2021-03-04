@@ -55,10 +55,10 @@ class Order implements JsonSerializable
         "ReferenceNumber" => "orderNo",
         "PurchaseOrderNumber" => "",
         "ShipCarrier" => "",
-        "ShipService" => "",
+        "ShipService" => "ShipService",
         "ShipBilling" => "ShipBilling",
 
-        "ShipAccount" => "ShipBilling",
+        "ShipAccount" => "ShipAccount",
         "ShipDate" => "",
         "CancelDate" => "",
         "Notes" => "",
