@@ -71,7 +71,7 @@ final class WebhooksController extends BaseController
     }
 
 
-    public function cancelled(Request $request, Response $response): Response
+    public function canceled(Request $request, Response $response): Response
     {
         // just to double check
         $shopifyOrder = $request->getParsedBody();
