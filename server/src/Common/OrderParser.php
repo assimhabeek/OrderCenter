@@ -61,7 +61,7 @@ class OrderParser
                 $o->setVehicleYear($vehicle ? $vehicle->getYear() : null);
                 $o->setVehicleMake($vehicle ? $vehicle->getMake() : null);
                 $o->setVehicleModel($vehicle ? $vehicle->getModel() : null);
-                $o->vehicle = $vehicleInputText;
+                $o->setVehicle($vehicleInputText);
                 $o->matchScore = $score;
 
                 $o->setHighBeam($vehicle ? ($vehicle->getHighBeam() ?: $vehicle->getHighLowBeam()) : null);
