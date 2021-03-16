@@ -152,16 +152,16 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'vehicle',
                 headerName: 'Customer year/make/model input',
-                editable: false
+                editable: false,
+                width: 160,
+                cellStyle: {'background-color': 'rgba(60,60,60,0.3)'},
             },
             {
                 field: 'detectedVehicle',
                 headerName: 'Detected year/make/model',
-                editable: false
-            },
-            {
-                field: 'orderNotes',
-                headerName: 'Order notes',
+                editable: false,
+                width: 160,
+                cellStyle: {'background-color': 'rgba(60,60,60,0.3)'}
             },
             {
                 field: 'orderNotes',
