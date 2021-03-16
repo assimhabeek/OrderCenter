@@ -192,6 +192,14 @@ class Order implements JsonSerializable
 
 
     /**
+     * @var integer|null
+     *
+     * @ORM\Column(name="client_input", type="string" , nullable=true, options={"fixed"=true})
+     */
+    private $vehicle;
+
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="order_notes", type="string", length=200, nullable=true, options={"fixed"=true})
@@ -928,6 +936,24 @@ class Order implements JsonSerializable
     /**
      * @return string|null
      */
+    public function getVehicle()
+    {
+        return $this->vehicle;
+    }
+
+    /**
+     * @param string|null $vehicle
+     */
+    public function setVehicle($vehicle)
+    {
+        $this->vehicle = $vehicle;
+        return $this;
+
+    }
+
+    /**
+     * @return string|null
+     */
     public function getVehicleModel()
     {
         return $this->vehicleModel;
@@ -1000,7 +1026,7 @@ class Order implements JsonSerializable
             "vehicleMake" => $this->vehicleMake,
             "vehicleModel" => $this->vehicleModel,
             'vehicle' => $this->vehicle ?? '',
-            'detectedVehicle' => $this->detectedVehicle ?? '',
+            'detectedVehicle' => $this->vehicleYear . ' ' . $this->vehicleMake . ' ' . $this->vehicleModel ?? '',
             'matchScore' => $this->matchScore ?? ''
         ];
     }
