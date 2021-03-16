@@ -39,10 +39,10 @@ export class OrdersService implements IServerSideDatasource {
     getHeader(): Observable<any[]> {
         return this.getSKUs()
             .pipe(map((skus) => {
-/*
-                const bulbTypes = skus.BULB_TYPE || this.addEmptyAndCompletedToSkus([]);
-                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
-*/
+                /*
+                                const bulbTypes = skus.BULB_TYPE || this.addEmptyAndCompletedToSkus([]);
+                                const bulbTypeFogLight = skus.BULB_TYPE_FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
+                */
                 const highBeam = skus.HIGH_BEAM || this.addEmptyAndCompletedToSkus([]);
                 const lowBeam = skus.LOW_BEAM || this.addEmptyAndCompletedToSkus([]);
                 const fogLight = skus.FOG_LIGHT || this.addEmptyAndCompletedToSkus([]);
@@ -148,6 +148,18 @@ export class OrdersService implements IServerSideDatasource {
                 cellEditorParams: {
                     elements: lbCanBus
                 }
+            },
+            {
+                field: 'vehicle',
+                headerName: 'Customer year/make/model input',
+            },
+            {
+                field: 'detectedVehicle',
+                headerName: 'Detected year/make/model',
+            },
+            {
+                field: 'orderNotes',
+                headerName: 'Order notes',
             },
             {
                 field: 'orderNotes',

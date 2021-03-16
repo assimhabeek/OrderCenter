@@ -1000,6 +1000,7 @@ class Order implements JsonSerializable
             "vehicleMake" => $this->vehicleMake,
             "vehicleModel" => $this->vehicleModel,
             'vehicle' => $this->vehicle ?? '',
+            'detectedVehicle' => $this->detectedVehicle ?? '',
             'matchScore' => $this->matchScore ?? ''
         ];
     }
