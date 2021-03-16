@@ -152,10 +152,12 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'vehicle',
                 headerName: 'Customer year/make/model input',
+                editable: false
             },
             {
                 field: 'detectedVehicle',
                 headerName: 'Detected year/make/model',
+                editable: false
             },
             {
                 field: 'orderNotes',
