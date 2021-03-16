@@ -108,7 +108,6 @@ final class ShopifyOrderController extends BaseController
             $toInsert = [];
 
             foreach ($orders as $order) {
-                unset($order['vehicle']);
                 unset($order['matchScore']);
 
                 $order = $this->hydrator->hydrate(Order::class, $order);
@@ -218,6 +217,7 @@ final class ShopifyOrderController extends BaseController
             $copy->setVehicleYear($new->getVehicleYear());
             $copy->setVehicleMake($new->getVehicleMake());
             $copy->setVehicleModel($new->getVehicleModel());
+            $copy->setVehicle($new->getVehicle());
 
 /*            $copy->setHighBeam($new->getHighBeam());
             $copy->setLowBeam($new->getLowBeam());
