@@ -47,7 +47,6 @@ final class VehicleController extends BaseController
         $this->em->persist($vehicle);
         $this->em->flush();
 
-        $this->updateOrders($vehicle);
 
         return $this->responseToJson($response, $payload = ["status" => true, "message" => 'Row added successfully']);
     }
@@ -62,7 +61,6 @@ final class VehicleController extends BaseController
         $query->getResult();
         $this->em->flush();
 
-        $this->updateOrders($this->em->find(Vehicle::class, $updateInfo['id']));
         return $this->responseToJson($response, ["status" => true, "message" => 'Row updated successfully']);
     }
 
