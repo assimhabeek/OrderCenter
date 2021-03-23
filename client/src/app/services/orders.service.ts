@@ -243,6 +243,14 @@ export class OrdersService implements IServerSideDatasource {
             {
                 field: 'completed',
                 hide: true
+            },
+            {
+                field: 'startDate',
+                hide: true
+            },
+            {
+                field: 'endDate',
+                hide: true
             }
         ];
     }
