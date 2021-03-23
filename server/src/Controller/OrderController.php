@@ -49,6 +49,7 @@ final class OrderController extends BaseController
             $criteria->orderBy([$sortBy => $sortDirection]);
         }
 
+
         $matches = $this->em->getRepository(Order::class)->matching($criteria);
         $count = $matches->count();
         $orders = $matches->toArray();
@@ -104,18 +105,37 @@ final class OrderController extends BaseController
     {
         $criteria = new Criteria();
 
+
         foreach ($filters as $filter) {
 
-            $expression = $filter->name === 'completed' ?
-                $this->orderCompletion->completionExpression($filter) :
-                $this->defaultExpression($filter);
+            if ($filter->name === 'completed')
+                $expression = $this->orderCompletion->completionExpression($filter);
+
+            elseif ($this->dateRangeFilter($filter))
+                $expression = $this->queryByRangeExpression($filter);
+
+            else
+                $expression = $this->defaultExpression($filter);
+
 
             $criteria->andWhere($expression);
-
         }
 
         return $criteria;
     }
+
+    private function dateRangeFilter($filter)
+    {
+        return $filter->name === 'startDate' || $filter->name === 'endDate';
+    }
+
+    private function queryByRangeExpression($filter)
+    {
+        return $filter->name === 'startDate' ?
+            Criteria::expr()->gte('orderDate', $filter->value) :
+            Criteria::expr()->lte('orderDate', $filter->value);
+    }
+
 
     public function queueAll(Request $request, Response $response): Response
     {

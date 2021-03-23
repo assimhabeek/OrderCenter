@@ -22,10 +22,13 @@
     <span class="ct-spacer"></span>
     <div [formGroup]="orderDateForm">
         <mat-form-field class="ct-order-date">
-            <mat-label>Choose a date</mat-label>
-            <input [matDatepicker]="picker" formControlName="orderDate" matInput>
-            <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="datePicker">
+                <input formControlName="startDate" matStartDate placeholder="Start date">
+                <input formControlName="endDate" matEndDate placeholder="End date">
+            </mat-date-range-input>
+            <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+            <mat-date-range-picker #datePicker></mat-date-range-picker>
         </mat-form-field>
     </div>
 
