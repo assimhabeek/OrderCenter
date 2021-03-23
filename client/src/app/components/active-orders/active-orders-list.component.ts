@@ -29,7 +29,8 @@ export class ActiveOrdersListComponent {
 
     orderType: OrderType = 'all';
     orderDateForm = new FormGroup({
-        orderDate: new FormControl(Helpers.now())
+        startDate: new FormControl(Helpers.now()),
+        endDate: new FormControl(Helpers.now())
     });
 
     gridApi!: GridApi;
@@ -61,7 +62,8 @@ export class ActiveOrdersListComponent {
     onGridReady(params: any): void {
         this.gridApi = params.api;
         this.gridColumnApi = params.columnApi;
-        this.addFilter({orderDate: {filter: Helpers.toMysqlDate(this.orderDateForm.value.orderDate)}});
+        this.addFilter({startDate: {filter: Helpers.formatDate(this.orderDateForm.value.startDate?.startOf('day'))}});
+        this.addFilter({endDate: {filter: Helpers.formatDate(this.orderDateForm.value.endDate?.endOf('day'))}});
         this.addFilter({orderStatus: {filter: Helpers.orderStatus.ORDER_ACTIVE}});
         this.gridApi?.setServerSideDatasource(this.ordersService);
         this.listenToOrderDateForm();
@@ -77,9 +79,17 @@ export class ActiveOrdersListComponent {
 
     listenToOrderDateForm(): void {
         this.orderDateForm.valueChanges.subscribe(x => {
-            this.addFilter({orderDate: {filter: Helpers.toMysqlDate(x.orderDate)}});
+            if (x.startDate) {
+                const startDate = Helpers.formatDate(x.startDate?.startOf('day'));
+                this.addFilter({startDate: {filter: startDate}});
+            }
+            if (x.endDate) {
+                const endDate = Helpers.formatDate(x.endDate?.endOf('day'));
+                this.addFilter({endDate: {filter: endDate}});
+            }
         });
     }
+
 
     orderTypeChanged(newValue: OrderType): void {
         this.orderType = newValue;
@@ -244,7 +254,8 @@ export class ActiveOrdersListComponent {
     }
 
     clearFilters(): void {
-        this.orderDateForm.reset({orderDate: null});
+        this.orderDateForm.reset({startDate: null});
+        this.orderDateForm.reset({endDate: null});
         this.orderType = 'all';
         this.gridApi?.setFilterModel({orderStatus: {filter: Helpers.orderStatus.ORDER_ACTIVE}});
     }
