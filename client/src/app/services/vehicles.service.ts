@@ -58,7 +58,6 @@ export class VehiclesService implements IServerSideDatasource {
     buildHeader(highBeam: any,
                 lowBeam: any,
                 fogLight: any): any {
-        console.log(highBeam);
         return [
             {
                 field: 'year',
@@ -172,4 +171,12 @@ export class VehiclesService implements IServerSideDatasource {
             }).toPromise();
     }
 
+    exportFile(filters: []) {
+        const params = new HttpParams().set('filter', JSON.stringify(filters));
+        return this.httpService.getWithAuth(environment.routes.exportVehicles, {
+            params: params,
+            responseType: 'blob',
+            observe: 'response'
+        });
+    }
 }
