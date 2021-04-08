@@ -39,8 +39,7 @@ final class VehicleExportController extends BaseController
             unlink($exportedPath);
         }
 
-        $vehicles = sizeof($filters) > 0 ? $this->em->getRepository(Vehicle::class)->matching($criteria)->toArray()
-            : $this->em->getRepository(Vehicle::class)->toArray();
+        $vehicles = sizeof($filters) > 0 ? $this->em->getRepository(Vehicle::class)->matching($criteria)->toArray() : [];
 
         $writer = $this->createWriterFromTemplate($exportedPath, $fileName);
 
