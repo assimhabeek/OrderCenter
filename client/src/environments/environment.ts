@@ -26,7 +26,8 @@ export const environment = {
         year: '/year',
         make: '/make',
         model: '/model',
-        productSkus: '/productSkus'
+        productSkus: '/productSkus',
+        exportVehicles: '/exportVehicles'
     }
 };
 
