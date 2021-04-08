@@ -9,6 +9,7 @@ use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\CompositeExpression;
+use Doctrine\Common\Collections\Expr\Expression;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -53,18 +54,22 @@ final class VehicleExportController extends BaseController
 
     protected function createFilterCriteria(array $filters = []): Criteria
     {
-        $expressions = [];
-        foreach ($filters as $filter) array_push($expressions, $this->searchExpression($filter));
-        $criteria = new Criteria(new CompositeExpression(CompositeExpression::TYPE_AND, $expressions));
-        return $criteria;
+        $innerExp = [];
+        foreach ($filters as $filter) array_push($innerExp, $this->searchExpression($filter));
+
+        $expression = [new CompositeExpression(CompositeExpression::TYPE_AND, $innerExp)];
+
+        $filter = new \stdClass();
+        $filter->name = 'highLowBeam';
+        $filter->value = $filters[0]->value;
+        if (sizeof($filters) === 2 and $filters[0]->value == $filters[1]->value) array_push($expression, $this->searchExpression($filter));
+
+        return new Criteria(new CompositeExpression(CompositeExpression::TYPE_OR, $expression));
     }
 
-    protected function searchExpression($filter): CompositeExpression
+    protected function searchExpression($filter): Expression
     {
-        return new CompositeExpression(CompositeExpression::TYPE_OR, [
-            Criteria::expr()->eq($filter->name, $filter->value),
-            Criteria::expr()->eq('highLowBeam', $filter->value),
-        ]);
+        return Criteria::expr()->eq($filter->name, $filter->value);
     }
 
 
