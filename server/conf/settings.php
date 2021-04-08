@@ -21,6 +21,8 @@ return function (ContainerBuilder $containerBuilder) {
             'envFilePath' => $rootPath . '/.env',
 
             'exportPath' => $rootPath . '/var/exportedFile/',
+
+            'listingTemplatePath' => $rootPath . '/var/template/listing-template.xlsx',
             // Is debug mode
             'debug' => (getenv('APPLICATION_ENV') != 'production'),
 

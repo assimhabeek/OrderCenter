@@ -13,6 +13,7 @@ use App\Controller\ShopifyProductController;
 use App\Controller\SkuController;
 use App\Controller\UserController;
 use App\Controller\VehicleController;
+use App\Controller\VehicleExportController;
 use App\Controller\WebhooksController;
 use App\Middleware\AdminMiddleware;
 use App\Middleware\AuthMiddleware as AuthMiddleware;
@@ -31,7 +32,6 @@ return function (App $app) {
     $app->get('/install', ShopifyConnector::class . ':install');
     $app->get('/generateToken', ShopifyConnector::class . ':generateToken');
     $app->get('/shop', ShopifyConnector::class . ':shop');
-
 
 
     $app->group("", function (Group $shopifyGroup) {
@@ -88,6 +88,8 @@ return function (App $app) {
                 $group->delete('/{id}', VehicleController::class . ':delete');
             });
 
+            $adminGroup->get('/exportVehicles', VehicleExportController::class . ':export');
+
             $adminGroup->group('/users', function (Group $group) {
                 $group->get('', UserController::class . ':index');
                 $group->post('', UserController::class . ':create');
@@ -102,8 +104,7 @@ return function (App $app) {
             $adminGroup->get('/shopify-products', ShopifyProductController::class . ':index');
             $adminGroup->post('/shopify-products', ShopifyProductController::class . ':import');
 
-            
-            
+
             $adminGroup->post('/shopify-webhooks', ShopifyConnector::class . ':createWebhooks');
             $adminGroup->get('/shopify-webhooks', ShopifyConnector::class . ':getWebhooks');
             $adminGroup->delete('/shopify-webhooks', ShopifyConnector::class . ':deleteWebhooks');
