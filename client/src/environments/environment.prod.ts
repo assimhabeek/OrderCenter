@@ -22,7 +22,8 @@ export const environment = {
         vehicles: '/vehicles',
         year: '/year',
         make: '/make',
-        model: '/model'
+        model: '/model',
+        exportVehicles: '/exportVehicles'
     }
 };
 
