@@ -65,6 +65,11 @@ export const routes: Routes = [
                 path: 'vehicles',
                 loadChildren: () => import('./components/vehicles/vehicles.module').then(m => m.VehiclesModule),
                 canActivate: [AdminGuardService]
+            },
+            {
+                path: 'vehicles-export',
+                loadChildren: () => import('./components/vehicles-export/vehicles-export.module').then(m => m.VehiclesExportModule),
+                canActivate: [AdminGuardService]
             }
         ]
     },
